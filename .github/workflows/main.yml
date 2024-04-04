@@ -16,6 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: jdx/mise-action@v2
-      - run: mise install tuist@3
-      - run: mise use tuist@latest
+      - run: mise install tuist@3.36.4
+      - run: mise use tuist@3.36.4
       - run: tuist test
