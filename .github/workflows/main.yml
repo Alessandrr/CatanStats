@@ -2,22 +2,20 @@
 name: CatanStats
 
 on:
-  push:
-    branches:
-      - main
-      - dev
   pull_request:
     branches:
       - main
       - dev
-
+  push:
+    branches:
+      - main
+      - dev
 jobs:
-  build:
-    name: Build
+  lint:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: tuist/tuist-action@0.13.0
-        with:
-          command: 'test'
-          arguments: ''
+      - uses: jdx/mise-action@v2
+      - run: mise install tuist@3
+      - run: mise use tuist@latest
+      - run: tuist test
