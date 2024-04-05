@@ -17,6 +17,7 @@ class RollCountViewController: UIViewController {
 	private var collectionView: UICollectionView!
 	private var dataSource: UICollectionViewDiffableDataSource<Section, RollButtonModel>!
 
+	// MARK: Life cycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		navigationItem.title = "Roll stats"
@@ -25,11 +26,13 @@ class RollCountViewController: UIViewController {
 		configureDataSource()
 	}
 
+	// MARK: Private methods
 	private func configureCollectionView() {
 		let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: generateLayout())
 		view.addSubview(collectionView)
 		collectionView.delegate = self
 		collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+		collectionView.isScrollEnabled = false
 		collectionView.register(StatButtonCell.self, forCellWithReuseIdentifier: StatButtonCell.reuseIdentifier)
 		self.collectionView = collectionView
 	}
@@ -64,7 +67,7 @@ extension RollCountViewController {
 		let nestedGroup = NSCollectionLayoutGroup.vertical(
 			layoutSize: NSCollectionLayoutSize(
 				widthDimension: .fractionalWidth(1.0),
-				heightDimension: .fractionalHeight(0.75)
+				heightDimension: .fractionalWidth(3/2)
 			),
 			subitems: generateGroups()
 		)
@@ -76,10 +79,10 @@ extension RollCountViewController {
 
 	private func generateGroups() -> [NSCollectionLayoutItem] {
 		let defaultInsets = NSDirectionalEdgeInsets(
-			top: 5,
-			leading: 5,
-			bottom: 5,
-			trailing: 5
+			top: Sizes.Padding.normal,
+			leading: Sizes.Padding.normal,
+			bottom: Sizes.Padding.normal,
+			trailing: Sizes.Padding.normal
 		)
 
 		let thirdSize = NSCollectionLayoutSize(
@@ -92,7 +95,7 @@ extension RollCountViewController {
 		let threeGroup = NSCollectionLayoutGroup.horizontal(
 			layoutSize: NSCollectionLayoutSize(
 				widthDimension: .fractionalWidth(1.0),
-				heightDimension: .fractionalHeight(1/10)
+				heightDimension: .fractionalWidth(1/5)
 			),
 			subitems: [oneThirdButtonItem, oneThirdButtonItem, oneThirdButtonItem]
 		)
@@ -100,7 +103,7 @@ extension RollCountViewController {
 		let largeItem = NSCollectionLayoutItem(
 			layoutSize: NSCollectionLayoutSize(
 				widthDimension: .fractionalWidth(0.5),
-				heightDimension: .fractionalHeight(1.0)
+				heightDimension: .fractionalWidth(0.5)
 			)
 		)
 		largeItem.contentInsets = defaultInsets
@@ -125,7 +128,7 @@ extension RollCountViewController {
 		let largeWithPairGroup = NSCollectionLayoutGroup.horizontal(
 			layoutSize: NSCollectionLayoutSize(
 				widthDimension: .fractionalWidth(1.0),
-				heightDimension: .fractionalHeight(0.35)
+				heightDimension: .fractionalWidth(1/2)
 			),
 			subitems: [leadingGroup, largeItem]
 		)
@@ -140,15 +143,16 @@ extension RollCountViewController {
 		let twoGroup = NSCollectionLayoutGroup.horizontal(
 			layoutSize: NSCollectionLayoutSize(
 				widthDimension: .fractionalWidth(1.0),
-				heightDimension: .fractionalHeight(1/10)
+				heightDimension: .fractionalWidth(1/5)
 			),
 			subitems: [halfButtonItem, halfButtonItem]
 		)
 
-		return [threeGroup, largeWithPairGroup, threeGroup, twoGroup]
+		return [threeGroup, largeWithPairGroup, twoGroup, threeGroup]
 	}
 }
 
+// MARK: UICollectionViewDelegate
 extension RollCountViewController: UICollectionViewDelegate {
 
 }

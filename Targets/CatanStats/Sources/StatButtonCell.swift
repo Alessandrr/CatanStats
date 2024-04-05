@@ -23,18 +23,15 @@ class StatButtonCell: UICollectionViewCell {
 		let buttonView = UIButton()
 		buttonView.translatesAutoresizingMaskIntoConstraints = false
 		var config = UIButton.Configuration.filled()
+
 		switch model {
 		case .number(let rollResult):
-			config.title = rollResult.description
+			config.image = UIImage(systemName: "\(rollResult).circle")
 		}
-
-		config.baseBackgroundColor = .systemBlue // Button background color
-		config.baseForegroundColor = .white // Text and image color
-
+		config.baseBackgroundColor = Colors.red
 		buttonView.configuration = config
 
 		contentView.addSubview(buttonView)
-
 		NSLayoutConstraint.activate([
 			buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 			buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
