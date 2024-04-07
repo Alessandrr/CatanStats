@@ -19,7 +19,7 @@ class StatButtonCell: UICollectionViewCell {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	func configure(with model: RollButtonModel) {
+	func configure(with model: RollStatsModel) {
 		let buttonView = UIButton()
 		buttonView.translatesAutoresizingMaskIntoConstraints = false
 		var config = UIButton.Configuration.filled()

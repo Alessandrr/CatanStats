@@ -1,5 +1,5 @@
 //
-//  RollCountViewController.swift
+//  RollStatsViewController.swift
 //  CatanStats
 //
 //  Created by Aleksandr Mamlygo on 04.04.24.
@@ -8,14 +8,17 @@
 
 import UIKit
 
-class RollCountViewController: UIViewController {
+class RollStatsViewController: UIViewController {
 	private enum Section {
 		case rolls
 	}
 
+	// MARK: Dependencies
+	var presenter: IRollStatsPresenter?
+
 	// MARK: Private properties
 	private var collectionView: UICollectionView!
-	private var dataSource: UICollectionViewDiffableDataSource<Section, RollButtonModel>!
+	private var dataSource: UICollectionViewDiffableDataSource<Section, RollStatsModel>!
 
 	// MARK: Life cycle
 	override func viewDidLoad() {
@@ -39,7 +42,7 @@ class RollCountViewController: UIViewController {
 
 	private func configureDataSource() {
 		dataSource = UICollectionViewDiffableDataSource
-		<Section, RollButtonModel>(collectionView: collectionView) { (collectionView, indexPath, rollButtonModel)
+		<Section, RollStatsModel>(collectionView: collectionView) { (collectionView, indexPath, rollButtonModel)
 			-> UICollectionViewCell? in
 			guard let cell = collectionView.dequeueReusableCell(
 				withReuseIdentifier: StatButtonCell.reuseIdentifier,
@@ -50,19 +53,19 @@ class RollCountViewController: UIViewController {
 			return cell
 		}
 
-		var snapshot = NSDiffableDataSourceSnapshot<Section, RollButtonModel>()
+		var snapshot = NSDiffableDataSourceSnapshot<Section, RollStatsModel>()
 		snapshot.appendSections([Section.rolls])
 		snapshot.appendItems(makeButtonModels())
 		dataSource.apply(snapshot)
 	}
 
-	private func makeButtonModels() -> [RollButtonModel] {
-		(2...12).map { RollButtonModel.number(rollResult: $0) }
+	private func makeButtonModels() -> [RollStatsModel] {
+		(2...12).map { RollStatsModel.number(rollResult: $0) }
 	}
 }
 
 // MARK: Layout
-extension RollCountViewController {
+extension RollStatsViewController {
 	private func generateLayout() -> UICollectionViewLayout {
 		let nestedGroup = NSCollectionLayoutGroup.vertical(
 			layoutSize: NSCollectionLayoutSize(
@@ -153,6 +156,6 @@ extension RollCountViewController {
 }
 
 // MARK: UICollectionViewDelegate
-extension RollCountViewController: UICollectionViewDelegate {
+extension RollStatsViewController: UICollectionViewDelegate {
 
 }

@@ -1,5 +1,5 @@
 //
-//  RollCountModel.swift
+//  RollStatsModel.swift
 //  CatanStats
 //
 //  Created by Aleksandr Mamlygo on 04.04.24.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-enum RollButtonModel: Hashable {
+enum RollStatsModel: Hashable {
 	case number(rollResult: Int)
 }
