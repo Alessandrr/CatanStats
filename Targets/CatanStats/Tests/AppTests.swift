@@ -3,6 +3,6 @@ import XCTest
 
 final class CatanStatsTests: XCTestCase {
     func test_twoPlusTwo_isFour() {
-        XCTAssertEqual(2+2, 5)
+        XCTAssertEqual(2+2, 4)
     }
 }

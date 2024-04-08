@@ -11,42 +11,42 @@ import UIKit
 class StatButtonCell: UICollectionViewCell {
 	static let reuseIdentifier = "statButtonIdentifier"
 
+	private lazy var imageView = UIImageView()
+
+	// MARK: Initialization
 	override init(frame: CGRect) {
 		super.init(frame: frame)
+		setupUI()
 	}
 
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 
+	// MARK: Public methods
 	func configure(with model: RollStatsModel) {
-		// TODO: replace UiButton with UiView
-		let buttonView = UIButton()
-		buttonView.translatesAutoresizingMaskIntoConstraints = false
-		var config = UIButton.Configuration.filled()
-
 		switch model {
 		case .number(let rollResult):
-			config.image = UIImage(systemName: "\(rollResult).circle")
-			config.baseBackgroundColor = Colors.red
+			imageView.image = UIImage(systemName: "\(rollResult).circle")
+			layer.backgroundColor = Colors.red.cgColor
 		case .ship:
-			config.image = UIImage(systemName: "sailboat")
-			config.baseBackgroundColor = UIColor.systemGray
+			imageView.image = UIImage(systemName: "sailboat")
+			layer.backgroundColor = UIColor.systemGray.cgColor
 		case .castle(let color):
-			config.image = UIImage(systemName: "house.lodge")
-			config.baseBackgroundColor = color
+			imageView.image = UIImage(systemName: "house.lodge")
+			layer.backgroundColor = color.cgColor
 		}
-		buttonView.configuration = config
-
-		contentView.addSubview(buttonView)
-		NSLayoutConstraint.activate([
-			buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-			buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-			buttonView.topAnchor.constraint(equalTo: contentView.topAnchor),
-			buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-		])
 	}
 
+	// MARK: Private methods
 	private func setupUI() {
+		imageView.tintColor = .white
+
+		contentView.addSubview(imageView)
+		imageView.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+			imageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+		])
 	}
 }

@@ -85,7 +85,7 @@ class RollStatsViewController: UIViewController {
 extension RollStatsViewController {
 	private func generateLayout() -> UICollectionViewLayout {
 		let layout = UICollectionViewCompositionalLayout { [unowned self] sectionIndex, _ in
-			let sectionLayoutKind = Section(rawValue: sectionIndex) ?? .rolls
+			let sectionLayoutKind = Section(rawValue: sectionIndex) ?? .ship
 			switch sectionLayoutKind {
 			case .rolls:
 				let subgroups = [
@@ -210,5 +210,4 @@ extension RollStatsViewController {
 
 // MARK: UICollectionViewDelegate
 extension RollStatsViewController: UICollectionViewDelegate {
-
 }
