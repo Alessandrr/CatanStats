@@ -20,6 +20,7 @@ class StatButtonCell: UICollectionViewCell {
 	}
 
 	func configure(with model: RollStatsModel) {
+		// TODO: replace UiButton with UiView
 		let buttonView = UIButton()
 		buttonView.translatesAutoresizingMaskIntoConstraints = false
 		var config = UIButton.Configuration.filled()
@@ -27,8 +28,14 @@ class StatButtonCell: UICollectionViewCell {
 		switch model {
 		case .number(let rollResult):
 			config.image = UIImage(systemName: "\(rollResult).circle")
+			config.baseBackgroundColor = Colors.red
+		case .ship:
+			config.image = UIImage(systemName: "sailboat")
+			config.baseBackgroundColor = UIColor.systemGray
+		case .castle(let color):
+			config.image = UIImage(systemName: "house.lodge")
+			config.baseBackgroundColor = color
 		}
-		config.baseBackgroundColor = Colors.red
 		buttonView.configuration = config
 
 		contentView.addSubview(buttonView)
@@ -38,5 +45,8 @@ class StatButtonCell: UICollectionViewCell {
 			buttonView.topAnchor.constraint(equalTo: contentView.topAnchor),
 			buttonView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
 		])
+	}
+
+	private func setupUI() {
 	}
 }

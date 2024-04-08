@@ -6,8 +6,10 @@
 //  Copyright © 2024 tuist.io. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 enum RollStatsModel: Hashable {
 	case number(rollResult: Int)
+	case ship
+	case castle(color: UIColor)
 }
