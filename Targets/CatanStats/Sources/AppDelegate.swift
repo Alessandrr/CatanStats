@@ -10,9 +10,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
 	) -> Bool {
 		window = UIWindow(frame: UIScreen.main.bounds)
-		let rollStatsViewController = RollStatsViewController()
-		rollStatsViewController.presenter = RollStatsPresenter()
-		let navigationViewController = UINavigationController(rootViewController: rollStatsViewController)
+
+		let navigationViewController = UINavigationController(
+			rootViewController: RollStatsAssembler().assembly()
+		)
 		window?.rootViewController = navigationViewController
 		window?.makeKeyAndVisible()
 

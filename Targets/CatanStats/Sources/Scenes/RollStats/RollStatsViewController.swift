@@ -8,29 +8,32 @@
 
 import UIKit
 
-class RollStatsViewController: UIViewController {
-	// MARK: Constants for layout
-	private enum Section: Int {
-		case rolls
-		case ship
-		case castles
-	}
-
-	private enum Sizes {
-		static let defaultInsets = NSDirectionalEdgeInsets(
-			top: 5,
-			leading: 5,
-			bottom: 5,
-			trailing: 5
-		)
-	}
+final class RollStatsViewController: UIViewController {
 
 	// MARK: Dependencies
-	var presenter: IRollStatsPresenter?
+	private var presenter: IRollStatsPresenter
+	private var sectionLayoutProviderFactory: SectionLayoutProviderFactory
+
+	// MARK: Initialization
+	init(
+		presenter: IRollStatsPresenter,
+		sectionLayoutProviderFactory: SectionLayoutProviderFactory,
+		sections: [RollStatsSection] = [.rolls, .ship, .castles]
+	) {
+		self.presenter = presenter
+		self.sectionLayoutProviderFactory = sectionLayoutProviderFactory
+		self.sections = sections
+		super.init(nibName: nil, bundle: nil)
+	}
+
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 
 	// MARK: Private properties
 	private var collectionView: UICollectionView!
-	private var dataSource: UICollectionViewDiffableDataSource<Section, RollStatsModel>!
+	private var dataSource: UICollectionViewDiffableDataSource<RollStatsSection, RollStatsModel>!
+	private var sections: [RollStatsSection]
 
 	// MARK: Life cycle
 	override func viewDidLoad() {
@@ -53,7 +56,7 @@ class RollStatsViewController: UIViewController {
 
 	private func configureDataSource() {
 		dataSource = UICollectionViewDiffableDataSource
-		<Section, RollStatsModel>(collectionView: collectionView) { (collectionView, indexPath, rollStatsModel)
+		<RollStatsSection, RollStatsModel>(collectionView: collectionView) { (collectionView, indexPath, rollStatsModel)
 			-> UICollectionViewCell? in
 			guard let cell = collectionView.dequeueReusableCell(
 				withReuseIdentifier: StatButtonCell.reuseIdentifier,
@@ -64,15 +67,15 @@ class RollStatsViewController: UIViewController {
 			return cell
 		}
 
-		var snapshot = NSDiffableDataSourceSnapshot<Section, RollStatsModel>()
-		snapshot.appendSections([Section.rolls, Section.ship, Section.castles])
-		snapshot.appendItems(makeButtonModels(), toSection: Section.rolls)
-		snapshot.appendItems([RollStatsModel.ship], toSection: Section.ship)
+		var snapshot = NSDiffableDataSourceSnapshot<RollStatsSection, RollStatsModel>()
+		snapshot.appendSections(sections)
+		snapshot.appendItems(makeButtonModels(), toSection: RollStatsSection.rolls)
+		snapshot.appendItems([RollStatsModel.ship], toSection: RollStatsSection.ship)
 		snapshot.appendItems([
 			RollStatsModel.castle(color: Colors.lightOrange),
 			RollStatsModel.castle(color: Colors.green),
 			RollStatsModel.castle(color: Colors.lightBlue)
-		])
+		], toSection: RollStatsSection.castles)
 		dataSource.apply(snapshot)
 	}
 
@@ -85,126 +88,12 @@ class RollStatsViewController: UIViewController {
 extension RollStatsViewController {
 	private func generateLayout() -> UICollectionViewLayout {
 		let layout = UICollectionViewCompositionalLayout { [unowned self] sectionIndex, _ in
-			let sectionLayoutKind = Section(rawValue: sectionIndex) ?? .ship
-			switch sectionLayoutKind {
-			case .rolls:
-				let subgroups = [
-					makeThreeButtonGroup(),
-					makeSquareWithLeadingPairGroup(),
-					makeTwoButtonGroup(),
-					makeThreeButtonGroup()
-				]
-
-				let nestedGroup = NSCollectionLayoutGroup.vertical(
-					layoutSize: NSCollectionLayoutSize(
-						widthDimension: .fractionalWidth(1.0),
-						heightDimension: .fractionalWidth(14/15)
-					),
-					subitems: subgroups
-				)
-
-				return NSCollectionLayoutSection(group: nestedGroup)
-			case .ship:
-				let item = NSCollectionLayoutItem(
-					layoutSize: NSCollectionLayoutSize(
-						widthDimension: .fractionalWidth(1.0),
-						heightDimension: .fractionalHeight(1.0)
-					)
-				)
-				item.contentInsets = Sizes.defaultInsets
-
-				let group = NSCollectionLayoutGroup.horizontal(
-					layoutSize: NSCollectionLayoutSize(
-						widthDimension: .fractionalWidth(1.0),
-						heightDimension: .fractionalWidth(1/7)
-					),
-					subitems: [item]
-				)
-				return NSCollectionLayoutSection(group: group)
-			case .castles:
-				let group = makeThreeButtonGroup()
-				return NSCollectionLayoutSection(group: group)
-			}
+			let section = sections[sectionIndex]
+			let layoutProvider = sectionLayoutProviderFactory.makeSectionProvider(for: section)
+			return layoutProvider.generateLayoutSection()
 		}
 
 		return layout
-	}
-
-	private func makeThreeButtonGroup() -> NSCollectionLayoutGroup {
-		let thirdWidthButtonItem = NSCollectionLayoutItem(
-			layoutSize: NSCollectionLayoutSize(
-				widthDimension: .fractionalWidth(1/3),
-				heightDimension: .fractionalHeight(1.0)
-			)
-		)
-		thirdWidthButtonItem.contentInsets = Sizes.defaultInsets
-
-		let threeGroup = NSCollectionLayoutGroup.horizontal(
-			layoutSize: NSCollectionLayoutSize(
-				widthDimension: .fractionalWidth(1.0),
-				heightDimension: .fractionalWidth(1/5)
-			),
-			subitems: [thirdWidthButtonItem, thirdWidthButtonItem, thirdWidthButtonItem]
-		)
-
-		return threeGroup
-	}
-
-	private func makeTwoButtonGroup() -> NSCollectionLayoutGroup {
-		let halfWidthButtonItem = NSCollectionLayoutItem(
-			layoutSize: NSCollectionLayoutSize(
-				widthDimension: .fractionalWidth(1/2),
-				heightDimension: .fractionalHeight(1.0)
-			)
-		)
-		halfWidthButtonItem.contentInsets = Sizes.defaultInsets
-
-		let twoGroup = NSCollectionLayoutGroup.horizontal(
-			layoutSize: NSCollectionLayoutSize(
-				widthDimension: .fractionalWidth(1.0),
-				heightDimension: .fractionalWidth(1/5)
-			),
-			subitems: [halfWidthButtonItem, halfWidthButtonItem]
-		)
-
-		return twoGroup
-	}
-
-	private func makeSquareWithLeadingPairGroup() -> NSCollectionLayoutGroup {
-		let largeSquareItem = NSCollectionLayoutItem(
-			layoutSize: NSCollectionLayoutSize(
-				widthDimension: .fractionalWidth(1/2),
-				heightDimension: .fractionalWidth(1/3)
-			)
-		)
-		largeSquareItem.contentInsets = Sizes.defaultInsets
-
-		let pairItem = NSCollectionLayoutItem(
-			layoutSize: NSCollectionLayoutSize(
-				widthDimension: .fractionalWidth(1.0),
-				heightDimension: .fractionalHeight(1/2)
-			)
-		)
-		pairItem.contentInsets = Sizes.defaultInsets
-
-		let leadingGroup = NSCollectionLayoutGroup.vertical(
-			layoutSize: NSCollectionLayoutSize(
-				widthDimension: .fractionalWidth(1/2),
-				heightDimension: .fractionalHeight(1.0)
-			),
-			subitem: pairItem,
-			count: 2
-		)
-
-		let largeWithPairGroup = NSCollectionLayoutGroup.horizontal(
-			layoutSize: NSCollectionLayoutSize(
-				widthDimension: .fractionalWidth(1.0),
-				heightDimension: .fractionalWidth(1/3)
-			),
-			subitems: [leadingGroup, largeSquareItem]
-		)
-
-		return largeWithPairGroup
 	}
 }
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class StatButtonCell: UICollectionViewCell {
+final class StatButtonCell: UICollectionViewCell {
 	static let reuseIdentifier = "statButtonIdentifier"
 
 	private lazy var imageView = UIImageView()

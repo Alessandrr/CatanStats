@@ -12,7 +12,7 @@ protocol IRollStatsPresenter {
 	func didSelectRollItem(_ item: RollStatsModel)
 }
 
-class RollStatsPresenter: IRollStatsPresenter {
+final class RollStatsPresenter: IRollStatsPresenter {
 	func didSelectRollItem(_ item: RollStatsModel) {
 	}
 }
