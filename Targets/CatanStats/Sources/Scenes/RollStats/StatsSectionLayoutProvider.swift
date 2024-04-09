@@ -22,11 +22,11 @@ struct SectionLayoutProviderFactory {
 	func makeSectionProvider(for section: RollStatsSection) -> ISectionLayoutProvider {
 		switch section {
 		case .rolls:
-			return RollsSectionLayoutProvider()
+			RollsSectionLayoutProvider()
 		case .ship:
-			return ShipSectionLayoutProvider()
+			ShipSectionLayoutProvider()
 		case .castles:
-			return CastlesSectionLayoutProvider()
+			CastlesSectionLayoutProvider()
 		}
 	}
 }
