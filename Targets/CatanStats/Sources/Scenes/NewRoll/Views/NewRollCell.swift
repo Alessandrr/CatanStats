@@ -1,5 +1,5 @@
 //
-//  StatButtonCell.swift
+//  NewRollCell.swift
 //  CatanStats
 //
 //  Created by Aleksandr Mamlygo on 04.04.24.
@@ -8,8 +8,8 @@
 
 import UIKit
 
-final class StatButtonCell: UICollectionViewCell {
-	static let reuseIdentifier = "statButtonIdentifier"
+final class NewRollCell: UICollectionViewCell {
+	static let reuseIdentifier = "newRollButtonIdentifier"
 
 	private lazy var imageView = UIImageView()
 
@@ -17,6 +17,8 @@ final class StatButtonCell: UICollectionViewCell {
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		setupUI()
+		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+		self.addGestureRecognizer(tapGesture)
 	}
 
 	required init?(coder: NSCoder) {
@@ -24,7 +26,7 @@ final class StatButtonCell: UICollectionViewCell {
 	}
 
 	// MARK: Public methods
-	func configure(with model: RollStatsModel) {
+	func configure(with model: NewRollModel) {
 		switch model {
 		case .number(let rollResult):
 			imageView.image = UIImage(systemName: "\(rollResult).circle")
@@ -40,13 +42,32 @@ final class StatButtonCell: UICollectionViewCell {
 
 	// MARK: Private methods
 	private func setupUI() {
-		imageView.tintColor = .white
+		layer.cornerRadius = Sizes.rollCellCornerRadius
 
+		imageView.tintColor = .white
 		contentView.addSubview(imageView)
 		imageView.translatesAutoresizingMaskIntoConstraints = false
+
 		NSLayoutConstraint.activate([
 			imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 			imageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
 		])
+	}
+
+	@objc private func handleTap() {
+		let originalBackgroundColor = layer.backgroundColor ?? Colors.lightBlue.cgColor
+		UIView.animate(
+			withDuration: 0.1,
+			delay: 0,
+			options: [.autoreverse, .allowUserInteraction],
+			animations: { [unowned self] in
+				contentView.alpha = 0.5
+				layer.backgroundColor = UIColor(cgColor: originalBackgroundColor).withAlphaComponent(0.5).cgColor
+			},
+			completion: { [unowned self] _ in
+				contentView.alpha = 1.0
+				layer.backgroundColor = originalBackgroundColor
+			}
+		)
 	}
 }

@@ -1,5 +1,5 @@
 //
-//  RollStatsAssembler.swift
+//  NewRollAssembler.swift
 //  CatanStats
 //
 //  Created by Aleksandr Mamlygo on 09.04.24.
@@ -8,10 +8,10 @@
 
 import Foundation
 
-final class RollStatsAssembler {
-	func assembly() -> RollStatsViewController {
-		let presenter = RollStatsPresenter()
-		let rollStatsViewController = RollStatsViewController(
+final class NewRollAssembler {
+	func assembly() -> NewRollViewController {
+		let presenter = NewRollPresenter()
+		let rollStatsViewController = NewRollViewController(
 			presenter: presenter,
 			sectionLayoutProviderFactory: SectionLayoutProviderFactory()
 		)

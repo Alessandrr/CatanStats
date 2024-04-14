@@ -8,11 +8,11 @@
 
 import Foundation
 
-protocol IRollStatsPresenter {
-	func didSelectRollItem(_ item: RollStatsModel)
+protocol INewRollPresenter {
+	func didSelectRollItem(_ item: NewRollModel)
 }
 
-final class RollStatsPresenter: IRollStatsPresenter {
-	func didSelectRollItem(_ item: RollStatsModel) {
+final class NewRollPresenter: INewRollPresenter {
+	func didSelectRollItem(_ item: NewRollModel) {
 	}
 }

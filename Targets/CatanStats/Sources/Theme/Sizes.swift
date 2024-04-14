@@ -15,4 +15,6 @@ enum Sizes {
 		bottom: 5,
 		trailing: 5
 	)
+
+	static let rollCellCornerRadius: CGFloat = 10
 }

@@ -1,5 +1,5 @@
 //
-//  RollStatsViewController.swift
+//  NewRollViewController.swift
 //  CatanStats
 //
 //  Created by Aleksandr Mamlygo on 04.04.24.
@@ -8,17 +8,17 @@
 
 import UIKit
 
-final class RollStatsViewController: UIViewController {
+final class NewRollViewController: UIViewController {
 
 	// MARK: Dependencies
-	private var presenter: IRollStatsPresenter
+	private var presenter: INewRollPresenter
 	private var sectionLayoutProviderFactory: SectionLayoutProviderFactory
 
 	// MARK: Initialization
 	init(
-		presenter: IRollStatsPresenter,
+		presenter: INewRollPresenter,
 		sectionLayoutProviderFactory: SectionLayoutProviderFactory,
-		sections: [RollStatsSection] = [.rolls, .ship, .castles]
+		sections: [NewRollSection] = [.rolls, .ship, .castles]
 	) {
 		self.presenter = presenter
 		self.sectionLayoutProviderFactory = sectionLayoutProviderFactory
@@ -32,8 +32,8 @@ final class RollStatsViewController: UIViewController {
 
 	// MARK: Private properties
 	private var collectionView: UICollectionView!
-	private var dataSource: UICollectionViewDiffableDataSource<RollStatsSection, RollStatsModel>!
-	private var sections: [RollStatsSection]
+	private var dataSource: UICollectionViewDiffableDataSource<NewRollSection, NewRollModel>!
+	private var sections: [NewRollSection]
 
 	// MARK: Life cycle
 	override func viewDidLoad() {
@@ -50,42 +50,42 @@ final class RollStatsViewController: UIViewController {
 		collectionView.delegate = self
 		collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
 		collectionView.isScrollEnabled = false
-		collectionView.register(StatButtonCell.self, forCellWithReuseIdentifier: StatButtonCell.reuseIdentifier)
+		collectionView.register(NewRollCell.self, forCellWithReuseIdentifier: NewRollCell.reuseIdentifier)
 		self.collectionView = collectionView
 	}
 
 	private func configureDataSource() {
 		dataSource = UICollectionViewDiffableDataSource
-		<RollStatsSection, RollStatsModel>(collectionView: collectionView) { (collectionView, indexPath, rollStatsModel)
+		<NewRollSection, NewRollModel>(collectionView: collectionView) { (collectionView, indexPath, rollStatsModel)
 			-> UICollectionViewCell? in
 			guard let cell = collectionView.dequeueReusableCell(
-				withReuseIdentifier: StatButtonCell.reuseIdentifier,
+				withReuseIdentifier: NewRollCell.reuseIdentifier,
 				for: indexPath
-			) as? StatButtonCell else { return UICollectionViewCell() }
+			) as? NewRollCell else { return UICollectionViewCell() }
 
 			cell.configure(with: rollStatsModel)
 			return cell
 		}
 
-		var snapshot = NSDiffableDataSourceSnapshot<RollStatsSection, RollStatsModel>()
+		var snapshot = NSDiffableDataSourceSnapshot<NewRollSection, NewRollModel>()
 		snapshot.appendSections(sections)
-		snapshot.appendItems(makeButtonModels(), toSection: RollStatsSection.rolls)
-		snapshot.appendItems([RollStatsModel.ship], toSection: RollStatsSection.ship)
+		snapshot.appendItems(makeButtonModels(), toSection: NewRollSection.rolls)
+		snapshot.appendItems([NewRollModel.ship], toSection: NewRollSection.ship)
 		snapshot.appendItems([
-			RollStatsModel.castle(color: Colors.lightOrange),
-			RollStatsModel.castle(color: Colors.green),
-			RollStatsModel.castle(color: Colors.lightBlue)
-		], toSection: RollStatsSection.castles)
+			NewRollModel.castle(color: Colors.lightOrange),
+			NewRollModel.castle(color: Colors.green),
+			NewRollModel.castle(color: Colors.lightBlue)
+		], toSection: NewRollSection.castles)
 		dataSource.apply(snapshot)
 	}
 
-	private func makeButtonModels() -> [RollStatsModel] {
-		(2...12).map { RollStatsModel.number(rollResult: $0) }
+	private func makeButtonModels() -> [NewRollModel] {
+		(2...12).map { NewRollModel.number(rollResult: $0) }
 	}
 }
 
 // MARK: Layout
-extension RollStatsViewController {
+extension NewRollViewController {
 	private func generateLayout() -> UICollectionViewLayout {
 		let layout = UICollectionViewCompositionalLayout { [unowned self] sectionIndex, _ in
 			let section = sections[sectionIndex]
@@ -98,5 +98,5 @@ extension RollStatsViewController {
 }
 
 // MARK: UICollectionViewDelegate
-extension RollStatsViewController: UICollectionViewDelegate {
+extension NewRollViewController: UICollectionViewDelegate {
 }
