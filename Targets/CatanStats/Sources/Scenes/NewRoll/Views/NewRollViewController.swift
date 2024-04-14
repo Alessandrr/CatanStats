@@ -41,6 +41,7 @@ final class NewRollViewController: UIViewController {
 		navigationItem.title = "Roll stats"
 		configureCollectionView()
 		configureDataSource()
+		presenter.loadData()
 	}
 
 	// MARK: Private methods
@@ -99,4 +100,7 @@ extension NewRollViewController {
 
 // MARK: UICollectionViewDelegate
 extension NewRollViewController: UICollectionViewDelegate {
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		presenter.didSelectRollItem(dataSource.itemIdentifier(for: indexPath) ?? NewRollModel.ship)
+	}
 }

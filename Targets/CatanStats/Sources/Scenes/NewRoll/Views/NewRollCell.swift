@@ -17,8 +17,8 @@ final class NewRollCell: UICollectionViewCell {
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		setupUI()
-		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-		self.addGestureRecognizer(tapGesture)
+//		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+//		self.addGestureRecognizer(tapGesture)
 	}
 
 	required init?(coder: NSCoder) {
@@ -57,15 +57,20 @@ final class NewRollCell: UICollectionViewCell {
 	@objc private func handleTap() {
 		let originalBackgroundColor = layer.backgroundColor ?? Colors.lightBlue.cgColor
 		UIView.animate(
-			withDuration: 0.1,
+			withDuration: 0.15,
 			delay: 0,
-			options: [.autoreverse, .allowUserInteraction],
+			options: [.allowUserInteraction],
 			animations: { [unowned self] in
 				contentView.alpha = 0.5
 				layer.backgroundColor = UIColor(cgColor: originalBackgroundColor).withAlphaComponent(0.5).cgColor
-			},
-			completion: { [unowned self] _ in
-				contentView.alpha = 1.0
+			}
+		)
+		UIView.animate(
+			withDuration: 0.15,
+			delay: 0,
+			options: [.allowUserInteraction],
+			animations: { [unowned self] in
+				contentView.alpha = 1
 				layer.backgroundColor = originalBackgroundColor
 			}
 		)

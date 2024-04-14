@@ -9,8 +9,8 @@
 import Foundation
 
 final class NewRollAssembler {
-	func assembly() -> NewRollViewController {
-		let presenter = NewRollPresenter()
+	func assembly(coreDataStack: CoreDataStack) -> NewRollViewController {
+		let presenter = NewRollPresenter(coreDataStack: coreDataStack)
 		let rollStatsViewController = NewRollViewController(
 			presenter: presenter,
 			sectionLayoutProviderFactory: SectionLayoutProviderFactory()

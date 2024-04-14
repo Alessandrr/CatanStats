@@ -9,6 +9,8 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
+	private let coreDataStack = CoreDataStack(modelName: "CatanStats")
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupTabs()
@@ -25,7 +27,7 @@ final class TabBarController: UITabBarController {
 
 		switch page {
 		case .rolls:
-			navigationController.setViewControllers([NewRollAssembler().assembly()], animated: true)
+			navigationController.setViewControllers([NewRollAssembler().assembly(coreDataStack: coreDataStack)], animated: true)
 		case .history:
 			navigationController.setViewControllers([GameHistoryViewController()], animated: true)
 		}
