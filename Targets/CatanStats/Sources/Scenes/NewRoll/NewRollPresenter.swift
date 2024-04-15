@@ -15,7 +15,12 @@ protocol INewRollPresenter {
 }
 
 final class NewRollPresenter: INewRollPresenter {
+
+	// MARK: Dependencies
 	private var coreDataStack: CoreDataStack
+
+	// MARK: Private properties
+	private var currentGame: Game?
 
 	init(coreDataStack: CoreDataStack) {
 		self.coreDataStack = coreDataStack
@@ -26,6 +31,7 @@ final class NewRollPresenter: INewRollPresenter {
 		case .number(let rollResult):
 			let roll = DiceRoll(context: coreDataStack.managedContext)
 			roll.value = Int16(rollResult)
+			currentGame?.addToRolls(roll)
 			coreDataStack.saveContext()
 		case .ship:
 			break
@@ -36,9 +42,15 @@ final class NewRollPresenter: INewRollPresenter {
 
 	func loadData() {
 		do {
-			let fetchReq = DiceRoll.fetchRequest()
-			let results = try coreDataStack.managedContext.fetch(fetchReq)
-			print(results)
+			let gameRequest = Game.fetchRequest()
+			let results = try coreDataStack.managedContext.fetch(gameRequest)
+			if results.isEmpty {
+				currentGame = Game(context: coreDataStack.managedContext)
+				currentGame?.title = "Game 1"
+				coreDataStack.saveContext()
+			} else {
+				currentGame = results.first
+			}
 		} catch let error {
 			print("Fetch error \(error.localizedDescription)")
 		}

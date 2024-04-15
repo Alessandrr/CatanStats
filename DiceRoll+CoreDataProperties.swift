@@ -2,8 +2,7 @@
 //  DiceRoll+CoreDataProperties.swift
 //  CatanStats
 //
-//  Created by Aleksandr Mamlygo on 14.04.24.
-//  Copyright © 2024 tuist.io. All rights reserved.
+//  Created by Aleksandr Mamlygo on 15.04.24.
 //
 //
 
@@ -18,6 +17,7 @@ extension DiceRoll {
     }
 
     @NSManaged public var value: Int16
+    @NSManaged public var game: Game?
 
 }
 

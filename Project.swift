@@ -46,7 +46,10 @@ private var targets: [Target] {
 		sources: ["Targets/\(ProjectSettings.projectName)/Sources/**"],
 		resources: ["Targets/\(ProjectSettings.projectName)/Resources/**"],
 		scripts: [swiftLintTargetScript],
-		dependencies: []
+		dependencies: [],
+		coreDataModels: [
+			CoreDataModel("Targets/\(ProjectSettings.projectName)/Sources/CoreData/CatanStats.xcdatamodeld")
+		]
 	)
 
 	let testTarget = Target(
@@ -57,15 +60,19 @@ private var targets: [Target] {
 		deploymentTargets: DeploymentTargets(iOS: ProjectSettings.targetVersion),
 		infoPlist: .default,
 		sources: ["Targets/\(ProjectSettings.projectName)/Tests/**"],
+		resources: ["Targets/\(ProjectSettings.projectName)/Resources/**"],
 		dependencies: [
 			.target(name: "\(ProjectSettings.projectName)")
-		])
+		],
+		coreDataModels: [
+			CoreDataModel("Targets/\(ProjectSettings.projectName)/Sources/CoreData/CatanStats.xcdatamodeld")
+		]
+	)
 
 	return [mainTarget, testTarget]
 }
 
-let project = Project.app(
+let app = Project(
 	name: "CatanStats",
-	destinations: .iOS,
 	targets: targets
 )

@@ -47,6 +47,7 @@ final class NewRollCell: UICollectionViewCell {
 		imageView.tintColor = .white
 		contentView.addSubview(imageView)
 		imageView.translatesAutoresizingMaskIntoConstraints = false
+		imageView.isUserInteractionEnabled = false
 
 		NSLayoutConstraint.activate([
 			imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
