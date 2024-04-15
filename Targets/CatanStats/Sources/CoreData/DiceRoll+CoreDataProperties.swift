@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 extension DiceRoll {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<DiceRoll> {
@@ -21,6 +20,6 @@ extension DiceRoll {
 
 }
 
-extension DiceRoll : Identifiable {
+extension DiceRoll: Identifiable {
 
 }

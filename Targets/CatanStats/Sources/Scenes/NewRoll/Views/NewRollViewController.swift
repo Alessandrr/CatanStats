@@ -42,9 +42,18 @@ final class NewRollViewController: UIViewController {
 		configureCollectionView()
 		configureDataSource()
 		presenter.loadData()
+		navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .trash,
+			target: self,
+			action: #selector(clearTapped)
+		)
 	}
 
 	// MARK: Private methods
+	@objc private func clearTapped() {
+		presenter.clearHistory()
+	}
+
 	private func configureCollectionView() {
 		let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: generateLayout())
 		view.addSubview(collectionView)
@@ -101,6 +110,9 @@ extension NewRollViewController {
 // MARK: UICollectionViewDelegate
 extension NewRollViewController: UICollectionViewDelegate {
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		if let cell = collectionView.cellForItem(at: indexPath) as? NewRollCell {
+			cell.animateTap()
+		}
 		presenter.didSelectRollItem(dataSource.itemIdentifier(for: indexPath) ?? NewRollModel.ship)
 	}
 }

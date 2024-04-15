@@ -29,7 +29,7 @@ final class TabBarController: UITabBarController {
 		case .rolls:
 			navigationController.setViewControllers([NewRollAssembler().assembly(coreDataStack: coreDataStack)], animated: true)
 		case .history:
-			navigationController.setViewControllers([GameHistoryViewController()], animated: true)
+			navigationController.setViewControllers([GameHistoryViewController(coreDataStack: coreDataStack)], animated: true)
 		}
 
 		navigationController.tabBarItem = UITabBarItem(

@@ -12,10 +12,10 @@ import CoreData
 protocol INewRollPresenter {
 	func didSelectRollItem(_ item: NewRollModel)
 	func loadData()
+	func clearHistory()
 }
 
 final class NewRollPresenter: INewRollPresenter {
-
 	// MARK: Dependencies
 	private var coreDataStack: CoreDataStack
 
@@ -53,6 +53,18 @@ final class NewRollPresenter: INewRollPresenter {
 			}
 		} catch let error {
 			print("Fetch error \(error.localizedDescription)")
+		}
+	}
+
+	func clearHistory() {
+		let rollRequest: NSFetchRequest<NSFetchRequestResult> = DiceRoll.fetchRequest()
+		let batchDelete = NSBatchDeleteRequest(fetchRequest: rollRequest)
+		do {
+			try coreDataStack.managedContext.execute(batchDelete)
+			coreDataStack.managedContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+			coreDataStack.managedContext.refreshAllObjects()
+		} catch let error {
+			print(error.localizedDescription)
 		}
 	}
 }

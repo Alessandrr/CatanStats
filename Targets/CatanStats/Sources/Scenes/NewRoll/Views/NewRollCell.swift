@@ -17,8 +17,6 @@ final class NewRollCell: UICollectionViewCell {
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		setupUI()
-//		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-//		self.addGestureRecognizer(tapGesture)
 	}
 
 	required init?(coder: NSCoder) {
@@ -40,22 +38,7 @@ final class NewRollCell: UICollectionViewCell {
 		}
 	}
 
-	// MARK: Private methods
-	private func setupUI() {
-		layer.cornerRadius = Sizes.rollCellCornerRadius
-
-		imageView.tintColor = .white
-		contentView.addSubview(imageView)
-		imageView.translatesAutoresizingMaskIntoConstraints = false
-		imageView.isUserInteractionEnabled = false
-
-		NSLayoutConstraint.activate([
-			imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-			imageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
-		])
-	}
-
-	@objc private func handleTap() {
+	func animateTap() {
 		let originalBackgroundColor = layer.backgroundColor ?? Colors.lightBlue.cgColor
 		UIView.animate(
 			withDuration: 0.15,
@@ -75,5 +58,20 @@ final class NewRollCell: UICollectionViewCell {
 				layer.backgroundColor = originalBackgroundColor
 			}
 		)
+	}
+
+	// MARK: Private methods
+	private func setupUI() {
+		layer.cornerRadius = Sizes.rollCellCornerRadius
+
+		imageView.tintColor = .white
+		contentView.addSubview(imageView)
+		imageView.translatesAutoresizingMaskIntoConstraints = false
+		imageView.isUserInteractionEnabled = false
+
+		NSLayoutConstraint.activate([
+			imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+			imageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+		])
 	}
 }
