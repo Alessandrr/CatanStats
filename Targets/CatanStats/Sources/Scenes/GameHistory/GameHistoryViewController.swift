@@ -17,13 +17,12 @@ final class GameHistoryViewController: UITableViewController {
 	// MARK: Private properties
 	private var dataSource: UITableViewDiffableDataSource<String, NSManagedObjectID>?
 	private var snapshot: NSDiffableDataSourceSnapshot<String, NSManagedObjectID>?
-	private let cellReuseIdentifier = "RollCell"
 
-	private lazy var fetchedResultsController: NSFetchedResultsController<DiceRoll> = {
-		let fetchRequest = DiceRoll.fetchRequest()
+	private lazy var fetchedResultsController: NSFetchedResultsController<Roll> = {
+		let fetchRequest = Roll.fetchRequest()
 
 		let sort = NSSortDescriptor(
-			key: #keyPath(DiceRoll.game),
+			key: #keyPath(Roll.game),
 			ascending: false
 		)
 		fetchRequest.sortDescriptors = [sort]
@@ -31,7 +30,7 @@ final class GameHistoryViewController: UITableViewController {
 		let fetchedResultsController = NSFetchedResultsController(
 			fetchRequest: fetchRequest,
 			managedObjectContext: coreDataStack.managedContext,
-			sectionNameKeyPath: #keyPath(DiceRoll.game.title),
+			sectionNameKeyPath: #keyPath(Roll.game.title),
 			cacheName: nil
 		)
 		fetchedResultsController.delegate = self
@@ -51,7 +50,7 @@ final class GameHistoryViewController: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		navigationItem.title = "Game history"
-		tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+		tableView.register(RollHistoryTableViewCell.self, forCellReuseIdentifier: RollHistoryTableViewCell.reuseIdentifier)
 		dataSource = setupDataSource()
 	}
 
@@ -75,13 +74,16 @@ extension GameHistoryViewController {
 			tableView: tableView
 		) { [unowned self] (tableView, indexPath, managedObjectID) -> UITableViewCell? in
 
-			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
-			var content = cell.defaultContentConfiguration()
+			guard let cell = tableView.dequeueReusableCell(
+				withIdentifier: RollHistoryTableViewCell.reuseIdentifier,
+				for: indexPath
+			) as? RollHistoryTableViewCell else { return UITableViewCell() }
 
-			if let roll = try? coreDataStack.managedContext.existingObject(with: managedObjectID) as? DiceRoll {
-				content.text = roll.value.formatted()
+			guard let rollModel = try? coreDataStack.managedContext.existingObject(with: managedObjectID) else {
+				return UITableViewCell()
 			}
-			cell.contentConfiguration = content
+
+			cell.configure(with: rollModel)
 			return cell
 		}
 	}

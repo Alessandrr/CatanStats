@@ -2,7 +2,7 @@
 //  Game+CoreDataProperties.swift
 //  CatanStats
 //
-//  Created by Aleksandr Mamlygo on 15.04.24.
+//  Created by Aleksandr Mamlygo on 16.04.24.
 //
 //
 
@@ -24,28 +24,28 @@ extension Game {
 extension Game {
 
     @objc(insertObject:inRollsAtIndex:)
-    @NSManaged public func insertIntoRolls(_ value: DiceRoll, at idx: Int)
+    @NSManaged public func insertIntoRolls(_ value: Roll, at idx: Int)
 
     @objc(removeObjectFromRollsAtIndex:)
     @NSManaged public func removeFromRolls(at idx: Int)
 
     @objc(insertRolls:atIndexes:)
-    @NSManaged public func insertIntoRolls(_ values: [DiceRoll], at indexes: NSIndexSet)
+    @NSManaged public func insertIntoRolls(_ values: [Roll], at indexes: NSIndexSet)
 
     @objc(removeRollsAtIndexes:)
     @NSManaged public func removeFromRolls(at indexes: NSIndexSet)
 
     @objc(replaceObjectInRollsAtIndex:withObject:)
-    @NSManaged public func replaceRolls(at idx: Int, with value: DiceRoll)
+    @NSManaged public func replaceRolls(at idx: Int, with value: Roll)
 
     @objc(replaceRollsAtIndexes:withRolls:)
-    @NSManaged public func replaceRolls(at indexes: NSIndexSet, with values: [DiceRoll])
+    @NSManaged public func replaceRolls(at indexes: NSIndexSet, with values: [Roll])
 
     @objc(addRollsObject:)
-    @NSManaged public func addToRolls(_ value: DiceRoll)
+    @NSManaged public func addToRolls(_ value: Roll)
 
     @objc(removeRollsObject:)
-    @NSManaged public func removeFromRolls(_ value: DiceRoll)
+    @NSManaged public func removeFromRolls(_ value: Roll)
 
     @objc(addRolls:)
     @NSManaged public func addToRolls(_ values: NSOrderedSet)

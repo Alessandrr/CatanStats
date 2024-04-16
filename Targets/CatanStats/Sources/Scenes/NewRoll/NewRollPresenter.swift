@@ -32,12 +32,13 @@ final class NewRollPresenter: INewRollPresenter {
 			let roll = DiceRoll(context: coreDataStack.managedContext)
 			roll.value = Int16(rollResult)
 			currentGame?.addToRolls(roll)
-			coreDataStack.saveContext()
 		case .ship:
-			break
+			let roll = ShipRoll(context: coreDataStack.managedContext)
+			currentGame?.addToRolls(roll)
 		case .castle(let color):
 			break
 		}
+		coreDataStack.saveContext()
 	}
 
 	func loadData() {
