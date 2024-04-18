@@ -30,7 +30,6 @@ enum TabBarPage: CaseIterable {
 		}
 	}
 
-
 	var pageOrderNumber: Int {
 		guard let num = TabBarPage.allCases.firstIndex(of: self) else { return .zero }
 		return num
