@@ -26,10 +26,10 @@ final class HistorySectionHeaderView: UIView {
 		addSubview(titleLabel)
 
 		NSLayoutConstraint.activate([
-			titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: Sizes.Padding.small),
-			titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -Sizes.Padding.small),
-			titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Sizes.Padding.large),
-			titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Sizes.Padding.large)
+			titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Sizes.Padding.small),
+			titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Sizes.Padding.small),
+			titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Sizes.Padding.large),
+			titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Sizes.Padding.large)
 		])
 	}
 

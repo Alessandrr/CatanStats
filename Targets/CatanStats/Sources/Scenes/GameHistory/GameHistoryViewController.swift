@@ -16,7 +16,7 @@ final class GameHistoryViewController: UITableViewController {
 
 	// MARK: Private properties
 	private var dataSource: UITableViewDiffableDataSource<String, NSManagedObjectID>?
-	private var snapshot: NSDiffableDataSourceSnapshot<String, NSManagedObjectID>?
+	private var dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, NSManagedObjectID>?
 
 	private lazy var fetchedResultsController: NSFetchedResultsController<Roll> = {
 		let fetchRequest = Roll.fetchRequest()
@@ -49,28 +49,33 @@ final class GameHistoryViewController: UITableViewController {
 	// MARK: View life cycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		navigationItem.title = "Game history"
-		tableView.register(RollHistoryTableViewCell.self, forCellReuseIdentifier: RollHistoryTableViewCell.reuseIdentifier)
-		dataSource = setupDataSource()
+		setupUI()
+		setupDataSource()
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		do {
 			try fetchedResultsController.performFetch()
-			if let snapshot = snapshot {
+			if let snapshot = dataSourceSnapshot {
 				dataSource?.apply(snapshot)
 			}
 		} catch let error {
 			print("Fetching error: \(error.localizedDescription)")
 		}
 	}
+
+	private func setupUI() {
+		navigationItem.title = CatanStatsStrings.GameHistory.navigationBarTitle
+	}
 }
 
 // MARK: Data source
 extension GameHistoryViewController {
-	private func setupDataSource() -> UITableViewDiffableDataSource<String, NSManagedObjectID> {
-		UITableViewDiffableDataSource(
+	private func setupDataSource() {
+		tableView.register(RollHistoryTableViewCell.self, forCellReuseIdentifier: RollHistoryTableViewCell.reuseIdentifier)
+
+		dataSource = UITableViewDiffableDataSource(
 			tableView: tableView
 		) { [unowned self] (tableView, indexPath, managedObjectID) -> UITableViewCell? in
 
@@ -108,6 +113,6 @@ extension GameHistoryViewController: NSFetchedResultsControllerDelegate {
 		_ controller: NSFetchedResultsController<NSFetchRequestResult>,
 		didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
 	) {
-		self.snapshot = snapshot as NSDiffableDataSourceSnapshot<String, NSManagedObjectID>
+		dataSourceSnapshot = snapshot as NSDiffableDataSourceSnapshot<String, NSManagedObjectID>
 	}
 }

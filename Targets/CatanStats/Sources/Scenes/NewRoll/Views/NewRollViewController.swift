@@ -11,12 +11,12 @@ import UIKit
 final class NewRollViewController: UIViewController {
 
 	// MARK: Dependencies
-	private var presenter: INewRollPresenter
+	private var presenter: NewRollPresenterProtocol
 	private var sectionLayoutProviderFactory: SectionLayoutProviderFactory
 
 	// MARK: Initialization
 	init(
-		presenter: INewRollPresenter,
+		presenter: NewRollPresenterProtocol,
 		sectionLayoutProviderFactory: SectionLayoutProviderFactory,
 		sections: [NewRollSection] = [.rolls, .ship, .castles]
 	) {

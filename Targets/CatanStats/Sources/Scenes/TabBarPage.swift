@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum TabBarPage {
+enum TabBarPage: CaseIterable {
 	case rolls
 	case history
 
@@ -30,10 +30,9 @@ enum TabBarPage {
 		}
 	}
 
-	static let allPages: [TabBarPage] = [.rolls, .history]
 
 	var pageOrderNumber: Int {
-		guard let num = TabBarPage.allPages.firstIndex(of: self) else { return .zero }
+		guard let num = TabBarPage.allCases.firstIndex(of: self) else { return .zero }
 		return num
 	}
 }

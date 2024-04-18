@@ -9,13 +9,13 @@
 import Foundation
 import CoreData
 
-protocol INewRollPresenter {
+protocol NewRollPresenterProtocol {
 	func didSelectRollItem(_ item: NewRollModel)
 	func loadData()
 	func clearHistory()
 }
 
-final class NewRollPresenter: INewRollPresenter {
+final class NewRollPresenter: NewRollPresenterProtocol {
 	// MARK: Dependencies
 	private var coreDataStack: CoreDataStack
 
@@ -47,7 +47,7 @@ final class NewRollPresenter: INewRollPresenter {
 			let results = try coreDataStack.managedContext.fetch(gameRequest)
 			if results.isEmpty {
 				currentGame = Game(context: coreDataStack.managedContext)
-				currentGame?.title = "Game 1"
+				currentGame?.title = CatanStatsStrings.GameHistory.sectionTitle(1)
 				coreDataStack.saveContext()
 			} else {
 				currentGame = results.first
@@ -58,7 +58,7 @@ final class NewRollPresenter: INewRollPresenter {
 	}
 
 	func clearHistory() {
-		let rollRequest: NSFetchRequest<NSFetchRequestResult> = DiceRoll.fetchRequest()
+		let rollRequest: NSFetchRequest<NSFetchRequestResult> = Roll.fetchRequest()
 		let batchDelete = NSBatchDeleteRequest(fetchRequest: rollRequest)
 		do {
 			try coreDataStack.managedContext.execute(batchDelete)

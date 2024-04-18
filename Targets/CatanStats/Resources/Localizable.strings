@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  CatanStats
+
+  Created by Aleksandr Mamlygo on 18.04.24.
+  
+*/
+
+// MARK: GameHistory scene
+
+"gameHistory.sectionTitle" = "Game %d";
+"gameHistory.navigationBarTitle" = "Game history";

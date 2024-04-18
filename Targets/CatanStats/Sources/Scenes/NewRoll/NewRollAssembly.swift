@@ -1,15 +1,15 @@
 //
-//  NewRollAssembler.swift
+//  NewRollAssembly.swift
 //  CatanStats
 //
 //  Created by Aleksandr Mamlygo on 09.04.24.
 //  Copyright © 2024 tuist.io. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-final class NewRollAssembler {
-	func assembly(coreDataStack: CoreDataStack) -> NewRollViewController {
+final class NewRollAssembly {
+	func makeViewController(coreDataStack: CoreDataStack) -> UIViewController {
 		let presenter = NewRollPresenter(coreDataStack: coreDataStack)
 		let rollStatsViewController = NewRollViewController(
 			presenter: presenter,

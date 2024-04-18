@@ -11,7 +11,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	) -> Bool {
 		window = UIWindow(frame: UIScreen.main.bounds)
 
-		window?.rootViewController = TabBarController()
+		window?.rootViewController = MainPageViewController()
 		window?.makeKeyAndVisible()
 
 		return true
