@@ -1,5 +1,5 @@
 //
-//  TabBarController.swift
+//  MainPageViewController.swift
 //  CatanStats
 //
 //  Created by Aleksandr Mamlygo on 14.04.24.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class TabBarController: UITabBarController {
+final class MainPageViewController: UITabBarController {
 	private let coreDataStack = CoreDataStack(modelName: "CatanStats")
 
 	override func viewDidLoad() {
@@ -27,7 +27,7 @@ final class TabBarController: UITabBarController {
 
 		switch page {
 		case .rolls:
-			navigationController.setViewControllers([NewRollAssembler().assembly(coreDataStack: coreDataStack)], animated: true)
+			navigationController.setViewControllers([NewRollAssembly().makeViewController(coreDataStack: coreDataStack)], animated: true)
 		case .history:
 			navigationController.setViewControllers([GameHistoryViewController(coreDataStack: coreDataStack)], animated: true)
 		}
