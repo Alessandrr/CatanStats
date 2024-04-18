@@ -15,9 +15,9 @@ enum TabBarPage: CaseIterable {
 	func pageTitle() -> String {
 		switch self {
 		case .rolls:
-			return "New roll"
+			return CatanStatsStrings.TabBar.rollsPageTitle
 		case .history:
-			return "Game history"
+			return CatanStatsStrings.TabBar.historyPageTitle
 		}
 	}
 

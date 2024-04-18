@@ -6,7 +6,15 @@
   
 */
 
+// MARK: TabBar
+"tabBar.rollsPageTitle" = "New roll";
+"tabBar.historyPageTitle" = "Game history";
+
 // MARK: GameHistory scene
 
 "gameHistory.sectionTitle" = "Game %d";
 "gameHistory.navigationBarTitle" = "Game history";
+
+// MARK: NewRoll scene
+
+"newRoll.navigationBarTitle" = "Roll stats";

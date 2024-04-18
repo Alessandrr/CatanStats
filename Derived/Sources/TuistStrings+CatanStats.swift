@@ -21,6 +21,18 @@ public enum CatanStatsStrings {
       return CatanStatsStrings.tr("Localizable", "gameHistory.sectionTitle",p1)
     }
   }
+
+  public enum NewRoll {
+  /// Roll stats
+    public static let navigationBarTitle = CatanStatsStrings.tr("Localizable", "newRoll.navigationBarTitle")
+  }
+
+  public enum TabBar {
+  /// Game history
+    public static let historyPageTitle = CatanStatsStrings.tr("Localizable", "tabBar.historyPageTitle")
+    /// New roll
+    public static let rollsPageTitle = CatanStatsStrings.tr("Localizable", "tabBar.rollsPageTitle")
+  }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name

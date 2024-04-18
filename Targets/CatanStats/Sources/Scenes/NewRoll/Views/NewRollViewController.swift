@@ -38,7 +38,7 @@ final class NewRollViewController: UIViewController {
 	// MARK: Life cycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		navigationItem.title = "Roll stats"
+		navigationItem.title = CatanStatsStrings.NewRoll.navigationBarTitle
 		configureCollectionView()
 		configureDataSource()
 		presenter.loadData()
