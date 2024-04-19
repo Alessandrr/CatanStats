@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,10 +13,10 @@
 		12DC914B7FDF409D76BEFCE4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BA590ED06C2CFE985953AB6 /* Localizable.strings */; };
 		13B10E6AEDB6A87C66D0C578 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F7604AF2E8B55FD62DE4BD /* AppTests.swift */; };
 		1AD67CE3B7E6F81806E789DC /* DiceRoll+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC190B910E0BE3B9143E23F /* DiceRoll+CoreDataProperties.swift */; };
-		1B11D92AFA36A79DA4196877 /* Game+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889E64DCE9FC5C053CB0EB53 /* Game+CoreDataProperties.swift */; };
 		1DAE1C02EE91E10DD42B1B3A /* NewRollPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E460C675AC3B299D389843 /* NewRollPresenter.swift */; };
+		1FA9DA8B2BD2FDCE007AD102 /* Game+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA9DA892BD2FDCE007AD102 /* Game+CoreDataClass.swift */; };
+		1FA9DA8C2BD2FDCE007AD102 /* Game+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA9DA8A2BD2FDCE007AD102 /* Game+CoreDataProperties.swift */; };
 		2A03A8F93B875F2296C31801 /* TabBarPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41156EC57A051B6791E6736 /* TabBarPage.swift */; };
-		2C0E2E37E7D09253FC7BB109 /* Game+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757274654CB2975387398FEC /* Game+CoreDataClass.swift */; };
 		2D2505EC54FABD9EB91D6068 /* DiceRoll+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A4CD71DE2E4ADE5C36F234 /* DiceRoll+CoreDataClass.swift */; };
 		2F8A0CAF52A6F7866C72F5E2 /* NewRollCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143C20CAAC06C75EF9A2EC35 /* NewRollCell.swift */; };
 		397329FF835C99AD23DCF961 /* UIColor+Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4D84B3320E4C51D1E6524E /* UIColor+Dynamic.swift */; };
@@ -32,12 +32,14 @@
 		7AC40458B89385CAC1BCA3B3 /* CatanStats.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 143FE92D4E9E1D3883E94C51 /* CatanStats.xcdatamodeld */; };
 		7E8D5D313C703BC5ABB54E05 /* Roll+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718F48FF6F90503FCD530543 /* Roll+CoreDataProperties.swift */; };
 		8DAF939CD83282F9DF23642F /* ShipRoll+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BDD3B6CCA1A19CBD0D0848 /* ShipRoll+CoreDataClass.swift */; };
+		903599D7F15624298A4DF14C /* NewRollPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B39F6B73C362120A42642DE /* NewRollPresenterTests.swift */; };
 		A148FBD71328121D1B805085 /* SectionLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9DA8F3A0CF5C5AD1DFF60DA /* SectionLayoutProvider.swift */; };
 		A17EF1029E3E81BF5E3A1173 /* TuistBundle+CatanStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E412851734EDEB9E898CB /* TuistBundle+CatanStatsTests.swift */; };
 		A55F1101621633519D118D54 /* TuistBundle+CatanStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A441F660C3E2EE7BD54837 /* TuistBundle+CatanStats.swift */; };
 		A73CC22C4FE5B69A3A950DE4 /* ShipRoll+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D55689CF7A58B41B576EB63 /* ShipRoll+CoreDataProperties.swift */; };
 		C62AE8D26C1C63748DE09E76 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C43DA17B8A9F79CE9C1765C8 /* LaunchScreen.storyboard */; };
 		EA3D22795031C2E1526D374F /* GameHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21A5FFBE92580AD9D804CB7 /* GameHistoryViewController.swift */; };
+		F7ED04D417A6AAF5A212B167 /* TestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D7D9FD3299FBDF04E1CAB0 /* TestCoreDataStack.swift */; };
 		F8811BCAC17E255EF1AF5876 /* Sizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89775F74EC83AD765B961D4A /* Sizes.swift */; };
 		FCEC18F646F9C0034C9D45F4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C43DA17B8A9F79CE9C1765C8 /* LaunchScreen.storyboard */; };
 		FCEEEDA21BBF3186F1F3B966 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41FE054A35FA2AE8FB83CF4 /* Colors.swift */; };
@@ -80,6 +82,8 @@
 /* Begin PBXFileReference section */
 		050F7F79B6DABA25F0AA2417 /* CatanStats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CatanStats.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		143C20CAAC06C75EF9A2EC35 /* NewRollCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRollCell.swift; sourceTree = "<group>"; };
+		1FA9DA892BD2FDCE007AD102 /* Game+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Game+CoreDataClass.swift"; sourceTree = "<group>"; };
+		1FA9DA8A2BD2FDCE007AD102 /* Game+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Game+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		2849DD6A83DC8ECE73F1180C /* HistorySectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorySectionHeaderView.swift; sourceTree = "<group>"; };
 		2B4D84B3320E4C51D1E6524E /* UIColor+Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Dynamic.swift"; sourceTree = "<group>"; };
 		2BA590ED06C2CFE985953AB6 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
@@ -88,15 +92,15 @@
 		56A441F660C3E2EE7BD54837 /* TuistBundle+CatanStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistBundle+CatanStats.swift"; sourceTree = "<group>"; };
 		5F54292C625F2C0876F29007 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		718F48FF6F90503FCD530543 /* Roll+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Roll+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		757274654CB2975387398FEC /* Game+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Game+CoreDataClass.swift"; sourceTree = "<group>"; };
-		889E64DCE9FC5C053CB0EB53 /* Game+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Game+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		89775F74EC83AD765B961D4A /* Sizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sizes.swift; sourceTree = "<group>"; };
 		8E5EF3B9AD3C88C8C0AE327E /* NewRollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRollViewController.swift; sourceTree = "<group>"; };
 		913035B9796E465FB2A69AE4 /* TuistStrings+CatanStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistStrings+CatanStats.swift"; sourceTree = "<group>"; };
 		93B0A8738E5232F7845756AE /* NewRollAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRollAssembly.swift; sourceTree = "<group>"; };
+		9B39F6B73C362120A42642DE /* NewRollPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRollPresenterTests.swift; sourceTree = "<group>"; };
 		9D55689CF7A58B41B576EB63 /* ShipRoll+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShipRoll+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A1A4CD71DE2E4ADE5C36F234 /* DiceRoll+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiceRoll+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A1F7604AF2E8B55FD62DE4BD /* AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTests.swift; sourceTree = "<group>"; };
+		A9D7D9FD3299FBDF04E1CAB0 /* TestCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoreDataStack.swift; sourceTree = "<group>"; };
 		A9DA8F3A0CF5C5AD1DFF60DA /* SectionLayoutProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionLayoutProvider.swift; sourceTree = "<group>"; };
 		B41FE054A35FA2AE8FB83CF4 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		B9217E556FC08FAE667DD7B7 /* Roll+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Roll+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -251,12 +255,12 @@
 		A42DC3E5EBFDEA12556EFD62 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				1FA9DA892BD2FDCE007AD102 /* Game+CoreDataClass.swift */,
+				1FA9DA8A2BD2FDCE007AD102 /* Game+CoreDataProperties.swift */,
 				143FE92D4E9E1D3883E94C51 /* CatanStats.xcdatamodeld */,
 				30F737E79CD8585A62283C00 /* CoreDataStack.swift */,
 				A1A4CD71DE2E4ADE5C36F234 /* DiceRoll+CoreDataClass.swift */,
 				2BC190B910E0BE3B9143E23F /* DiceRoll+CoreDataProperties.swift */,
-				757274654CB2975387398FEC /* Game+CoreDataClass.swift */,
-				889E64DCE9FC5C053CB0EB53 /* Game+CoreDataProperties.swift */,
 				B9217E556FC08FAE667DD7B7 /* Roll+CoreDataClass.swift */,
 				718F48FF6F90503FCD530543 /* Roll+CoreDataProperties.swift */,
 				D2BDD3B6CCA1A19CBD0D0848 /* ShipRoll+CoreDataClass.swift */,
@@ -307,6 +311,8 @@
 			isa = PBXGroup;
 			children = (
 				A1F7604AF2E8B55FD62DE4BD /* AppTests.swift */,
+				9B39F6B73C362120A42642DE /* NewRollPresenterTests.swift */,
+				A9D7D9FD3299FBDF04E1CAB0 /* TestCoreDataStack.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -444,6 +450,8 @@
 				A17EF1029E3E81BF5E3A1173 /* TuistBundle+CatanStatsTests.swift in Sources */,
 				4065E151AED7E3FB9CE4BA52 /* TuistStrings+CatanStatsTests.swift in Sources */,
 				13B10E6AEDB6A87C66D0C578 /* AppTests.swift in Sources */,
+				903599D7F15624298A4DF14C /* NewRollPresenterTests.swift in Sources */,
+				F7ED04D417A6AAF5A212B167 /* TestCoreDataStack.swift in Sources */,
 				7AC40458B89385CAC1BCA3B3 /* CatanStats.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -457,10 +465,10 @@
 				64F7E1D877637F8AE9C51995 /* AppDelegate.swift in Sources */,
 				6ABC5C1201FFBFBF7C5B1376 /* CoreDataStack.swift in Sources */,
 				2D2505EC54FABD9EB91D6068 /* DiceRoll+CoreDataClass.swift in Sources */,
+				1FA9DA8B2BD2FDCE007AD102 /* Game+CoreDataClass.swift in Sources */,
 				1AD67CE3B7E6F81806E789DC /* DiceRoll+CoreDataProperties.swift in Sources */,
-				2C0E2E37E7D09253FC7BB109 /* Game+CoreDataClass.swift in Sources */,
-				1B11D92AFA36A79DA4196877 /* Game+CoreDataProperties.swift in Sources */,
 				4C9D1F782BE07A06073DDA55 /* Roll+CoreDataClass.swift in Sources */,
+				1FA9DA8C2BD2FDCE007AD102 /* Game+CoreDataProperties.swift in Sources */,
 				7E8D5D313C703BC5ABB54E05 /* Roll+CoreDataProperties.swift in Sources */,
 				8DAF939CD83282F9DF23642F /* ShipRoll+CoreDataClass.swift in Sources */,
 				A73CC22C4FE5B69A3A950DE4 /* ShipRoll+CoreDataProperties.swift in Sources */,

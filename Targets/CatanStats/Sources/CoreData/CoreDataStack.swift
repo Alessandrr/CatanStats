@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-final class CoreDataStack {
+class CoreDataStack {
 	private let modelName: String
 
 	init(modelName: String) {
@@ -20,7 +20,7 @@ final class CoreDataStack {
 		return storeContainer.viewContext
 	}()
 
-	private lazy var storeContainer: NSPersistentContainer = {
+	lazy var storeContainer: NSPersistentContainer = {
 		let container = NSPersistentContainer(name: modelName)
 		container.loadPersistentStores { _, error in
 			if let error = error as NSError? {
@@ -31,12 +31,12 @@ final class CoreDataStack {
 	}()
 
 	func saveContext () {
-	  guard managedContext.hasChanges else { return }
+		guard managedContext.hasChanges else { return }
 
-	  do {
-		try managedContext.save()
-	  } catch let error as NSError {
-		print("Unresolved error \(error), \(error.userInfo)")
-	  }
+		do {
+			try managedContext.save()
+		} catch let error as NSError {
+			print("Unresolved error \(error), \(error.userInfo)")
+		}
 	}
 }

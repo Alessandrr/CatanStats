@@ -4,6 +4,7 @@
         <attribute name="value" attributeType="Integer 16" minValueString="2" maxValueString="12" defaultValueString="2" usesScalarValueType="YES"/>
     </entity>
     <entity name="Game" representedClassName="Game" syncable="YES">
+        <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="rolls" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Roll" inverseName="game" inverseEntity="Roll"/>
     </entity>
