@@ -48,6 +48,25 @@ final class NewRollPresenterTests: XCTestCase {
 		XCTAssertNotNil(sut.currentGame, "Current game wasn't set")
 		XCTAssertEqual(sut.currentGame?.title, expectedTitle, "Expected title of current game to be \(expectedTitle)")
 	}
+
+	func test_didSelectRollItem_numberSelected_shouldSaveCorrectRoll() {
+		let sut = makePresenter()
+		let expectedRollValue = 2
+		let rollModel = NewRollModel.number(rollResult: expectedRollValue)
+
+		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
+		sut.didSelectRollItem(rollModel)
+		waitForExpectations(timeout: 0.5) { error in
+			XCTAssertNil(error, "Managed context wasn't saved")
+		}
+		let savedRolls = try? fetchRolls()
+
+		guard let roll = savedRolls?.first as? DiceRoll else {
+			XCTFail("Expected to get DiceRoll")
+			return
+		}
+		XCTAssertEqual(roll.value, Int16(expectedRollValue), "Expected value to be \(expectedRollValue)")
+	}
 }
 
 private extension NewRollPresenterTests {
@@ -77,6 +96,12 @@ private extension NewRollPresenterTests {
 
 	func fetchGames() throws -> [Game] {
 		let fetchRequest = Game.fetchRequest()
+		let results = try coreDataStack.managedContext.fetch(fetchRequest)
+		return results
+	}
+
+	func fetchRolls() throws -> [Roll] {
+		let fetchRequest = Roll.fetchRequest()
 		let results = try coreDataStack.managedContext.fetch(fetchRequest)
 		return results
 	}

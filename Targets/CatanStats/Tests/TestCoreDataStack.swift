@@ -13,11 +13,10 @@ final class TestCoreDataStack: CoreDataStack {
 	override init(modelName: String) {
 		super.init(modelName: modelName)
 
-		let persistentStoreDescription = NSPersistentStoreDescription()
-		persistentStoreDescription.type = NSInMemoryStoreType
-
 		let container = NSPersistentContainer(name: modelName)
 
+		let persistentStoreDescription = NSPersistentStoreDescription()
+		persistentStoreDescription.url = URL(fileURLWithPath: "/dev/null")
 		container.persistentStoreDescriptions = [persistentStoreDescription]
 
 		container.loadPersistentStores { _, error in

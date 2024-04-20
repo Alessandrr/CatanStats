@@ -41,6 +41,7 @@ final class NewRollViewController: UIViewController {
 		navigationItem.title = CatanStatsStrings.NewRoll.navigationBarTitle
 		configureCollectionView()
 		configureDataSource()
+		// Не вызывать при тестах
 		presenter.loadData()
 		navigationItem.rightBarButtonItem = UIBarButtonItem(
 			barButtonSystemItem: .trash,

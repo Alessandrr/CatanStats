@@ -43,12 +43,17 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 
 	func loadData() {
 		do {
-			let gameRequest = Game.fetchRequest()
+			let gameRequest = NSFetchRequest<Game>(entityName: "Game")
 			let sortByTitle = NSSortDescriptor(key: #keyPath(Game.dateCreated), ascending: true)
 			gameRequest.sortDescriptors = [sortByTitle]
 			let results = try coreDataStack.managedContext.fetch(gameRequest)
 			if results.isEmpty {
-				currentGame = Game(context: coreDataStack.managedContext)
+				currentGame = NSEntityDescription.insertNewObject(
+					forEntityName: "Game",
+					into: coreDataStack.managedContext
+				) as? Game
+				// Ломает тесты
+				// currentGame = Game(context: coreDataStack.managedContext)
 				currentGame?.dateCreated = Date.now
 				currentGame?.title = CatanStatsStrings.GameHistory.sectionTitle(1)
 				coreDataStack.saveContext()

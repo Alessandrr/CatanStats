@@ -57,6 +57,6 @@ extension Game {
 
 }
 
-extension Game : Identifiable {
+extension Game: Identifiable {
 
 }
