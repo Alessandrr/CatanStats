@@ -11,5 +11,5 @@ import UIKit
 enum NewRollModel: Hashable {
 	case number(rollResult: Int)
 	case ship
-	case castle(color: UIColor)
+	case castle(color: Colors)
 }

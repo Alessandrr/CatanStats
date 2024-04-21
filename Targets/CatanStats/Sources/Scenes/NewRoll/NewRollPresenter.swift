@@ -33,10 +33,12 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 			roll.value = Int16(rollResult)
 			currentGame?.addToRolls(roll)
 		case .ship:
-			let roll = ShipRoll(context: coreDataStack.managedContext)
-			currentGame?.addToRolls(roll)
+			let ship = ShipRoll(context: coreDataStack.managedContext)
+			currentGame?.addToRolls(ship)
 		case .castle(let color):
-			break
+			let castle = CastleRoll(context: coreDataStack.managedContext)
+			castle.color = color.description
+			currentGame?.addToRolls(castle)
 		}
 		coreDataStack.saveContext()
 	}

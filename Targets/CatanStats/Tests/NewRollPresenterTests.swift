@@ -67,6 +67,89 @@ final class NewRollPresenterTests: XCTestCase {
 		}
 		XCTAssertEqual(roll.value, Int16(expectedRollValue), "Expected value to be \(expectedRollValue)")
 	}
+
+	func test_didSelectRoll_numberSelected_shouldAddToCurrentGame() {
+		let sut = makePresenter()
+		let expectedRollValue = 2
+		let rollModel = NewRollModel.number(rollResult: expectedRollValue)
+
+		sut.loadData()
+		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
+		sut.didSelectRollItem(rollModel)
+		waitForExpectations(timeout: 0.5) { error in
+			XCTAssertNil(error, "Managed context wasn't saved")
+		}
+		let savedGame = try? fetchGames().last
+
+		XCTAssertNotNil(savedGame?.rolls?.lastObject as? DiceRoll, "Expected dice roll to be added")
+	}
+
+	func test_didSelectRollItem_shipSelected_shouldSaveShip() {
+		let sut = makePresenter()
+		let shipModel = NewRollModel.ship
+
+		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
+		sut.didSelectRollItem(shipModel)
+		waitForExpectations(timeout: 0.5) { error in
+			XCTAssertNil(error, "Managed context wasn't saved")
+		}
+		let savedRolls = try? fetchRolls()
+
+		XCTAssertNotNil(savedRolls?.first as? ShipRoll, "Expected to get ShipRoll")
+	}
+
+	func test_didSelectRollItem_shipSelected_shouldAddToCurrentGame() {
+		let sut = makePresenter()
+		let shipModel = NewRollModel.ship
+
+		sut.loadData()
+		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
+		sut.didSelectRollItem(shipModel)
+		waitForExpectations(timeout: 0.5) { error in
+			XCTAssertNil(error, "Managed context wasn't saved")
+		}
+		let savedGame = try? fetchGames().last
+
+		XCTAssertNotNil(savedGame?.rolls?.lastObject as? ShipRoll, "Expected ship roll to be added")
+	}
+
+	func test_didSelectRollItem_castleSelected_shouldSaveCorrectCastle() {
+		let sut = makePresenter()
+		let expectedColor = Colors.green
+		let castleModel = NewRollModel.castle(color: expectedColor)
+
+		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
+		sut.didSelectRollItem(castleModel)
+		waitForExpectations(timeout: 0.5) { error in
+			XCTAssertNil(error, "Managed context wasn't saved")
+		}
+		let savedRolls = try? fetchRolls()
+
+		guard let roll = savedRolls?.first as? CastleRoll else {
+			XCTFail("Expected to get CastleRoll")
+			return
+		}
+		XCTAssertEqual(
+			roll.color?.description,
+			expectedColor.description,
+			"Expected color to be \(expectedColor.description)"
+		)
+	}
+
+	func test_didSelectRollItem_castleSelected_shouldAddToCurrentGame() {
+		let sut = makePresenter()
+		let castleModel = NewRollModel.castle(color: Colors.green)
+
+		sut.loadData()
+		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
+		sut.didSelectRollItem(castleModel)
+		waitForExpectations(timeout: 0.5) { error in
+			XCTAssertNil(error, "Managed context wasn't saved")
+		}
+		let savedGame = try? fetchGames().last
+
+		XCTAssertNotNil(savedGame?.rolls?.lastObject as? CastleRoll, "Expected castle roll to be added")
+	}
 }
 
 private extension NewRollPresenterTests {

@@ -28,18 +28,18 @@ final class NewRollCell: UICollectionViewCell {
 		switch model {
 		case .number(let rollResult):
 			imageView.image = UIImage(systemName: "\(rollResult).circle")
-			layer.backgroundColor = Colors.red.cgColor
+			layer.backgroundColor = Colors.red.colorValue.cgColor
 		case .ship:
 			imageView.image = UIImage(systemName: "sailboat")
 			layer.backgroundColor = UIColor.systemGray.cgColor
 		case .castle(let color):
 			imageView.image = UIImage(systemName: "house.lodge")
-			layer.backgroundColor = color.cgColor
+			layer.backgroundColor = color.colorValue.cgColor
 		}
 	}
 
 	func animateTap() {
-		let originalBackgroundColor = layer.backgroundColor ?? Colors.lightBlue.cgColor
+		let originalBackgroundColor = layer.backgroundColor ?? Colors.lightBlue.colorValue.cgColor
 		UIView.animate(
 			withDuration: 0.15,
 			delay: 0,

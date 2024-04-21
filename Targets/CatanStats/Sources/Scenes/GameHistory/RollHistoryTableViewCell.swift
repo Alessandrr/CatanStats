@@ -18,8 +18,10 @@ class RollHistoryTableViewCell: UITableViewCell {
 		switch roll {
 		case let roll as DiceRoll:
 			content.text = roll.value.formatted()
-		case let roll as ShipRoll:
+		case roll as ShipRoll:
 			content.text = "Ship"
+		case let roll as CastleRoll:
+			content.text = "\(roll.color ?? "") castle"
 		default:
 			content.text = "Unknown"
 		}
