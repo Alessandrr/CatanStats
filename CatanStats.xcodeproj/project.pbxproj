@@ -1,0 +1,785 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		01AB7D893422CFBCEC4AA293 /* NewRollModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C0C4E28926BB22EF76046B /* NewRollModel.swift */; };
+		0BB6586D76EDA58294760932 /* TuistStrings+CatanStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913035B9796E465FB2A69AE4 /* TuistStrings+CatanStats.swift */; };
+		12702FB8DC89B48744DE0E38 /* NewRollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5EF3B9AD3C88C8C0AE327E /* NewRollViewController.swift */; };
+		12DC914B7FDF409D76BEFCE4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BA590ED06C2CFE985953AB6 /* Localizable.strings */; };
+		13B10E6AEDB6A87C66D0C578 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F7604AF2E8B55FD62DE4BD /* AppTests.swift */; };
+		1AD67CE3B7E6F81806E789DC /* DiceRoll+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC190B910E0BE3B9143E23F /* DiceRoll+CoreDataProperties.swift */; };
+		1B11D92AFA36A79DA4196877 /* Game+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889E64DCE9FC5C053CB0EB53 /* Game+CoreDataProperties.swift */; };
+		1DAE1C02EE91E10DD42B1B3A /* NewRollPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E460C675AC3B299D389843 /* NewRollPresenter.swift */; };
+		1FA9DA9A2BD57991007AD102 /* CastleRoll+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA9DA982BD57991007AD102 /* CastleRoll+CoreDataClass.swift */; };
+		1FA9DA9B2BD57991007AD102 /* CastleRoll+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA9DA992BD57991007AD102 /* CastleRoll+CoreDataProperties.swift */; };
+		2A03A8F93B875F2296C31801 /* TabBarPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41156EC57A051B6791E6736 /* TabBarPage.swift */; };
+		2C0E2E37E7D09253FC7BB109 /* Game+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757274654CB2975387398FEC /* Game+CoreDataClass.swift */; };
+		2D2505EC54FABD9EB91D6068 /* DiceRoll+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A4CD71DE2E4ADE5C36F234 /* DiceRoll+CoreDataClass.swift */; };
+		2F8A0CAF52A6F7866C72F5E2 /* NewRollCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143C20CAAC06C75EF9A2EC35 /* NewRollCell.swift */; };
+		397329FF835C99AD23DCF961 /* UIColor+Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4D84B3320E4C51D1E6524E /* UIColor+Dynamic.swift */; };
+		4022C5EE0DDE7023C62314B1 /* RollHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D01B77B52ACB1EBF1AB708 /* RollHistoryTableViewCell.swift */; };
+		4065E151AED7E3FB9CE4BA52 /* TuistStrings+CatanStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2ADAF2F9FCB83339D0D7F8 /* TuistStrings+CatanStatsTests.swift */; };
+		4332F6B39F506E58C5A9EF33 /* HistorySectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2849DD6A83DC8ECE73F1180C /* HistorySectionHeaderView.swift */; };
+		4C9D1F782BE07A06073DDA55 /* Roll+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9217E556FC08FAE667DD7B7 /* Roll+CoreDataClass.swift */; };
+		59CD2988D27686FD221EEF3D /* NewRollAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B0A8738E5232F7845756AE /* NewRollAssembly.swift */; };
+		59F95649E19F693B9425DF9E /* CatanStats.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 143FE92D4E9E1D3883E94C51 /* CatanStats.xcdatamodeld */; };
+		64F7E1D877637F8AE9C51995 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F54292C625F2C0876F29007 /* AppDelegate.swift */; };
+		6ABC5C1201FFBFBF7C5B1376 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F737E79CD8585A62283C00 /* CoreDataStack.swift */; };
+		6D82C14B6692A3028A8F6510 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BA590ED06C2CFE985953AB6 /* Localizable.strings */; };
+		7AC40458B89385CAC1BCA3B3 /* CatanStats.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 143FE92D4E9E1D3883E94C51 /* CatanStats.xcdatamodeld */; };
+		7E8D5D313C703BC5ABB54E05 /* Roll+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718F48FF6F90503FCD530543 /* Roll+CoreDataProperties.swift */; };
+		8DAF939CD83282F9DF23642F /* ShipRoll+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BDD3B6CCA1A19CBD0D0848 /* ShipRoll+CoreDataClass.swift */; };
+		903599D7F15624298A4DF14C /* NewRollPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B39F6B73C362120A42642DE /* NewRollPresenterTests.swift */; };
+		A148FBD71328121D1B805085 /* SectionLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9DA8F3A0CF5C5AD1DFF60DA /* SectionLayoutProvider.swift */; };
+		A17EF1029E3E81BF5E3A1173 /* TuistBundle+CatanStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E412851734EDEB9E898CB /* TuistBundle+CatanStatsTests.swift */; };
+		A55F1101621633519D118D54 /* TuistBundle+CatanStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A441F660C3E2EE7BD54837 /* TuistBundle+CatanStats.swift */; };
+		A73CC22C4FE5B69A3A950DE4 /* ShipRoll+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D55689CF7A58B41B576EB63 /* ShipRoll+CoreDataProperties.swift */; };
+		C62AE8D26C1C63748DE09E76 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C43DA17B8A9F79CE9C1765C8 /* LaunchScreen.storyboard */; };
+		EA3D22795031C2E1526D374F /* GameHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21A5FFBE92580AD9D804CB7 /* GameHistoryViewController.swift */; };
+		F7ED04D417A6AAF5A212B167 /* TestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D7D9FD3299FBDF04E1CAB0 /* TestCoreDataStack.swift */; };
+		F8811BCAC17E255EF1AF5876 /* Sizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89775F74EC83AD765B961D4A /* Sizes.swift */; };
+		FCEC18F646F9C0034C9D45F4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C43DA17B8A9F79CE9C1765C8 /* LaunchScreen.storyboard */; };
+		FCEEEDA21BBF3186F1F3B966 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41FE054A35FA2AE8FB83CF4 /* Colors.swift */; };
+		FF0D4B6D8632CA1BB69E00BB /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98B4EEB9C084EC2ED86BBB5 /* MainPageViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		02731B47FB72DC7B61FD6B73 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D76C3A5A0AC19EFB63AD2AFD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B0062D0C7E199C6125AB53B9;
+			remoteInfo = CatanStats;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		989A44783B2761E8FADDE131 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B28DA699C9736323B154E553 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		050F7F79B6DABA25F0AA2417 /* CatanStats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CatanStats.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		143C20CAAC06C75EF9A2EC35 /* NewRollCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRollCell.swift; sourceTree = "<group>"; };
+		1FA9DA982BD57991007AD102 /* CastleRoll+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CastleRoll+CoreDataClass.swift"; sourceTree = "<group>"; };
+		1FA9DA992BD57991007AD102 /* CastleRoll+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CastleRoll+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		2849DD6A83DC8ECE73F1180C /* HistorySectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistorySectionHeaderView.swift; sourceTree = "<group>"; };
+		2B4D84B3320E4C51D1E6524E /* UIColor+Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Dynamic.swift"; sourceTree = "<group>"; };
+		2BA590ED06C2CFE985953AB6 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		2BC190B910E0BE3B9143E23F /* DiceRoll+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiceRoll+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		30F737E79CD8585A62283C00 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		56A441F660C3E2EE7BD54837 /* TuistBundle+CatanStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistBundle+CatanStats.swift"; sourceTree = "<group>"; };
+		5F54292C625F2C0876F29007 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		718F48FF6F90503FCD530543 /* Roll+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Roll+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		757274654CB2975387398FEC /* Game+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Game+CoreDataClass.swift"; sourceTree = "<group>"; };
+		889E64DCE9FC5C053CB0EB53 /* Game+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Game+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		89775F74EC83AD765B961D4A /* Sizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sizes.swift; sourceTree = "<group>"; };
+		8E5EF3B9AD3C88C8C0AE327E /* NewRollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRollViewController.swift; sourceTree = "<group>"; };
+		913035B9796E465FB2A69AE4 /* TuistStrings+CatanStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistStrings+CatanStats.swift"; sourceTree = "<group>"; };
+		93B0A8738E5232F7845756AE /* NewRollAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRollAssembly.swift; sourceTree = "<group>"; };
+		9B39F6B73C362120A42642DE /* NewRollPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRollPresenterTests.swift; sourceTree = "<group>"; };
+		9D55689CF7A58B41B576EB63 /* ShipRoll+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShipRoll+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A1A4CD71DE2E4ADE5C36F234 /* DiceRoll+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiceRoll+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A1F7604AF2E8B55FD62DE4BD /* AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTests.swift; sourceTree = "<group>"; };
+		A9D7D9FD3299FBDF04E1CAB0 /* TestCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoreDataStack.swift; sourceTree = "<group>"; };
+		A9DA8F3A0CF5C5AD1DFF60DA /* SectionLayoutProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionLayoutProvider.swift; sourceTree = "<group>"; };
+		B41FE054A35FA2AE8FB83CF4 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		B9217E556FC08FAE667DD7B7 /* Roll+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Roll+CoreDataClass.swift"; sourceTree = "<group>"; };
+		BD0E412851734EDEB9E898CB /* TuistBundle+CatanStatsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistBundle+CatanStatsTests.swift"; sourceTree = "<group>"; };
+		C16ABFD9764A95D759D446FA /* CatanStats.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CatanStats.xcdatamodel; sourceTree = "<group>"; };
+		C21A5FFBE92580AD9D804CB7 /* GameHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHistoryViewController.swift; sourceTree = "<group>"; };
+		C43DA17B8A9F79CE9C1765C8 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C4C0C4E28926BB22EF76046B /* NewRollModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRollModel.swift; sourceTree = "<group>"; };
+		C98B4EEB9C084EC2ED86BBB5 /* MainPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
+		CFB140FF7E87D50761BA044D /* CatanStats-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "CatanStats-Info.plist"; sourceTree = "<group>"; };
+		D2BDD3B6CCA1A19CBD0D0848 /* ShipRoll+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShipRoll+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D2D01B77B52ACB1EBF1AB708 /* RollHistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollHistoryTableViewCell.swift; sourceTree = "<group>"; };
+		D41156EC57A051B6791E6736 /* TabBarPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarPage.swift; sourceTree = "<group>"; };
+		DD2ADAF2F9FCB83339D0D7F8 /* TuistStrings+CatanStatsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistStrings+CatanStatsTests.swift"; sourceTree = "<group>"; };
+		E42855F7D66ECD20877B4749 /* CatanStatsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CatanStatsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8E460C675AC3B299D389843 /* NewRollPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRollPresenter.swift; sourceTree = "<group>"; };
+		F0843F8CEDF11F883711D324 /* CatanStatsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "CatanStatsTests-Info.plist"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1CDA6E79BEA46908FDF8CF7B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4535B5EA030E71EBD956DB71 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		035FCD0F0A85CF62DA3E802E /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				A42DC3E5EBFDEA12556EFD62 /* CoreData */,
+				AF8C0A517A6532BE7349C26D /* Scenes */,
+				6124786768026E2A831417AE /* Theme */,
+				5F54292C625F2C0876F29007 /* AppDelegate.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		124F881B4E37593B111EDBBD /* CatanStats */ = {
+			isa = PBXGroup;
+			children = (
+				CFCC4E9C9B6282F247ADDAC0 /* Resources */,
+				035FCD0F0A85CF62DA3E802E /* Sources */,
+				F64EFC7227939A8B340075EF /* Tests */,
+			);
+			path = CatanStats;
+			sourceTree = "<group>";
+		};
+		1FA9DA972BD575AA007AD102 /* Managed Objects */ = {
+			isa = PBXGroup;
+			children = (
+				1FA9DA982BD57991007AD102 /* CastleRoll+CoreDataClass.swift */,
+				1FA9DA992BD57991007AD102 /* CastleRoll+CoreDataProperties.swift */,
+				A1A4CD71DE2E4ADE5C36F234 /* DiceRoll+CoreDataClass.swift */,
+				2BC190B910E0BE3B9143E23F /* DiceRoll+CoreDataProperties.swift */,
+				757274654CB2975387398FEC /* Game+CoreDataClass.swift */,
+				889E64DCE9FC5C053CB0EB53 /* Game+CoreDataProperties.swift */,
+				B9217E556FC08FAE667DD7B7 /* Roll+CoreDataClass.swift */,
+				718F48FF6F90503FCD530543 /* Roll+CoreDataProperties.swift */,
+				D2BDD3B6CCA1A19CBD0D0848 /* ShipRoll+CoreDataClass.swift */,
+				9D55689CF7A58B41B576EB63 /* ShipRoll+CoreDataProperties.swift */,
+			);
+			path = "Managed Objects";
+			sourceTree = "<group>";
+		};
+		386CD031586D08F14BB9D572 /* Compiled */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Compiled;
+			sourceTree = "<group>";
+		};
+		54743DAA4D8005FA8E2D1F75 /* NewRoll */ = {
+			isa = PBXGroup;
+			children = (
+				808A40C27F32EE2E7B733FBA /* Views */,
+				93B0A8738E5232F7845756AE /* NewRollAssembly.swift */,
+				C4C0C4E28926BB22EF76046B /* NewRollModel.swift */,
+				E8E460C675AC3B299D389843 /* NewRollPresenter.swift */,
+			);
+			path = NewRoll;
+			sourceTree = "<group>";
+		};
+		5634867B95D65C759F279BB6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2B4D84B3320E4C51D1E6524E /* UIColor+Dynamic.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		5BA8D8BC9DD34E62071158A7 /* GameHistory */ = {
+			isa = PBXGroup;
+			children = (
+				C21A5FFBE92580AD9D804CB7 /* GameHistoryViewController.swift */,
+				2849DD6A83DC8ECE73F1180C /* HistorySectionHeaderView.swift */,
+				D2D01B77B52ACB1EBF1AB708 /* RollHistoryTableViewCell.swift */,
+			);
+			path = GameHistory;
+			sourceTree = "<group>";
+		};
+		6124786768026E2A831417AE /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				5634867B95D65C759F279BB6 /* Extensions */,
+				B41FE054A35FA2AE8FB83CF4 /* Colors.swift */,
+				89775F74EC83AD765B961D4A /* Sizes.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		63DABE2C94994E5A6F409F93 /* Project */ = {
+			isa = PBXGroup;
+			children = (
+				DF5B09F66B3080A2F68B4DE0 /* Derived */,
+				7DC7D4CB381E6848ABD88AA9 /* Targets */,
+			);
+			name = Project;
+			sourceTree = "<group>";
+		};
+		759BB916C84B0E9DD5EFBAA8 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				56A441F660C3E2EE7BD54837 /* TuistBundle+CatanStats.swift */,
+				BD0E412851734EDEB9E898CB /* TuistBundle+CatanStatsTests.swift */,
+				913035B9796E465FB2A69AE4 /* TuistStrings+CatanStats.swift */,
+				DD2ADAF2F9FCB83339D0D7F8 /* TuistStrings+CatanStatsTests.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		75F44D70E54621AA988F7D00 /* InfoPlists */ = {
+			isa = PBXGroup;
+			children = (
+				CFB140FF7E87D50761BA044D /* CatanStats-Info.plist */,
+				F0843F8CEDF11F883711D324 /* CatanStatsTests-Info.plist */,
+			);
+			path = InfoPlists;
+			sourceTree = "<group>";
+		};
+		7DC7D4CB381E6848ABD88AA9 /* Targets */ = {
+			isa = PBXGroup;
+			children = (
+				124F881B4E37593B111EDBBD /* CatanStats */,
+			);
+			path = Targets;
+			sourceTree = "<group>";
+		};
+		808A40C27F32EE2E7B733FBA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				143C20CAAC06C75EF9A2EC35 /* NewRollCell.swift */,
+				8E5EF3B9AD3C88C8C0AE327E /* NewRollViewController.swift */,
+				A9DA8F3A0CF5C5AD1DFF60DA /* SectionLayoutProvider.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A42DC3E5EBFDEA12556EFD62 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				1FA9DA972BD575AA007AD102 /* Managed Objects */,
+				143FE92D4E9E1D3883E94C51 /* CatanStats.xcdatamodeld */,
+				30F737E79CD8585A62283C00 /* CoreDataStack.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		A859C4B705F20968817B3846 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				050F7F79B6DABA25F0AA2417 /* CatanStats.app */,
+				E42855F7D66ECD20877B4749 /* CatanStatsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AF8C0A517A6532BE7349C26D /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				5BA8D8BC9DD34E62071158A7 /* GameHistory */,
+				54743DAA4D8005FA8E2D1F75 /* NewRoll */,
+				C98B4EEB9C084EC2ED86BBB5 /* MainPageViewController.swift */,
+				D41156EC57A051B6791E6736 /* TabBarPage.swift */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		CFCC4E9C9B6282F247ADDAC0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C43DA17B8A9F79CE9C1765C8 /* LaunchScreen.storyboard */,
+				2BA590ED06C2CFE985953AB6 /* Localizable.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		DF5B09F66B3080A2F68B4DE0 /* Derived */ = {
+			isa = PBXGroup;
+			children = (
+				75F44D70E54621AA988F7D00 /* InfoPlists */,
+				759BB916C84B0E9DD5EFBAA8 /* Sources */,
+			);
+			path = Derived;
+			sourceTree = "<group>";
+		};
+		F64EFC7227939A8B340075EF /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A1F7604AF2E8B55FD62DE4BD /* AppTests.swift */,
+				9B39F6B73C362120A42642DE /* NewRollPresenterTests.swift */,
+				A9D7D9FD3299FBDF04E1CAB0 /* TestCoreDataStack.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		FCC1DF8B58C3938FC670AD43 = {
+			isa = PBXGroup;
+			children = (
+				63DABE2C94994E5A6F409F93 /* Project */,
+				386CD031586D08F14BB9D572 /* Compiled */,
+				A859C4B705F20968817B3846 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		39CBFA3883775DAE0E1BD655 /* CatanStatsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA019DE3DE088E38F8A1CBAC /* Build configuration list for PBXNativeTarget "CatanStatsTests" */;
+			buildPhases = (
+				076064E3D46D298EA70428F8 /* Sources */,
+				CE17F8F46B65103E2D7D57C5 /* Resources */,
+				B28DA699C9736323B154E553 /* Embed Frameworks */,
+				4535B5EA030E71EBD956DB71 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E90D9A0CE6C13F8871A0278A /* PBXTargetDependency */,
+			);
+			name = CatanStatsTests;
+			productName = CatanStatsTests;
+			productReference = E42855F7D66ECD20877B4749 /* CatanStatsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B0062D0C7E199C6125AB53B9 /* CatanStats */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8E51B995889377539C74861F /* Build configuration list for PBXNativeTarget "CatanStats" */;
+			buildPhases = (
+				A4BA3BB2BCF1FD09C59E0CCB /* Run Swiftlint */,
+				5678D2E3305274FE1A74D5F2 /* Sources */,
+				8AF2A354A9EEB3EC525C048B /* Resources */,
+				989A44783B2761E8FADDE131 /* Embed Frameworks */,
+				1CDA6E79BEA46908FDF8CF7B /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CatanStats;
+			productName = CatanStats;
+			productReference = 050F7F79B6DABA25F0AA2417 /* CatanStats.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D76C3A5A0AC19EFB63AD2AFD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				TargetAttributes = {
+					39CBFA3883775DAE0E1BD655 = {
+						TestTargetID = B0062D0C7E199C6125AB53B9;
+					};
+				};
+			};
+			buildConfigurationList = 1CA95A3F88A088AD68E7D531 /* Build configuration list for PBXProject "CatanStats" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = FCC1DF8B58C3938FC670AD43;
+			productRefGroup = A859C4B705F20968817B3846 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B0062D0C7E199C6125AB53B9 /* CatanStats */,
+				39CBFA3883775DAE0E1BD655 /* CatanStatsTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8AF2A354A9EEB3EC525C048B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C62AE8D26C1C63748DE09E76 /* LaunchScreen.storyboard in Resources */,
+				6D82C14B6692A3028A8F6510 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE17F8F46B65103E2D7D57C5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FCEC18F646F9C0034C9D45F4 /* LaunchScreen.storyboard in Resources */,
+				12DC914B7FDF409D76BEFCE4 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A4BA3BB2BCF1FD09C59E0CCB /* Run Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Swiftlint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n swiftlint\nelse\n echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n exit 1\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		076064E3D46D298EA70428F8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A17EF1029E3E81BF5E3A1173 /* TuistBundle+CatanStatsTests.swift in Sources */,
+				4065E151AED7E3FB9CE4BA52 /* TuistStrings+CatanStatsTests.swift in Sources */,
+				13B10E6AEDB6A87C66D0C578 /* AppTests.swift in Sources */,
+				903599D7F15624298A4DF14C /* NewRollPresenterTests.swift in Sources */,
+				F7ED04D417A6AAF5A212B167 /* TestCoreDataStack.swift in Sources */,
+				7AC40458B89385CAC1BCA3B3 /* CatanStats.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5678D2E3305274FE1A74D5F2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A55F1101621633519D118D54 /* TuistBundle+CatanStats.swift in Sources */,
+				0BB6586D76EDA58294760932 /* TuistStrings+CatanStats.swift in Sources */,
+				64F7E1D877637F8AE9C51995 /* AppDelegate.swift in Sources */,
+				6ABC5C1201FFBFBF7C5B1376 /* CoreDataStack.swift in Sources */,
+				2D2505EC54FABD9EB91D6068 /* DiceRoll+CoreDataClass.swift in Sources */,
+				1AD67CE3B7E6F81806E789DC /* DiceRoll+CoreDataProperties.swift in Sources */,
+				2C0E2E37E7D09253FC7BB109 /* Game+CoreDataClass.swift in Sources */,
+				1B11D92AFA36A79DA4196877 /* Game+CoreDataProperties.swift in Sources */,
+				4C9D1F782BE07A06073DDA55 /* Roll+CoreDataClass.swift in Sources */,
+				7E8D5D313C703BC5ABB54E05 /* Roll+CoreDataProperties.swift in Sources */,
+				8DAF939CD83282F9DF23642F /* ShipRoll+CoreDataClass.swift in Sources */,
+				A73CC22C4FE5B69A3A950DE4 /* ShipRoll+CoreDataProperties.swift in Sources */,
+				EA3D22795031C2E1526D374F /* GameHistoryViewController.swift in Sources */,
+				4332F6B39F506E58C5A9EF33 /* HistorySectionHeaderView.swift in Sources */,
+				1FA9DA9A2BD57991007AD102 /* CastleRoll+CoreDataClass.swift in Sources */,
+				4022C5EE0DDE7023C62314B1 /* RollHistoryTableViewCell.swift in Sources */,
+				FF0D4B6D8632CA1BB69E00BB /* MainPageViewController.swift in Sources */,
+				59CD2988D27686FD221EEF3D /* NewRollAssembly.swift in Sources */,
+				01AB7D893422CFBCEC4AA293 /* NewRollModel.swift in Sources */,
+				1DAE1C02EE91E10DD42B1B3A /* NewRollPresenter.swift in Sources */,
+				2F8A0CAF52A6F7866C72F5E2 /* NewRollCell.swift in Sources */,
+				12702FB8DC89B48744DE0E38 /* NewRollViewController.swift in Sources */,
+				1FA9DA9B2BD57991007AD102 /* CastleRoll+CoreDataProperties.swift in Sources */,
+				A148FBD71328121D1B805085 /* SectionLayoutProvider.swift in Sources */,
+				2A03A8F93B875F2296C31801 /* TabBarPage.swift in Sources */,
+				FCEEEDA21BBF3186F1F3B966 /* Colors.swift in Sources */,
+				397329FF835C99AD23DCF961 /* UIColor+Dynamic.swift in Sources */,
+				F8811BCAC17E255EF1AF5876 /* Sizes.swift in Sources */,
+				59F95649E19F693B9425DF9E /* CatanStats.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E90D9A0CE6C13F8871A0278A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CatanStats;
+			target = B0062D0C7E199C6125AB53B9 /* CatanStats */;
+			targetProxy = 02731B47FB72DC7B61FD6B73 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		5ABDCDADFCB94B4C502615B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = "Derived/InfoPlists/CatanStatsTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Mamlygo.CatanStatsTests;
+				PRODUCT_NAME = CatanStatsTests;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CatanStats.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CatanStats";
+				TEST_TARGET_NAME = CatanStats;
+			};
+			name = Debug;
+		};
+		7680AD596E847E59DCB555EF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9CC880A89103389808A30AC5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Derived/InfoPlists/CatanStats-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Mamlygo.CatanStats;
+				PRODUCT_NAME = CatanStats;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		B0937B472BCEECF6EE6A63A6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = "Derived/InfoPlists/CatanStatsTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Mamlygo.CatanStatsTests;
+				PRODUCT_NAME = CatanStatsTests;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CatanStats.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CatanStats";
+				TEST_TARGET_NAME = CatanStats;
+			};
+			name = Release;
+		};
+		BFC83E30B4BA2FC6CADF63EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Derived/InfoPlists/CatanStats-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Mamlygo.CatanStats;
+				PRODUCT_NAME = CatanStats;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		D807A324D7CB25FB2B9AB602 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1CA95A3F88A088AD68E7D531 /* Build configuration list for PBXProject "CatanStats" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7680AD596E847E59DCB555EF /* Debug */,
+				D807A324D7CB25FB2B9AB602 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8E51B995889377539C74861F /* Build configuration list for PBXNativeTarget "CatanStats" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BFC83E30B4BA2FC6CADF63EE /* Debug */,
+				9CC880A89103389808A30AC5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA019DE3DE088E38F8A1CBAC /* Build configuration list for PBXNativeTarget "CatanStatsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5ABDCDADFCB94B4C502615B1 /* Debug */,
+				B0937B472BCEECF6EE6A63A6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		143FE92D4E9E1D3883E94C51 /* CatanStats.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C16ABFD9764A95D759D446FA /* CatanStats.xcdatamodel */,
+			);
+			currentVersion = C16ABFD9764A95D759D446FA /* CatanStats.xcdatamodel */;
+			path = CatanStats.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = D76C3A5A0AC19EFB63AD2AFD /* Project object */;
+}

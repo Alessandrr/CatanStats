@@ -11,10 +11,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	) -> Bool {
 		window = UIWindow(frame: UIScreen.main.bounds)
 
-		let navigationViewController = UINavigationController(
-			rootViewController: RollStatsAssembler().assembly()
-		)
-		window?.rootViewController = navigationViewController
+		window?.rootViewController = MainPageViewController()
 		window?.makeKeyAndVisible()
 
 		return true

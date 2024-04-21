@@ -1,0 +1,20 @@
+/* 
+  Localizable.strings
+  CatanStats
+
+  Created by Aleksandr Mamlygo on 18.04.24.
+  
+*/
+
+// MARK: TabBar
+"tabBar.rollsPageTitle" = "New roll";
+"tabBar.historyPageTitle" = "Game history";
+
+// MARK: GameHistory scene
+
+"gameHistory.sectionTitle" = "Game %d";
+"gameHistory.navigationBarTitle" = "Game history";
+
+// MARK: NewRoll scene
+
+"newRoll.navigationBarTitle" = "Roll stats";

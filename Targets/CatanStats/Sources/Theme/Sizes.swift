@@ -9,10 +9,19 @@
 import UIKit
 
 enum Sizes {
+	enum Padding {
+		static let small: CGFloat = 5
+		static let large: CGFloat = 15
+	}
+
 	static let defaultInsets = NSDirectionalEdgeInsets(
 		top: 5,
 		leading: 5,
 		bottom: 5,
 		trailing: 5
 	)
+
+	static let rollCellCornerRadius: CGFloat = 10
+
+	static let historyHeaderViewHeight: CGFloat = 25
 }

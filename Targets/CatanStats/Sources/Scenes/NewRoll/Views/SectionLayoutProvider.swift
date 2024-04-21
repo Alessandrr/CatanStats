@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum RollStatsSection {
+enum NewRollSection {
 	case rolls
 	case ship
 	case castles
@@ -19,7 +19,7 @@ protocol ISectionLayoutProvider {
 }
 
 struct SectionLayoutProviderFactory {
-	func makeSectionProvider(for section: RollStatsSection) -> ISectionLayoutProvider {
+	func makeSectionProvider(for section: NewRollSection) -> ISectionLayoutProvider {
 		switch section {
 		case .rolls:
 			return RollsSectionLayoutProvider()
