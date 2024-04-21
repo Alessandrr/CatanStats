@@ -17,22 +17,22 @@ enum Colors {
 	var colorValue: UIColor {
 		switch self {
 		case .red:
-			UIColor.color(
+			return UIColor.color(
 				light: UIColor(red: 224, green: 102, blue: 102),
 				dark: UIColor(red: 157, green: 71, blue: 71)
 			)
 		case .green:
-			UIColor.color(
+			return UIColor.color(
 				light: UIColor(red: 187, green: 201, blue: 173),
 				dark: UIColor(red: 137, green: 151, blue: 123)
 			)
 		case .lightOrange:
-			UIColor.color(
+			return UIColor.color(
 				light: UIColor(red: 249, green: 203, blue: 156),
 				dark: UIColor(red: 199, green: 153, blue: 106)
 			)
 		case .lightBlue:
-			UIColor.color(
+			return UIColor.color(
 				light: UIColor(red: 184, green: 211, blue: 232),
 				dark: UIColor(red: 134, green: 161, blue: 182)
 			)
@@ -42,13 +42,13 @@ enum Colors {
 	var description: String {
 		switch self {
 		case .red:
-			"Red"
+			return "Red"
 		case .green:
-			"Green"
+			return "Green"
 		case .lightOrange:
-			"Orange"
+			return "Orange"
 		case .lightBlue:
-			"Blue"
+			return "Blue"
 		}
 	}
 }
