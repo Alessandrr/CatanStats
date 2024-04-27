@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 extension Game {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Game> {

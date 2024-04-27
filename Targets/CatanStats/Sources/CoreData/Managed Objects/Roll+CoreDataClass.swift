@@ -2,7 +2,7 @@
 //  Roll+CoreDataClass.swift
 //  CatanStats
 //
-//  Created by Aleksandr Mamlygo on 16.04.24.
+//  Created by Aleksandr Mamlygo on 26.04.24.
 //
 //
 

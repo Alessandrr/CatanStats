@@ -13,6 +13,15 @@ import Foundation
 // swiftlint:disable nesting type_body_length type_name
 public enum CatanStatsStrings {
 
+  public enum CastleColors {
+  /// Blue
+    public static let blue = CatanStatsStrings.tr("Localizable", "castleColors.blue")
+    /// Green
+    public static let green = CatanStatsStrings.tr("Localizable", "castleColors.green")
+    /// Yellow
+    public static let yellow = CatanStatsStrings.tr("Localizable", "castleColors.yellow")
+  }
+
   public enum GameHistory {
   /// Game history
     public static let navigationBarTitle = CatanStatsStrings.tr("Localizable", "gameHistory.navigationBarTitle")
@@ -28,7 +37,7 @@ public enum CatanStatsStrings {
   }
 
   public enum TabBar {
-  /// Game history
+  /// Game list
     public static let historyPageTitle = CatanStatsStrings.tr("Localizable", "tabBar.historyPageTitle")
     /// New roll
     public static let rollsPageTitle = CatanStatsStrings.tr("Localizable", "tabBar.rollsPageTitle")

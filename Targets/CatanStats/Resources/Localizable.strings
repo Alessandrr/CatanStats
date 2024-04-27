@@ -8,7 +8,7 @@
 
 // MARK: TabBar
 "tabBar.rollsPageTitle" = "New roll";
-"tabBar.historyPageTitle" = "Game history";
+"tabBar.historyPageTitle" = "Game list";
 
 // MARK: GameHistory scene
 
@@ -18,3 +18,8 @@
 // MARK: NewRoll scene
 
 "newRoll.navigationBarTitle" = "Roll stats";
+
+// MARK: Roll model
+"castleColors.yellow" = "Yellow";
+"castleColors.green" = "Green";
+"castleColors.blue" = "Blue";

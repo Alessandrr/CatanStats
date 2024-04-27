@@ -10,9 +10,10 @@ import Foundation
 import CoreData
 
 protocol NewRollPresenterProtocol {
-	func didSelectRollItem(_ item: NewRollModel)
+	func didSelectRollItem(_ item: RollModel)
 	func loadData()
 	func clearHistory()
+	func addNewGame()
 }
 
 final class NewRollPresenter: NewRollPresenterProtocol {
@@ -26,18 +27,30 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 		self.coreDataStack = coreDataStack
 	}
 
-	func didSelectRollItem(_ item: NewRollModel) {
+	func didSelectRollItem(_ item: RollModel) {
 		switch item {
 		case .number(let rollResult):
-			let roll = DiceRoll(context: coreDataStack.managedContext)
+			guard let roll = NSEntityDescription.insertNewObject(
+				forEntityName: "DiceRoll",
+				into: coreDataStack.managedContext
+			) as? DiceRoll else { return }
 			roll.value = Int16(rollResult)
+			roll.dateCreated = Date.now
 			currentGame?.addToRolls(roll)
 		case .ship:
-			let ship = ShipRoll(context: coreDataStack.managedContext)
+			guard let ship = NSEntityDescription.insertNewObject(
+				forEntityName: "ShipRoll",
+				into: coreDataStack.managedContext
+			) as? ShipRoll else { return }
+			ship.dateCreated = Date.now
 			currentGame?.addToRolls(ship)
 		case .castle(let color):
-			let castle = CastleRoll(context: coreDataStack.managedContext)
-			castle.color = color.description
+			guard let castle = NSEntityDescription.insertNewObject(
+				forEntityName: "CastleRoll",
+				into: coreDataStack.managedContext
+			) as? CastleRoll else { return }
+			castle.dateCreated = Date.now
+			castle.color = color.rawValue
 			currentGame?.addToRolls(castle)
 		}
 		coreDataStack.saveContext()
@@ -67,9 +80,21 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 		}
 	}
 
+	func addNewGame() {
+		do {
+			let gameRequest = Game.fetchRequest()
+			let gameCount = try coreDataStack.managedContext.count(for: gameRequest)
+			currentGame = Game(context: coreDataStack.managedContext)
+			currentGame?.title = CatanStatsStrings.GameHistory.sectionTitle(gameCount + 1)
+			coreDataStack.saveContext()
+		} catch let error {
+			print(error.localizedDescription)
+		}
+	}
+
 	func clearHistory() {
-		let rollRequest: NSFetchRequest<NSFetchRequestResult> = Roll.fetchRequest()
-		let batchDelete = NSBatchDeleteRequest(fetchRequest: rollRequest)
+		let gameRequest: NSFetchRequest<NSFetchRequestResult> = Game.fetchRequest()
+		let batchDelete = NSBatchDeleteRequest(fetchRequest: gameRequest)
 		do {
 			try coreDataStack.managedContext.execute(batchDelete)
 			coreDataStack.managedContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump

@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 extension CastleRoll {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<CastleRoll> {

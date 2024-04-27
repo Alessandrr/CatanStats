@@ -32,7 +32,10 @@ final class MainPageViewController: UITabBarController {
 				animated: true
 			)
 		case .history:
-			navigationController.setViewControllers([GameHistoryViewController(coreDataStack: coreDataStack)], animated: true)
+			navigationController.setViewControllers(
+				[GameListAssembly().makeViewController(coreDataStack: coreDataStack, navigationController: navigationController)],
+				animated: true
+			)
 		}
 
 		navigationController.tabBarItem = UITabBarItem(

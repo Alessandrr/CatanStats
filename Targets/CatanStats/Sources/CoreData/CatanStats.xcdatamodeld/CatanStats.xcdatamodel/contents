@@ -9,9 +9,10 @@
     <entity name="Game" representedClassName=".Game" syncable="YES">
         <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
-        <relationship name="rolls" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Roll" inverseName="game" inverseEntity="Roll"/>
+        <relationship name="rolls" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Roll" inverseName="game" inverseEntity="Roll"/>
     </entity>
     <entity name="Roll" representedClassName=".Roll" isAbstract="YES" syncable="YES">
+        <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="game" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Game" inverseName="rolls" inverseEntity="Game"/>
     </entity>
     <entity name="ShipRoll" representedClassName=".ShipRoll" parentEntity="Roll" syncable="YES"/>

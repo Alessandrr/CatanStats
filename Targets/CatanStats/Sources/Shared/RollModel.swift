@@ -1,5 +1,5 @@
 //
-//  NewRollModel.swift
+//  RollModel.swift
 //  CatanStats
 //
 //  Created by Aleksandr Mamlygo on 04.04.24.
@@ -8,8 +8,14 @@
 
 import UIKit
 
-enum NewRollModel: Hashable {
+enum RollModel: Hashable {
 	case number(rollResult: Int)
 	case ship
-	case castle(color: Colors)
+	case castle(color: CastleColor)
+}
+
+enum CastleColor: String {
+	case yellow
+	case green
+	case blue
 }

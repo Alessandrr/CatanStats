@@ -2,7 +2,7 @@
 //  Roll+CoreDataProperties.swift
 //  CatanStats
 //
-//  Created by Aleksandr Mamlygo on 16.04.24.
+//  Created by Aleksandr Mamlygo on 26.04.24.
 //
 //
 
@@ -15,6 +15,7 @@ extension Roll {
         return NSFetchRequest<Roll>(entityName: "Roll")
     }
 
+    @NSManaged public var dateCreated: Date?
     @NSManaged public var game: Game?
 
 }

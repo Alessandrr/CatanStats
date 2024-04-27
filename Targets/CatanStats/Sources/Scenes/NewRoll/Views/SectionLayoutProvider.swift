@@ -8,12 +8,6 @@
 
 import UIKit
 
-enum NewRollSection {
-	case rolls
-	case ship
-	case castles
-}
-
 protocol ISectionLayoutProvider {
 	func generateLayoutSection() -> NSCollectionLayoutSection
 }

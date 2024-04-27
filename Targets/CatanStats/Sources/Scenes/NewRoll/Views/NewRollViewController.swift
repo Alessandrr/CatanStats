@@ -10,18 +10,26 @@ import UIKit
 
 final class NewRollViewController: UIViewController {
 
+	// MARK: Private properties
+	private var collectionView: UICollectionView!
+	private var dataSource: UICollectionViewDiffableDataSource<NewRollSection, RollModel>!
+	private var sections: [NewRollSection]
+
 	// MARK: Dependencies
 	private var presenter: NewRollPresenterProtocol
 	private var sectionLayoutProviderFactory: SectionLayoutProviderFactory
+	private var modelProvider: GameModelProviderProtocol
 
 	// MARK: Initialization
 	init(
 		presenter: NewRollPresenterProtocol,
 		sectionLayoutProviderFactory: SectionLayoutProviderFactory,
-		sections: [NewRollSection] = [.rolls, .ship, .castles]
+		modelProvider: GameModelProviderProtocol,
+		sections: [NewRollSection] = NewRollSection.allCases
 	) {
 		self.presenter = presenter
 		self.sectionLayoutProviderFactory = sectionLayoutProviderFactory
+		self.modelProvider = modelProvider
 		self.sections = sections
 		super.init(nibName: nil, bundle: nil)
 	}
@@ -30,29 +38,22 @@ final class NewRollViewController: UIViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	// MARK: Private properties
-	private var collectionView: UICollectionView!
-	private var dataSource: UICollectionViewDiffableDataSource<NewRollSection, NewRollModel>!
-	private var sections: [NewRollSection]
-
 	// MARK: Life cycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		navigationItem.title = CatanStatsStrings.NewRoll.navigationBarTitle
 		configureCollectionView()
 		configureDataSource()
-		// Не вызывать при тестах
+		setupUI()
 		presenter.loadData()
-		navigationItem.rightBarButtonItem = UIBarButtonItem(
-			barButtonSystemItem: .trash,
-			target: self,
-			action: #selector(clearTapped)
-		)
 	}
 
 	// MARK: Private methods
 	@objc private func clearTapped() {
 		presenter.clearHistory()
+	}
+
+	@objc private func newGameTapped() {
+		presenter.addNewGame()
 	}
 
 	private func configureCollectionView() {
@@ -67,36 +68,48 @@ final class NewRollViewController: UIViewController {
 
 	private func configureDataSource() {
 		dataSource = UICollectionViewDiffableDataSource
-		<NewRollSection, NewRollModel>(collectionView: collectionView) { (collectionView, indexPath, rollStatsModel)
+		<NewRollSection, RollModel>(collectionView: collectionView) { (collectionView, indexPath, newRollModel)
 			-> UICollectionViewCell? in
 			guard let cell = collectionView.dequeueReusableCell(
 				withReuseIdentifier: NewRollCell.reuseIdentifier,
 				for: indexPath
 			) as? NewRollCell else { return UICollectionViewCell() }
 
-			cell.configure(with: rollStatsModel)
+			cell.configure(with: newRollModel)
 			return cell
 		}
 
-		var snapshot = NSDiffableDataSourceSnapshot<NewRollSection, NewRollModel>()
+		var snapshot = NSDiffableDataSourceSnapshot<NewRollSection, RollModel>()
 		snapshot.appendSections(sections)
-		snapshot.appendItems(makeButtonModels(), toSection: NewRollSection.rolls)
-		snapshot.appendItems([NewRollModel.ship], toSection: NewRollSection.ship)
-		snapshot.appendItems([
-			NewRollModel.castle(color: Colors.lightOrange),
-			NewRollModel.castle(color: Colors.green),
-			NewRollModel.castle(color: Colors.lightBlue)
-		], toSection: NewRollSection.castles)
+		for section in sections {
+			snapshot.appendItems(modelProvider.makeModelsForSection(section), toSection: section)
+		}
 		dataSource.apply(snapshot)
-	}
-
-	private func makeButtonModels() -> [NewRollModel] {
-		(2...12).map { NewRollModel.number(rollResult: $0) }
 	}
 }
 
 // MARK: Layout
 extension NewRollViewController {
+	private func setupUI() {
+		navigationItem.title = CatanStatsStrings.NewRoll.navigationBarTitle
+		navigationController?.navigationBar.prefersLargeTitles = true
+		navigationController?.navigationBar.sizeToFit()
+
+		let buttons = [
+			UIBarButtonItem(
+				barButtonSystemItem: .trash,
+				target: self,
+				action: #selector(clearTapped)
+			),
+			UIBarButtonItem(
+				barButtonSystemItem: .add,
+				target: self,
+				action: #selector(newGameTapped)
+			)
+		]
+		navigationItem.rightBarButtonItems = buttons
+	}
+
 	private func generateLayout() -> UICollectionViewLayout {
 		let layout = UICollectionViewCompositionalLayout { [unowned self] sectionIndex, _ in
 			let section = sections[sectionIndex]
@@ -114,6 +127,6 @@ extension NewRollViewController: UICollectionViewDelegate {
 		if let cell = collectionView.cellForItem(at: indexPath) as? NewRollCell {
 			cell.animateTap()
 		}
-		presenter.didSelectRollItem(dataSource.itemIdentifier(for: indexPath) ?? NewRollModel.ship)
+		presenter.didSelectRollItem(dataSource.itemIdentifier(for: indexPath) ?? RollModel.ship)
 	}
 }
