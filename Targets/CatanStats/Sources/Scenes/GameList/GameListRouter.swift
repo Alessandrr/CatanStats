@@ -16,9 +16,9 @@ final class GameListRouter: GameListRouterProtocol {
 	private weak var navigationController: UINavigationController?
 	private var coreDataStack: CoreDataStack
 
-	init(navigationController: UINavigationController?, coreDataStsck: CoreDataStack) {
+	init(navigationController: UINavigationController?, coreDataStack: CoreDataStack) {
 		self.navigationController = navigationController
-		self.coreDataStack = coreDataStsck
+		self.coreDataStack = coreDataStack
 	}
 
 	func routeToGameDetails(for gameID: NSManagedObjectID) {

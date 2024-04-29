@@ -13,13 +13,23 @@ import Foundation
 // swiftlint:disable nesting type_body_length type_name
 public enum CatanStatsTestsStrings {
 
-  public enum CastleColors {
-  /// Blue
-    public static let blue = CatanStatsTestsStrings.tr("Localizable", "castleColors.blue")
-    /// Green
-    public static let green = CatanStatsTestsStrings.tr("Localizable", "castleColors.green")
-    /// Yellow
-    public static let yellow = CatanStatsTestsStrings.tr("Localizable", "castleColors.yellow")
+  public enum GameDetails {
+  /// Actual count
+    public static let actualCount = CatanStatsTestsStrings.tr("Localizable", "gameDetails.actualCount")
+    /// Blue castle
+    public static let blueCastleCell = CatanStatsTestsStrings.tr("Localizable", "gameDetails.blueCastleCell")
+    /// Rolled %d
+    public static func diceCell(_ p1: Int) -> String {
+      return CatanStatsTestsStrings.tr("Localizable", "gameDetails.diceCell",p1)
+    }
+    /// Expected count
+    public static let expectedCount = CatanStatsTestsStrings.tr("Localizable", "gameDetails.expectedCount")
+    /// Green castle
+    public static let greenCastleCell = CatanStatsTestsStrings.tr("Localizable", "gameDetails.greenCastleCell")
+    /// Ship
+    public static let shipCell = CatanStatsTestsStrings.tr("Localizable", "gameDetails.shipCell")
+    /// Yellow castle
+    public static let yellowCastleCell = CatanStatsTestsStrings.tr("Localizable", "gameDetails.yellowCastleCell")
   }
 
   public enum GameHistory {

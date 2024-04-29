@@ -65,6 +65,7 @@ final class NewRollPresenterTests: XCTestCase {
 			XCTFail("Expected to get DiceRoll")
 			return
 		}
+		XCTAssertNotNil(roll.dateCreated, "Expected date to be not nil")
 		XCTAssertEqual(roll.value, Int16(expectedRollValue), "Expected value to be \(expectedRollValue)")
 	}
 
@@ -95,7 +96,11 @@ final class NewRollPresenterTests: XCTestCase {
 		}
 		let savedRolls = try? fetchRolls()
 
-		XCTAssertNotNil(savedRolls?.first as? ShipRoll, "Expected to get ShipRoll")
+		guard let roll = savedRolls?.first as? ShipRoll else {
+			XCTFail("Expected to get ShipRoll")
+			return
+		}
+		XCTAssertNotNil(roll.dateCreated, "Expected date created to be non-nil")
 	}
 
 	func test_didSelectRollItem_shipSelected_shouldAddToCurrentGame() {
@@ -134,6 +139,7 @@ final class NewRollPresenterTests: XCTestCase {
 			expectedColor.rawValue,
 			"Expected color to be \(expectedColor.rawValue)"
 		)
+		XCTAssertNotNil(roll.dateCreated, "Expected date created to be non-nil")
 	}
 
 	func test_didSelectRollItem_castleSelected_shouldAddToCurrentGame() {

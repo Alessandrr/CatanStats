@@ -9,9 +9,18 @@ import UIKit
 import CoreData
 
 final class GameDetailsAssembly {
-	func makeViewController(coreDataStack: CoreDataStack, gameID: NSManagedObjectID) -> UIViewController {
+	func makeViewController(
+		coreDataStack: CoreDataStack,
+		gameID: NSManagedObjectID,
+		gameModelProvider: GameModelProviderProtocol = GameModelProvider()
+	) -> UIViewController {
 		let viewController = GameDetailsViewController()
-		let presenter = GameDetailsPresenter(viewController: viewController, coreDataStack: coreDataStack, gameID: gameID)
+		let presenter = GameDetailsPresenter(
+			viewController: viewController,
+			coreDataStack: coreDataStack,
+			gameID: gameID,
+			gameModelProvider: gameModelProvider
+		)
 
 		viewController.presenter = presenter
 

@@ -18,6 +18,7 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 	private weak var viewController: GameDetailsViewControllerProtocol?
 	private var coreDataStack: CoreDataStack
 	private var gameID: NSManagedObjectID
+	private var gameModelProvider: GameModelProviderProtocol
 
 	// MARK: Private properties
 	private lazy var fetchedResultsController: NSFetchedResultsController<Roll> = {
@@ -42,10 +43,17 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 		return fetchedResultsController
 	}()
 
-	init(viewController: GameDetailsViewControllerProtocol, coreDataStack: CoreDataStack, gameID: NSManagedObjectID) {
+	// MARK: Initialization
+	init(
+		viewController: GameDetailsViewControllerProtocol,
+		coreDataStack: CoreDataStack,
+		gameID: NSManagedObjectID,
+		gameModelProvider: GameModelProviderProtocol
+	) {
 		self.viewController = viewController
 		self.coreDataStack = coreDataStack
 		self.gameID = gameID
+		self.gameModelProvider = gameModelProvider
 	}
 
 	// MARK: Internal methods
@@ -58,7 +66,7 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 	}
 
 	// MARK: Private methods
-	private func mapSnapshotToRollCounts(
+	private func mapSnapshotToRollCounters(
 		_ snapshot: NSDiffableDataSourceSnapshot<String, NSManagedObjectID>
 	) -> [RollModelCounter] {
 		var counts: [RollModel: Int] = [:]
@@ -87,9 +95,32 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 			if counter1.count != counter2.count {
 				return counter1.count > counter2.count
 			}
-
+			// Maintaints consistent order for items with equal counts
 			return counter1.hashValue > counter2.hashValue
 		}
+	}
+
+	private func prepareCountersForChart(_ counters: [RollModelCounter]) -> [RollModelCounter] {
+		var chartCounters: [RollModelCounter] = []
+
+		gameModelProvider.makeModelsForSection(.rolls).forEach { rollModel in
+			guard case let RollModel.number(expectedRoll) = rollModel else { return }
+
+			let foundCounter = counters.first { counter in
+				if case .number(let rollResult) = counter.rollModel, rollResult == expectedRoll {
+					return true
+				}
+				return false
+			}
+
+			if let foundCounter = foundCounter {
+				chartCounters.append(foundCounter)
+			} else {
+				chartCounters.append(RollModelCounter(rollModel: rollModel, count: 0))
+			}
+		}
+
+		return chartCounters
 	}
 }
 
@@ -99,7 +130,9 @@ extension GameDetailsPresenter: NSFetchedResultsControllerDelegate {
 		_ controller: NSFetchedResultsController<NSFetchRequestResult>,
 		didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
 	) {
-		let rollCounts = mapSnapshotToRollCounts(snapshot as NSDiffableDataSourceSnapshot<String, NSManagedObjectID>)
-		viewController?.updateRollCounts(rollCounts)
+		let tableViewCounters = mapSnapshotToRollCounters(snapshot as NSDiffableDataSourceSnapshot<String, NSManagedObjectID>)
+		let chartCounters = prepareCountersForChart(tableViewCounters)
+		viewController?.updateTableViewModel(tableViewCounters)
+		viewController?.updateChartModel(chartCounters)
 	}
 }

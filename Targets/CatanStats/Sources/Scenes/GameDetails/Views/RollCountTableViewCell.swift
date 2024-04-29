@@ -14,13 +14,21 @@ final class RollCountTableViewCell: UITableViewCell {
 	func configure(with model: RollModelCounter) {
 		var contentConfiguration = UIListContentConfiguration.valueCell()
 		let rollModel = model.rollModel
+
 		switch rollModel {
 		case .number(let rollResult):
-			contentConfiguration.text = "Rolled \(rollResult)"
+			contentConfiguration.text = CatanStatsStrings.GameDetails.diceCell(rollResult)
 		case .ship:
-			contentConfiguration.text = "Ship"
+			contentConfiguration.text = CatanStatsStrings.GameDetails.shipCell
 		case .castle(let color):
-			contentConfiguration.text = "\(color.rawValue) Castle"
+			switch color {
+			case .yellow:
+				contentConfiguration.text = CatanStatsStrings.GameDetails.yellowCastleCell
+			case .green:
+				contentConfiguration.text = CatanStatsStrings.GameDetails.greenCastleCell
+			case .blue:
+				contentConfiguration.text = CatanStatsStrings.GameDetails.blueCastleCell
+			}
 		}
 
 		contentConfiguration.secondaryText = model.count.formatted()

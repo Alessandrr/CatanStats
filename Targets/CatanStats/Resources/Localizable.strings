@@ -19,7 +19,11 @@
 
 "newRoll.navigationBarTitle" = "Roll stats";
 
-// MARK: Roll model
-"castleColors.yellow" = "Yellow";
-"castleColors.green" = "Green";
-"castleColors.blue" = "Blue";
+// MARK: GameDetails scene
+"gameDetails.diceCell" = "Rolled %d";
+"gameDetails.shipCell" = "Ship";
+"gameDetails.yellowCastleCell" = "Yellow castle";
+"gameDetails.greenCastleCell" = "Green castle";
+"gameDetails.blueCastleCell" = "Blue castle";
+"gameDetails.expectedCount" = "Expected count";
+"gameDetails.actualCount" = "Actual count";
