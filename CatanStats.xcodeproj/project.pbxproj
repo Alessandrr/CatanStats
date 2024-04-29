@@ -425,7 +425,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8E51B995889377539C74861F /* Build configuration list for PBXNativeTarget "CatanStats" */;
 			buildPhases = (
-				A4BA3BB2BCF1FD09C59E0CCB /* Run Swiftlint */,
 				5678D2E3305274FE1A74D5F2 /* Sources */,
 				8AF2A354A9EEB3EC525C048B /* Resources */,
 				989A44783B2761E8FADDE131 /* Embed Frameworks */,
@@ -492,28 +491,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		A4BA3BB2BCF1FD09C59E0CCB /* Run Swiftlint */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run Swiftlint";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n swiftlint\nelse\n echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n exit 1\nfi";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		076064E3D46D298EA70428F8 /* Sources */ = {
@@ -670,6 +647,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SRCROOT = /Users/aleksandr/Desktop/Swift/CatanStats;
 			};
 			name = Debug;
 		};
@@ -800,6 +778,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SRCROOT = /Users/aleksandr/Desktop/Swift/CatanStats;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
