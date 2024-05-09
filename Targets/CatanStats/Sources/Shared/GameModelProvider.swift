@@ -8,11 +8,11 @@
 import Foundation
 
 protocol GameModelProviderProtocol {
-	func makeModelsForSection(_ section: NewRollSection) -> [RollModel]
+	func makeModelsForSection(_ section: RollSection) -> [RollModel]
 }
 
 struct GameModelProvider: GameModelProviderProtocol {
-	func makeModelsForSection(_ section: NewRollSection) -> [RollModel] {
+	func makeModelsForSection(_ section: RollSection) -> [RollModel] {
 		switch section {
 		case .rolls:
 			(2...12).map { RollModel.number(rollResult: $0) }

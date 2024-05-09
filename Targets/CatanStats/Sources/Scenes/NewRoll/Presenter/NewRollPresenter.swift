@@ -88,7 +88,7 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 			currentGame?.title = CatanStatsStrings.GameHistory.sectionTitle(gameCount + 1)
 			coreDataStack.saveContext()
 		} catch let error {
-			print(error.localizedDescription)
+			assertionFailure(error.localizedDescription)
 		}
 	}
 
@@ -100,7 +100,7 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 			coreDataStack.managedContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
 			coreDataStack.managedContext.refreshAllObjects()
 		} catch let error {
-			print(error.localizedDescription)
+			assertionFailure(error.localizedDescription)
 		}
 	}
 }

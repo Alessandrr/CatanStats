@@ -61,7 +61,7 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 		do {
 			try fetchedResultsController.performFetch()
 		} catch let error {
-			print(error.localizedDescription)
+			assertionFailure(error.localizedDescription)
 		}
 	}
 

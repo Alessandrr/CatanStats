@@ -24,8 +24,8 @@ final class GameDetailsViewController: UIViewController {
 
 	// MARK: Private properties
 	private lazy var tableView = makeTableView()
-	private var dataSource: UITableViewDiffableDataSource<RollCountSections, RollModelCounter>?
-	private var snapshot: NSDiffableDataSourceSnapshot<RollCountSections, RollModelCounter>?
+	private var dataSource: UITableViewDiffableDataSource<RollSection, RollModelCounter>?
+	private var snapshot: NSDiffableDataSourceSnapshot<RollSection, RollModelCounter>?
 
 	private var chartHostingController: UIHostingController<RollDistributionChartView>?
 	private var chartCountersModel = ChartCountersModel()
@@ -78,11 +78,10 @@ private extension GameDetailsViewController {
 		chartHostingController = UIHostingController(rootView: chartView)
 		guard let chartHostingController = chartHostingController else { return }
 
-		chartHostingController.sizingOptions = .intrinsicContentSize
 		addChild(chartHostingController)
+		chartHostingController.didMove(toParent: self)
 		chartHostingController.view.translatesAutoresizingMaskIntoConstraints = false
 		view.addSubview(chartHostingController.view)
-		chartHostingController.didMove(toParent: self)
 	}
 
 	func setupDataSource() {
@@ -102,9 +101,18 @@ private extension GameDetailsViewController {
 
 extension GameDetailsViewController: GameDetailsViewControllerProtocol {
 	func updateTableViewModel(_ models: [RollModelCounter]) {
-		var snapshot = NSDiffableDataSourceSnapshot<RollCountSections, RollModelCounter>()
-		snapshot.appendSections([.main])
-		snapshot.appendItems(models, toSection: .main)
+		var snapshot = NSDiffableDataSourceSnapshot<RollSection, RollModelCounter>()
+		snapshot.appendSections([.rolls, .castles, .ship])
+		for model in models {
+			switch model.rollModel {
+			case .number:
+				snapshot.appendItems([model], toSection: .rolls)
+			case .ship:
+				snapshot.appendItems([model], toSection: .ship)
+			case .castle:
+				snapshot.appendItems([model], toSection: .castles)
+			}
+		}
 		self.snapshot = snapshot
 	}
 

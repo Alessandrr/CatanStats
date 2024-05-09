@@ -12,8 +12,8 @@ final class NewRollViewController: UIViewController {
 
 	// MARK: Private properties
 	private var collectionView: UICollectionView!
-	private var dataSource: UICollectionViewDiffableDataSource<NewRollSection, RollModel>!
-	private var sections: [NewRollSection]
+	private var dataSource: UICollectionViewDiffableDataSource<RollSection, RollModel>!
+	private var sections: [RollSection]
 
 	// MARK: Dependencies
 	private var presenter: NewRollPresenterProtocol
@@ -25,7 +25,7 @@ final class NewRollViewController: UIViewController {
 		presenter: NewRollPresenterProtocol,
 		sectionLayoutProviderFactory: SectionLayoutProviderFactory,
 		modelProvider: GameModelProviderProtocol,
-		sections: [NewRollSection] = NewRollSection.allCases
+		sections: [RollSection] = RollSection.allCases
 	) {
 		self.presenter = presenter
 		self.sectionLayoutProviderFactory = sectionLayoutProviderFactory
@@ -68,7 +68,7 @@ final class NewRollViewController: UIViewController {
 
 	private func configureDataSource() {
 		dataSource = UICollectionViewDiffableDataSource
-		<NewRollSection, RollModel>(collectionView: collectionView) { (collectionView, indexPath, newRollModel)
+		<RollSection, RollModel>(collectionView: collectionView) { (collectionView, indexPath, newRollModel)
 			-> UICollectionViewCell? in
 			guard let cell = collectionView.dequeueReusableCell(
 				withReuseIdentifier: NewRollCell.reuseIdentifier,
@@ -79,7 +79,7 @@ final class NewRollViewController: UIViewController {
 			return cell
 		}
 
-		var snapshot = NSDiffableDataSourceSnapshot<NewRollSection, RollModel>()
+		var snapshot = NSDiffableDataSourceSnapshot<RollSection, RollModel>()
 		snapshot.appendSections(sections)
 		for section in sections {
 			snapshot.appendItems(modelProvider.makeModelsForSection(section), toSection: section)

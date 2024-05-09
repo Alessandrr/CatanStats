@@ -12,36 +12,16 @@ import CoreData
 final class GameListViewController: UITableViewController {
 
 	// MARK: Dependencies
-	private var coreDataStack: CoreDataStack
 	private var router: GameListRouterProtocol
+	var presenter: GameListPresenterProtocol?
 
 	// MARK: Private properties
 	private var dataSource: UITableViewDiffableDataSource<String, NSManagedObjectID>?
 	private var dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, NSManagedObjectID>?
 
-	private lazy var fetchedResultsController: NSFetchedResultsController<Game> = {
-		let fetchRequest = Game.fetchRequest()
-
-		let sort = NSSortDescriptor(
-			key: #keyPath(Game.dateCreated),
-			ascending: false
-		)
-		fetchRequest.sortDescriptors = [sort]
-
-		let fetchedResultsController = NSFetchedResultsController(
-			fetchRequest: fetchRequest,
-			managedObjectContext: coreDataStack.managedContext,
-			sectionNameKeyPath: nil,
-			cacheName: nil
-		)
-		fetchedResultsController.delegate = self
-		return fetchedResultsController
-	}()
-
 	// MARK: Initialization
 
-	init(coreDataStack: CoreDataStack, router: GameListRouterProtocol) {
-		self.coreDataStack = coreDataStack
+	init(router: GameListRouterProtocol) {
 		self.router = router
 		super.init(nibName: nil, bundle: nil)
 	}
@@ -59,13 +39,9 @@ final class GameListViewController: UITableViewController {
 
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		do {
-			try fetchedResultsController.performFetch()
-			if let snapshot = dataSourceSnapshot {
-				dataSource?.apply(snapshot)
-			}
-		} catch let error {
-			print("Fetching error: \(error.localizedDescription)")
+		presenter?.initialFetch()
+		if let snapshot = dataSourceSnapshot {
+			dataSource?.apply(snapshot)
 		}
 	}
 
@@ -77,11 +53,8 @@ final class GameListViewController: UITableViewController {
 // MARK: Data source
 extension GameListViewController {
 	private func setupDataSource() {
-		dataSource = UITableViewDiffableDataSource(
-			tableView: tableView
-		) { [unowned self] (_, _, managedObjectID) -> UITableViewCell? in
-
-			guard let game = try? coreDataStack.managedContext.existingObject(with: managedObjectID) as? Game else {
+		dataSource = UITableViewDiffableDataSource(tableView: tableView) { [weak self] tableView, indexPath, itemIdentifier in
+			guard let game = self?.presenter?.getGameForCellAt(indexPath) else {
 				return UITableViewCell()
 			}
 

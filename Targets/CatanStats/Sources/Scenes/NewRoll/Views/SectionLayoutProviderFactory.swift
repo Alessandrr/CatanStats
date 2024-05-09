@@ -13,7 +13,7 @@ protocol ISectionLayoutProvider {
 }
 
 struct SectionLayoutProviderFactory {
-	func makeSectionProvider(for section: NewRollSection) -> ISectionLayoutProvider {
+	func makeSectionProvider(for section: RollSection) -> ISectionLayoutProvider {
 		switch section {
 		case .rolls:
 			return RollsSectionLayoutProvider()
@@ -137,8 +137,7 @@ extension ISectionLayoutProvider {
 				widthDimension: .fractionalWidth(1/2),
 				heightDimension: .fractionalHeight(1.0)
 			),
-			subitem: pairItem,
-			count: 2
+			subitems: [pairItem, pairItem]
 		)
 
 		let largeWithPairGroup = NSCollectionLayoutGroup.horizontal(

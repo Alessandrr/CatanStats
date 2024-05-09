@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,7 +16,8 @@
 		1DAE1C02EE91E10DD42B1B3A /* NewRollPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E460C675AC3B299D389843 /* NewRollPresenter.swift */; };
 		1F190988B2657F0C148CB6B3 /* Game+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5809355A53B7D67A562C6A3E /* Game+CoreDataClass.swift */; };
 		1F76A0CD0EE9B19BEC1DB702 /* RollModelCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785637B2129583CD135CE0B0 /* RollModelCounter.swift */; };
-		268CE4FCDE88BC9AC45B0CD8 /* NewRollSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05D4EC6A41DD6A6584F158B /* NewRollSection.swift */; };
+		1FFCC98C2BEAB83C00D5D556 /* GameListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFCC98B2BEAB83C00D5D556 /* GameListPresenter.swift */; };
+		268CE4FCDE88BC9AC45B0CD8 /* RollSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05D4EC6A41DD6A6584F158B /* RollSection.swift */; };
 		2A03A8F93B875F2296C31801 /* TabBarPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41156EC57A051B6791E6736 /* TabBarPage.swift */; };
 		2F8A0CAF52A6F7866C72F5E2 /* NewRollCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143C20CAAC06C75EF9A2EC35 /* NewRollCell.swift */; };
 		3510958210E228902EAE3A06 /* GameListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3A4E454C8D221FB2C2F935 /* GameListViewController.swift */; };
@@ -40,7 +41,7 @@
 		927A4897745CFA2D60214864 /* RollCountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C60E9F212A8E3E291D4E6F3 /* RollCountTableViewCell.swift */; };
 		92980730A25314B30DB2E859 /* ChartCountersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3D0703987F09B20C3581C /* ChartCountersModel.swift */; };
 		93C0CB59760F9FE9FA05100A /* GameDetailsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = E377556CE9BDF8F61A66FAF6 /* GameDetailsAssembly.swift */; };
-		A148FBD71328121D1B805085 /* SectionLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9DA8F3A0CF5C5AD1DFF60DA /* SectionLayoutProvider.swift */; };
+		A148FBD71328121D1B805085 /* SectionLayoutProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9DA8F3A0CF5C5AD1DFF60DA /* SectionLayoutProviderFactory.swift */; };
 		A17EF1029E3E81BF5E3A1173 /* TuistBundle+CatanStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E412851734EDEB9E898CB /* TuistBundle+CatanStatsTests.swift */; };
 		A3B4175087B1B6B49810DB84 /* Roll+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B935B6361C4E3C0E5B4D00CD /* Roll+CoreDataProperties.swift */; };
 		A55F1101621633519D118D54 /* TuistBundle+CatanStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A441F660C3E2EE7BD54837 /* TuistBundle+CatanStats.swift */; };
@@ -97,6 +98,7 @@
 		10AABA3F2DA473C533A7F933 /* ShipRoll+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShipRoll+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		13559F16F97E62BFDD402407 /* ShipRoll+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShipRoll+CoreDataClass.swift"; sourceTree = "<group>"; };
 		143C20CAAC06C75EF9A2EC35 /* NewRollCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRollCell.swift; sourceTree = "<group>"; };
+		1FFCC98B2BEAB83C00D5D556 /* GameListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListPresenter.swift; sourceTree = "<group>"; };
 		288FA04DBEE57DDCCBDD7CA8 /* DiceRoll+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiceRoll+CoreDataClass.swift"; sourceTree = "<group>"; };
 		2B4D84B3320E4C51D1E6524E /* UIColor+Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Dynamic.swift"; sourceTree = "<group>"; };
 		2BA590ED06C2CFE985953AB6 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
@@ -120,7 +122,7 @@
 		A1F7604AF2E8B55FD62DE4BD /* AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTests.swift; sourceTree = "<group>"; };
 		A7E3AB24AAB4BE09B0ABFCBB /* GameModelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModelProvider.swift; sourceTree = "<group>"; };
 		A9D7D9FD3299FBDF04E1CAB0 /* TestCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoreDataStack.swift; sourceTree = "<group>"; };
-		A9DA8F3A0CF5C5AD1DFF60DA /* SectionLayoutProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionLayoutProvider.swift; sourceTree = "<group>"; };
+		A9DA8F3A0CF5C5AD1DFF60DA /* SectionLayoutProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionLayoutProviderFactory.swift; sourceTree = "<group>"; };
 		B48E736C168DD6D2685C1B08 /* CastleRoll+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CastleRoll+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B935B6361C4E3C0E5B4D00CD /* Roll+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Roll+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		BC9A37C0F6FC4ABEA9AE56AF /* CastleRoll+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CastleRoll+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -131,7 +133,7 @@
 		C98B4EEB9C084EC2ED86BBB5 /* MainPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
 		CF2760635E40B6453D49107A /* DiceRoll+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiceRoll+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CFB140FF7E87D50761BA044D /* CatanStats-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "CatanStats-Info.plist"; sourceTree = "<group>"; };
-		D05D4EC6A41DD6A6584F158B /* NewRollSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRollSection.swift; sourceTree = "<group>"; };
+		D05D4EC6A41DD6A6584F158B /* RollSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollSection.swift; sourceTree = "<group>"; };
 		D41156EC57A051B6791E6736 /* TabBarPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarPage.swift; sourceTree = "<group>"; };
 		D97E9445F9DAC0FDF11BAAD1 /* GameDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailsViewController.swift; sourceTree = "<group>"; };
 		DB3A4E454C8D221FB2C2F935 /* GameListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListViewController.swift; sourceTree = "<group>"; };
@@ -182,6 +184,96 @@
 			path = CatanStats;
 			sourceTree = "<group>";
 		};
+		1FFCC9812BEAB18300D5D556 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				E377556CE9BDF8F61A66FAF6 /* GameDetailsAssembly.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		1FFCC9822BEAB18F00D5D556 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				9E33C58259CC663A151D2B60 /* GameDetailsPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		1FFCC9832BEAB19800D5D556 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				02F3D0703987F09B20C3581C /* ChartCountersModel.swift */,
+				785637B2129583CD135CE0B0 /* RollModelCounter.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		1FFCC9842BEAB1C100D5D556 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				BE821F28E0DFC27A36D9A0E4 /* RollDistributionChartView.swift */,
+				7C60E9F212A8E3E291D4E6F3 /* RollCountTableViewCell.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
+		1FFCC9852BEAB1D900D5D556 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				35B53311F3A83BA79B3500D0 /* GameListAssembly.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		1FFCC9862BEAB1E000D5D556 /* Routing */ = {
+			isa = PBXGroup;
+			children = (
+				608A587B97FB79376CED5E03 /* GameListRouter.swift */,
+			);
+			path = Routing;
+			sourceTree = "<group>";
+		};
+		1FFCC9872BEAB1E800D5D556 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DB3A4E454C8D221FB2C2F935 /* GameListViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1FFCC9882BEAB1F800D5D556 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				93B0A8738E5232F7845756AE /* NewRollAssembly.swift */,
+			);
+			path = Assembly;
+			sourceTree = "<group>";
+		};
+		1FFCC9892BEAB1FE00D5D556 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				E8E460C675AC3B299D389843 /* NewRollPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		1FFCC98A2BEAB26B00D5D556 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				143C20CAAC06C75EF9A2EC35 /* NewRollCell.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
+		1FFCC98D2BEAB83F00D5D556 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				1FFCC98B2BEAB83C00D5D556 /* GameListPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
 		386CD031586D08F14BB9D572 /* Compiled */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,11 +284,10 @@
 		45DF3BEC701FF904B2DC6B71 /* GameDetails */ = {
 			isa = PBXGroup;
 			children = (
-				72ABE47F352B7F8F326E7E2D /* Chart */,
 				C98D37ECD601479271475F3E /* Views */,
-				E377556CE9BDF8F61A66FAF6 /* GameDetailsAssembly.swift */,
-				9E33C58259CC663A151D2B60 /* GameDetailsPresenter.swift */,
-				785637B2129583CD135CE0B0 /* RollModelCounter.swift */,
+				1FFCC9812BEAB18300D5D556 /* Assembly */,
+				1FFCC9822BEAB18F00D5D556 /* Presenter */,
+				1FFCC9832BEAB19800D5D556 /* Model */,
 			);
 			path = GameDetails;
 			sourceTree = "<group>";
@@ -205,8 +296,8 @@
 			isa = PBXGroup;
 			children = (
 				808A40C27F32EE2E7B733FBA /* Views */,
-				93B0A8738E5232F7845756AE /* NewRollAssembly.swift */,
-				E8E460C675AC3B299D389843 /* NewRollPresenter.swift */,
+				1FFCC9882BEAB1F800D5D556 /* Assembly */,
+				1FFCC9892BEAB1FE00D5D556 /* Presenter */,
 			);
 			path = NewRoll;
 			sourceTree = "<group>";
@@ -222,6 +313,7 @@
 		6054597BA4740C8E17E798FE /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				D05D4EC6A41DD6A6584F158B /* RollSection.swift */,
 				A7E3AB24AAB4BE09B0ABFCBB /* GameModelProvider.swift */,
 				4C62C8245FA37CCD70D8572C /* RollModel.swift */,
 			);
@@ -245,15 +337,6 @@
 				7DC7D4CB381E6848ABD88AA9 /* Targets */,
 			);
 			name = Project;
-			sourceTree = "<group>";
-		};
-		72ABE47F352B7F8F326E7E2D /* Chart */ = {
-			isa = PBXGroup;
-			children = (
-				02F3D0703987F09B20C3581C /* ChartCountersModel.swift */,
-				BE821F28E0DFC27A36D9A0E4 /* RollDistributionChartView.swift */,
-			);
-			path = Chart;
 			sourceTree = "<group>";
 		};
 		759BB916C84B0E9DD5EFBAA8 /* Sources */ = {
@@ -287,10 +370,9 @@
 		808A40C27F32EE2E7B733FBA /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				143C20CAAC06C75EF9A2EC35 /* NewRollCell.swift */,
-				D05D4EC6A41DD6A6584F158B /* NewRollSection.swift */,
+				1FFCC98A2BEAB26B00D5D556 /* Subviews */,
 				8E5EF3B9AD3C88C8C0AE327E /* NewRollViewController.swift */,
-				A9DA8F3A0CF5C5AD1DFF60DA /* SectionLayoutProvider.swift */,
+				A9DA8F3A0CF5C5AD1DFF60DA /* SectionLayoutProviderFactory.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -330,7 +412,7 @@
 			isa = PBXGroup;
 			children = (
 				D97E9445F9DAC0FDF11BAAD1 /* GameDetailsViewController.swift */,
-				7C60E9F212A8E3E291D4E6F3 /* RollCountTableViewCell.swift */,
+				1FFCC9842BEAB1C100D5D556 /* Subviews */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -338,9 +420,10 @@
 		CA9FC2DAA1671720582EF4C6 /* GameList */ = {
 			isa = PBXGroup;
 			children = (
-				35B53311F3A83BA79B3500D0 /* GameListAssembly.swift */,
-				608A587B97FB79376CED5E03 /* GameListRouter.swift */,
-				DB3A4E454C8D221FB2C2F935 /* GameListViewController.swift */,
+				1FFCC9852BEAB1D900D5D556 /* Assembly */,
+				1FFCC9862BEAB1E000D5D556 /* Routing */,
+				1FFCC9872BEAB1E800D5D556 /* Views */,
+				1FFCC98D2BEAB83F00D5D556 /* Presenter */,
 			);
 			path = GameList;
 			sourceTree = "<group>";
@@ -527,6 +610,7 @@
 				92980730A25314B30DB2E859 /* ChartCountersModel.swift in Sources */,
 				40BDD788CD3E84EC3EA4826D /* RollDistributionChartView.swift in Sources */,
 				93C0CB59760F9FE9FA05100A /* GameDetailsAssembly.swift in Sources */,
+				1FFCC98C2BEAB83C00D5D556 /* GameListPresenter.swift in Sources */,
 				38058B34D5B5035D8D138330 /* GameDetailsPresenter.swift in Sources */,
 				1F76A0CD0EE9B19BEC1DB702 /* RollModelCounter.swift in Sources */,
 				E364EC63B923EF94F66687B8 /* GameDetailsViewController.swift in Sources */,
@@ -538,9 +622,9 @@
 				59CD2988D27686FD221EEF3D /* NewRollAssembly.swift in Sources */,
 				1DAE1C02EE91E10DD42B1B3A /* NewRollPresenter.swift in Sources */,
 				2F8A0CAF52A6F7866C72F5E2 /* NewRollCell.swift in Sources */,
-				268CE4FCDE88BC9AC45B0CD8 /* NewRollSection.swift in Sources */,
+				268CE4FCDE88BC9AC45B0CD8 /* RollSection.swift in Sources */,
 				12702FB8DC89B48744DE0E38 /* NewRollViewController.swift in Sources */,
-				A148FBD71328121D1B805085 /* SectionLayoutProvider.swift in Sources */,
+				A148FBD71328121D1B805085 /* SectionLayoutProviderFactory.swift in Sources */,
 				2A03A8F93B875F2296C31801 /* TabBarPage.swift in Sources */,
 				6FD5E9EE3DDFAFE91B83042F /* GameModelProvider.swift in Sources */,
 				F8B1D292F8CD4295C6459FF6 /* RollModel.swift in Sources */,
