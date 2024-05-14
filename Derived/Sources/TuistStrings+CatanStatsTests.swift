@@ -32,12 +32,14 @@ public enum CatanStatsTestsStrings {
     public static let yellowCastleCell = CatanStatsTestsStrings.tr("Localizable", "gameDetails.yellowCastleCell")
   }
 
-  public enum GameHistory {
-  /// Game history
-    public static let navigationBarTitle = CatanStatsTestsStrings.tr("Localizable", "gameHistory.navigationBarTitle")
+  public enum GameList {
+  /// Delete
+    public static let deleteActionTitle = CatanStatsTestsStrings.tr("Localizable", "gameList.deleteActionTitle")
+    /// Game history
+    public static let navigationBarTitle = CatanStatsTestsStrings.tr("Localizable", "gameList.navigationBarTitle")
     /// Game %d
     public static func sectionTitle(_ p1: Int) -> String {
-      return CatanStatsTestsStrings.tr("Localizable", "gameHistory.sectionTitle",p1)
+      return CatanStatsTestsStrings.tr("Localizable", "gameList.sectionTitle",p1)
     }
   }
 

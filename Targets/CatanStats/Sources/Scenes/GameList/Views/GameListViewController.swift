@@ -9,6 +9,10 @@
 import UIKit
 import CoreData
 
+protocol GameListViewControllerProtocol: NSFetchedResultsControllerDelegate {
+	func gameDeleted(_ id: NSManagedObjectID)
+}
+
 final class GameListViewController: UITableViewController {
 
 	// MARK: Dependencies
@@ -46,7 +50,18 @@ final class GameListViewController: UITableViewController {
 	}
 
 	private func setupUI() {
-		navigationItem.title = CatanStatsStrings.GameHistory.navigationBarTitle
+		navigationItem.title = CatanStatsStrings.GameList.navigationBarTitle
+	}
+
+}
+
+// MARK: GameListViewControllerProtocol
+extension GameListViewController: GameListViewControllerProtocol {
+	func gameDeleted(_ id: NSManagedObjectID) {
+		dataSourceSnapshot?.deleteItems([id])
+		if let snapshot = dataSourceSnapshot {
+			dataSource?.apply(snapshot, animatingDifferences: true)
+		}
 	}
 }
 
@@ -74,10 +89,22 @@ extension GameListViewController {
 		guard let gameId = dataSource?.itemIdentifier(for: indexPath) else { return }
 		router.routeToGameDetails(for: gameId)
 	}
+
+	override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+		let deleteAction = UIContextualAction(style: .destructive, title: CatanStatsStrings.GameList.deleteActionTitle) { [weak self] action, _, _ in
+			self?.presenter?.deleteGameAt(indexPath)
+		}
+
+		deleteAction.backgroundColor = .red
+
+		let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+		configuration.performsFirstActionWithFullSwipe = true
+		return configuration
+	}
 }
 
 // MARK: NSFetchedResultsControllerDelegate
-extension GameListViewController: NSFetchedResultsControllerDelegate {
+extension GameListViewController {
 	func controller(
 		_ controller: NSFetchedResultsController<NSFetchRequestResult>,
 		didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference

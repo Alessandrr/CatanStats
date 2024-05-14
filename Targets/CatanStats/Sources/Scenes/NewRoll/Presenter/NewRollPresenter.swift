@@ -12,7 +12,6 @@ import CoreData
 protocol NewRollPresenterProtocol {
 	func didSelectRollItem(_ item: RollModel)
 	func loadData()
-	func clearHistory()
 	func addNewGame()
 }
 
@@ -67,10 +66,8 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 					forEntityName: "Game",
 					into: coreDataStack.managedContext
 				) as? Game
-				// Ломает тесты
-				// currentGame = Game(context: coreDataStack.managedContext)
 				currentGame?.dateCreated = Date.now
-				currentGame?.title = CatanStatsStrings.GameHistory.sectionTitle(1)
+				currentGame?.title = CatanStatsStrings.GameList.sectionTitle(1)
 				coreDataStack.saveContext()
 			} else {
 				currentGame = results.last
@@ -85,20 +82,8 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 			let gameRequest = Game.fetchRequest()
 			let gameCount = try coreDataStack.managedContext.count(for: gameRequest)
 			currentGame = Game(context: coreDataStack.managedContext)
-			currentGame?.title = CatanStatsStrings.GameHistory.sectionTitle(gameCount + 1)
+			currentGame?.title = CatanStatsStrings.GameList.sectionTitle(gameCount + 1)
 			coreDataStack.saveContext()
-		} catch let error {
-			assertionFailure(error.localizedDescription)
-		}
-	}
-
-	func clearHistory() {
-		let gameRequest: NSFetchRequest<NSFetchRequestResult> = Game.fetchRequest()
-		let batchDelete = NSBatchDeleteRequest(fetchRequest: gameRequest)
-		do {
-			try coreDataStack.managedContext.execute(batchDelete)
-			coreDataStack.managedContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-			coreDataStack.managedContext.refreshAllObjects()
 		} catch let error {
 			assertionFailure(error.localizedDescription)
 		}

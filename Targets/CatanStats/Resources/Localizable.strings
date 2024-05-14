@@ -10,10 +10,11 @@
 "tabBar.rollsPageTitle" = "New roll";
 "tabBar.historyPageTitle" = "Game list";
 
-// MARK: GameHistory scene
+// MARK: GameList scene
 
-"gameHistory.sectionTitle" = "Game %d";
-"gameHistory.navigationBarTitle" = "Game history";
+"gameList.sectionTitle" = "Game %d";
+"gameList.navigationBarTitle" = "Game history";
+"gameList.deleteActionTitle" = "Delete";
 
 // MARK: NewRoll scene
 

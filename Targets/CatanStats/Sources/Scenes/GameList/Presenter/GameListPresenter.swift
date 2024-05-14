@@ -12,13 +12,14 @@ import Combine
 protocol GameListPresenterProtocol {
 	func initialFetch()
 	func getGameForCellAt(_ indexPath: IndexPath) -> Game
+	func deleteGameAt(_ indexPath: IndexPath)
 }
 
 final class GameListPresenter: GameListPresenterProtocol {
 
 	// MARK: Dependenciesn
 	private var coreDataStack: CoreDataStack
-	private weak var viewController: GameListViewController?
+	private weak var viewController: GameListViewControllerProtocol?
 
 	// MARK: Private properties
 	private lazy var fetchedResultsController: NSFetchedResultsController<Game> = {
@@ -57,5 +58,18 @@ final class GameListPresenter: GameListPresenterProtocol {
 
 	func getGameForCellAt(_ indexPath: IndexPath) -> Game {
 		fetchedResultsController.object(at: indexPath)
+	}
+
+	func deleteGameAt(_ indexPath: IndexPath) {
+		let gameToDelete = fetchedResultsController.object(at: indexPath)
+		coreDataStack.managedContext.delete(gameToDelete)
+
+		do {
+			try coreDataStack.managedContext.save()
+		} catch let error {
+			assertionFailure(error.localizedDescription)
+		}
+
+		viewController?.gameDeleted(gameToDelete.objectID)
 	}
 }

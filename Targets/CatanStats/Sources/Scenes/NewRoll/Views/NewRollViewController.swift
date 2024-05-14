@@ -48,10 +48,6 @@ final class NewRollViewController: UIViewController {
 	}
 
 	// MARK: Private methods
-	@objc private func clearTapped() {
-		presenter.clearHistory()
-	}
-
 	@objc private func newGameTapped() {
 		presenter.addNewGame()
 	}
@@ -95,19 +91,11 @@ extension NewRollViewController {
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationController?.navigationBar.sizeToFit()
 
-		let buttons = [
-			UIBarButtonItem(
-				barButtonSystemItem: .trash,
-				target: self,
-				action: #selector(clearTapped)
-			),
-			UIBarButtonItem(
-				barButtonSystemItem: .add,
-				target: self,
-				action: #selector(newGameTapped)
-			)
-		]
-		navigationItem.rightBarButtonItems = buttons
+		navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .add,
+			target: self,
+			action: #selector(newGameTapped)
+		)
 	}
 
 	private func generateLayout() -> UICollectionViewLayout {
