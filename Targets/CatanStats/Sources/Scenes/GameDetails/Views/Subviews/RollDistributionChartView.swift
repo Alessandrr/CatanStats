@@ -41,17 +41,17 @@ struct RollDistributionChartView: View {
 	}
 
 	private func getRollDescriptionFromCounter(_ counter: RollModelCounter) -> String {
-		if case let RollModel.number(rollResult) = counter.rollModel {
-			return rollResult.description
+		guard case let RollModel.number(rollResult) = counter.rollModel else {
+			return ""
 		}
-		return ""
+		return rollResult.description
 	}
 
 	private func getRollValueFromCounter(_ counter: RollModelCounter) -> Int {
-		if case let RollModel.number(rollResult) = counter.rollModel {
-			return rollResult
+		guard case let RollModel.number(rollResult) = counter.rollModel else {
+			return 0
 		}
-		return 0
+		return rollResult
 	}
 
 	private func getRollCount() -> Int {

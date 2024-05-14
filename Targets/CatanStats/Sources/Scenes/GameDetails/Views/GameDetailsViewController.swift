@@ -23,11 +23,15 @@ final class GameDetailsViewController: UIViewController {
 	var presenter: GameDetailsPresenterProtocol?
 
 	// MARK: Private properties
-	private lazy var tableView = makeTableView()
+	private lazy var tableView: UITableView = UITableView()
+	private lazy var chartHostingController: UIHostingController<RollDistributionChartView> = {
+		return UIHostingController(
+			rootView: RollDistributionChartView(counterModel: chartCountersModel)
+		)
+	}()
+
 	private var dataSource: UITableViewDiffableDataSource<RollSection, RollModelCounter>?
 	private var snapshot: NSDiffableDataSourceSnapshot<RollSection, RollModelCounter>?
-
-	private var chartHostingController: UIHostingController<RollDistributionChartView>?
 	private var chartCountersModel = ChartCountersModel()
 
 	// MARK: Life cycle
@@ -37,7 +41,6 @@ final class GameDetailsViewController: UIViewController {
 		view.backgroundColor = .systemBackground
 		setupDataSource()
 		presenter?.loadData()
-		setupChartView()
 		layout()
 	}
 
@@ -51,7 +54,14 @@ final class GameDetailsViewController: UIViewController {
 // MARK: UI Setup
 private extension GameDetailsViewController {
 	func layout() {
-		guard let chartHostingController = chartHostingController else { return }
+		addChild(chartHostingController)
+		chartHostingController.didMove(toParent: self)
+		chartHostingController.view.translatesAutoresizingMaskIntoConstraints = false
+		tableView.translatesAutoresizingMaskIntoConstraints = false
+
+		view.addSubview(chartHostingController.view)
+		view.addSubview(tableView)
+
 		NSLayoutConstraint.activate([
 			chartHostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
 			chartHostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -63,25 +73,6 @@ private extension GameDetailsViewController {
 			tableView.topAnchor.constraint(equalTo: chartHostingController.view.bottomAnchor, constant: 10),
 			tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
 		])
-	}
-
-	func makeTableView() -> UITableView {
-		let tableView = UITableView()
-		tableView.translatesAutoresizingMaskIntoConstraints = false
-		view.addSubview(tableView)
-
-		return tableView
-	}
-
-	func setupChartView() {
-		let chartView = RollDistributionChartView(counterModel: chartCountersModel)
-		chartHostingController = UIHostingController(rootView: chartView)
-		guard let chartHostingController = chartHostingController else { return }
-
-		addChild(chartHostingController)
-		chartHostingController.didMove(toParent: self)
-		chartHostingController.view.translatesAutoresizingMaskIntoConstraints = false
-		view.addSubview(chartHostingController.view)
 	}
 
 	func setupDataSource() {

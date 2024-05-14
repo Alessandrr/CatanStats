@@ -30,7 +30,7 @@ final class NewRollPresenterTests: XCTestCase {
 			XCTAssertNil(error, "Managed context wasn't saved")
 		}
 		let savedGames = try? fetchGames()
-		let expectedTitle = CatanStatsStrings.GameHistory.sectionTitle(1)
+		let expectedTitle = CatanStatsStrings.GameList.sectionTitle(1)
 
 		XCTAssertEqual(savedGames?.count, 1, "Expected to fetch 1 saved game")
 		XCTAssertEqual(savedGames?.first?.title, expectedTitle, "Expected title to be \(expectedTitle)")
