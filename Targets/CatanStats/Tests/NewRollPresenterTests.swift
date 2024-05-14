@@ -156,6 +156,19 @@ final class NewRollPresenterTests: XCTestCase {
 
 		XCTAssertNotNil(savedGame?.rolls?.lastObject as? CastleRoll, "Expected castle roll to be added")
 	}
+
+	func test_didSelectRollItem_withNilCurrentGame_shouldCreateNewGame() {
+		let sut = makePresenter()
+		let castleModel = RollModel.castle(color: CastleColor.green)
+
+		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
+		sut.didSelectRollItem(castleModel)
+		waitForExpectations(timeout: 0.5) { error in
+			XCTAssertNil(error, "Managed context wasn't saved")
+		}
+		XCTAssertNotNil(sut.currentGame, "New game wasn't set as current")
+		XCTAssertNotNil(sut.currentGame?.managedObjectContext, "Current game wasn't saved to coreData")
+	}
 }
 
 private extension NewRollPresenterTests {

@@ -27,6 +27,10 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 	}
 
 	func didSelectRollItem(_ item: RollModel) {
+		if currentGame?.managedObjectContext == nil {
+			createFirstGame()
+		}
+
 		switch item {
 		case .number(let rollResult):
 			guard let roll = NSEntityDescription.insertNewObject(
@@ -62,13 +66,7 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 			gameRequest.sortDescriptors = [sortByTitle]
 			let results = try coreDataStack.managedContext.fetch(gameRequest)
 			if results.isEmpty {
-				currentGame = NSEntityDescription.insertNewObject(
-					forEntityName: "Game",
-					into: coreDataStack.managedContext
-				) as? Game
-				currentGame?.dateCreated = Date.now
-				currentGame?.title = CatanStatsStrings.GameList.sectionTitle(1)
-				coreDataStack.saveContext()
+				createFirstGame()
 			} else {
 				currentGame = results.last
 			}
@@ -87,5 +85,15 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 		} catch let error {
 			assertionFailure(error.localizedDescription)
 		}
+	}
+
+	private func createFirstGame() {
+		currentGame = NSEntityDescription.insertNewObject(
+			forEntityName: "Game",
+			into: coreDataStack.managedContext
+		) as? Game
+		currentGame?.dateCreated = Date.now
+		currentGame?.title = CatanStatsStrings.GameList.sectionTitle(1)
+		coreDataStack.saveContext()
 	}
 }
