@@ -15,7 +15,7 @@ protocol ISectionLayoutProvider {
 struct SectionLayoutProviderFactory {
 	func makeSectionProvider(for section: RollSection) -> ISectionLayoutProvider {
 		switch section {
-		case .rolls:
+		case .numberRolls:
 			return RollsSectionLayoutProvider()
 		case .ship:
 			return ShipSectionLayoutProvider()

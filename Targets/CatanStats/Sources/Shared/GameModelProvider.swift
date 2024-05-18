@@ -14,7 +14,7 @@ protocol GameModelProviderProtocol {
 struct GameModelProvider: GameModelProviderProtocol {
 	func makeModelsForSection(_ section: RollSection) -> [RollModel] {
 		switch section {
-		case .rolls:
+		case .numberRolls:
 			(2...12).map { RollModel.number(rollResult: $0) }
 		case .ship:
 			[RollModel.ship]

@@ -14,16 +14,16 @@ protocol GameDetailsViewControllerProtocol: AnyObject {
 }
 
 final class GameDetailsViewController: UIViewController {
-	// MARK: Table view sections
-	enum RollCountSections: Hashable {
-		case main
-	}
 
 	// MARK: Dependencies
 	var presenter: GameDetailsPresenterProtocol?
 
 	// MARK: Private properties
-	private lazy var tableView: UITableView = UITableView()
+	private lazy var tableView: UITableView = {
+		let tableView = UITableView()
+		tableView.delegate = self
+		return tableView
+	}()
 	private lazy var chartHostingController: UIHostingController<RollDistributionChartView> = {
 		return UIHostingController(
 			rootView: RollDistributionChartView(counterModel: chartCountersModel)
@@ -90,14 +90,28 @@ private extension GameDetailsViewController {
 	}
 }
 
+// MARK: UITableViewDelegate
+extension GameDetailsViewController: UITableViewDelegate {
+	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+		let headerView = GameDetailsSectionHeaderView()
+		headerView.configure(with: dataSource?.sectionIdentifier(for: section)?.description ?? "")
+		return headerView
+	}
+
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
+	}
+}
+
+// MARK: GameDetailsViewControllerProtocol
 extension GameDetailsViewController: GameDetailsViewControllerProtocol {
 	func updateTableViewModel(_ models: [RollModelCounter]) {
 		var snapshot = NSDiffableDataSourceSnapshot<RollSection, RollModelCounter>()
-		snapshot.appendSections([.rolls, .castles, .ship])
+		snapshot.appendSections([.numberRolls, .castles, .ship])
 		for model in models {
 			switch model.rollModel {
 			case .number:
-				snapshot.appendItems([model], toSection: .rolls)
+				snapshot.appendItems([model], toSection: .numberRolls)
 			case .ship:
 				snapshot.appendItems([model], toSection: .ship)
 			case .castle:

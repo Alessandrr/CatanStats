@@ -10,6 +10,12 @@
 "tabBar.rollsPageTitle" = "New roll";
 "tabBar.historyPageTitle" = "Game list";
 
+// MARK: Roll section
+
+"rollSection.ship" = "Ship";
+"rollSection.castles" = "Castle";
+"rollSection.rolls" = "Rolls";
+
 // MARK: GameList scene
 
 "gameList.sectionTitle" = "Game %d";

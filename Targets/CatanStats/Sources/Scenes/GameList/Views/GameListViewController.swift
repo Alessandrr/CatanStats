@@ -68,7 +68,7 @@ extension GameListViewController: GameListViewControllerProtocol {
 // MARK: Data source
 extension GameListViewController {
 	private func setupDataSource() {
-		dataSource = UITableViewDiffableDataSource(tableView: tableView) { [weak self] tableView, indexPath, itemIdentifier in
+		dataSource = UITableViewDiffableDataSource(tableView: tableView) { [weak self] _, indexPath, _ in
 			guard let game = self?.presenter?.getGameForCellAt(indexPath) else {
 				return UITableViewCell()
 			}
@@ -90,8 +90,14 @@ extension GameListViewController {
 		router.routeToGameDetails(for: gameId)
 	}
 
-	override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-		let deleteAction = UIContextualAction(style: .destructive, title: CatanStatsStrings.GameList.deleteActionTitle) { [weak self] action, _, _ in
+	override func tableView(
+		_ tableView: UITableView,
+		trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+	) -> UISwipeActionsConfiguration? {
+		let deleteAction = UIContextualAction(
+			style: .destructive,
+			title: CatanStatsStrings.GameList.deleteActionTitle
+		) { [weak self] _, _, _ in
 			self?.presenter?.deleteGameAt(indexPath)
 		}
 

@@ -8,7 +8,18 @@
 import Foundation
 
 enum RollSection: CaseIterable {
-	case rolls
+	case numberRolls
 	case ship
 	case castles
+
+	var description: String {
+		switch self {
+		case .numberRolls:
+			CatanStatsStrings.RollSection.rolls
+		case .ship:
+			CatanStatsStrings.RollSection.ship
+		case .castles:
+			CatanStatsStrings.RollSection.castles
+		}
+	}
 }

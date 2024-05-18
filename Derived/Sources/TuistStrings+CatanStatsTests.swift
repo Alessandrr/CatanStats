@@ -48,6 +48,15 @@ public enum CatanStatsTestsStrings {
     public static let navigationBarTitle = CatanStatsTestsStrings.tr("Localizable", "newRoll.navigationBarTitle")
   }
 
+  public enum RollSection {
+  /// Castle
+    public static let castles = CatanStatsTestsStrings.tr("Localizable", "rollSection.castles")
+    /// Rolls
+    public static let rolls = CatanStatsTestsStrings.tr("Localizable", "rollSection.rolls")
+    /// Ship
+    public static let ship = CatanStatsTestsStrings.tr("Localizable", "rollSection.ship")
+  }
+
   public enum TabBar {
   /// Game list
     public static let historyPageTitle = CatanStatsTestsStrings.tr("Localizable", "tabBar.historyPageTitle")

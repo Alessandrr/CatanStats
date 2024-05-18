@@ -87,7 +87,7 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 					counts[model, default: 0] += 1
 				}
 			default:
-				print("Unknown roll")
+				assertionFailure("New type of roll not processed")
 			}
 		}
 
@@ -103,7 +103,7 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 	private func prepareCountersForChart(_ counters: [RollModelCounter]) -> [RollModelCounter] {
 		var chartCounters: [RollModelCounter] = []
 
-		gameModelProvider.makeModelsForSection(.rolls).forEach { rollModel in
+		gameModelProvider.makeModelsForSection(.numberRolls).forEach { rollModel in
 			guard case let RollModel.number(expectedRoll) = rollModel else { return }
 
 			let foundCounter = counters.first { counter in

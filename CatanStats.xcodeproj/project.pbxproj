@@ -34,6 +34,7 @@
 		8059D4CB95D8CFDB03034D02 /* Roll+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C95A64ABDC5E067B9744CC /* Roll+CoreDataClass.swift */; };
 		867E40050F4C5933EFDD1656 /* SectionLayoutProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66111A7B95E0700C2FE8D7B3 /* SectionLayoutProviderFactory.swift */; };
 		8A57C6BA02A25CBF3AA0681A /* RollModelCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F1ED5630C4672395085467 /* RollModelCounter.swift */; };
+		8D3315A66374AFBD4713E4F3 /* GameDetailsSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C6874F86EA551ACB3B7EB1 /* GameDetailsSectionHeaderView.swift */; };
 		903599D7F15624298A4DF14C /* NewRollPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B39F6B73C362120A42642DE /* NewRollPresenterTests.swift */; };
 		93B7E8C22235B1DAF40CAF9D /* GameDetailsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66463D4B55E7C8FB44FBB0B /* GameDetailsAssembly.swift */; };
 		A17EF1029E3E81BF5E3A1173 /* TuistBundle+CatanStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E412851734EDEB9E898CB /* TuistBundle+CatanStatsTests.swift */; };
@@ -139,6 +140,7 @@
 		DD2ADAF2F9FCB83339D0D7F8 /* TuistStrings+CatanStatsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistStrings+CatanStatsTests.swift"; sourceTree = "<group>"; };
 		E38A3475F3626F471AFB104B /* GameListAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListAssembly.swift; sourceTree = "<group>"; };
 		E42855F7D66ECD20877B4749 /* CatanStatsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CatanStatsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4C6874F86EA551ACB3B7EB1 /* GameDetailsSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailsSectionHeaderView.swift; sourceTree = "<group>"; };
 		EA75AA9EB0E9FEB9AD117BD2 /* ChartCountersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartCountersModel.swift; sourceTree = "<group>"; };
 		F0843F8CEDF11F883711D324 /* CatanStatsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "CatanStatsTests-Info.plist"; sourceTree = "<group>"; };
 		F76BC80C2D46F1EECB46A955 /* RollSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollSection.swift; sourceTree = "<group>"; };
@@ -346,6 +348,7 @@
 		9BD701CA57B2398E20AEA1CD /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				E4C6874F86EA551ACB3B7EB1 /* GameDetailsSectionHeaderView.swift */,
 				5D0FF38DB238D88E9DC73F13 /* RollCountTableViewCell.swift */,
 				832222F86A564F53D5782F22 /* RollDistributionChartView.swift */,
 			);
@@ -508,6 +511,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8E51B995889377539C74861F /* Build configuration list for PBXNativeTarget "CatanStats" */;
 			buildPhases = (
+				A4BA3BB2BCF1FD09C59E0CCB /* Run Swiftlint */,
 				5678D2E3305274FE1A74D5F2 /* Sources */,
 				8AF2A354A9EEB3EC525C048B /* Resources */,
 				989A44783B2761E8FADDE131 /* Embed Frameworks */,
@@ -575,6 +579,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A4BA3BB2BCF1FD09C59E0CCB /* Run Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Swiftlint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n swiftlint\nelse\n echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n exit 1\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		076064E3D46D298EA70428F8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -612,6 +638,7 @@
 				8A57C6BA02A25CBF3AA0681A /* RollModelCounter.swift in Sources */,
 				113E4001E8D31C235BF3A5A5 /* GameDetailsPresenter.swift in Sources */,
 				E364EC63B923EF94F66687B8 /* GameDetailsViewController.swift in Sources */,
+				8D3315A66374AFBD4713E4F3 /* GameDetailsSectionHeaderView.swift in Sources */,
 				DF91644E826A25AC7F84EB14 /* RollCountTableViewCell.swift in Sources */,
 				B1D25E0D3D94A68044468A5C /* RollDistributionChartView.swift in Sources */,
 				F4135EF0E8F7C8FFD1E3203F /* GameListAssembly.swift in Sources */,
@@ -739,7 +766,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = HUJ988ZQ9U;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Derived/InfoPlists/CatanStats-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -792,7 +818,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = HUJ988ZQ9U;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Derived/InfoPlists/CatanStats-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
