@@ -12,9 +12,13 @@
 
 // MARK: Roll section
 
-"rollSection.ship" = "Ship";
-"rollSection.castles" = "Castle";
+"rollSection.shipAndCastles" = "Ship and castles";
 "rollSection.rolls" = "Rolls";
+
+// MARK: Castle colors
+"castleColor.yellow" = "Yellow";
+"castleColor.green" = "Green";
+"castleColor.blue" = "Blue";
 
 // MARK: GameList scene
 
@@ -28,9 +32,9 @@
 
 // MARK: GameDetails scene
 "gameDetails.diceCell" = "Rolled %d";
-"gameDetails.shipCell" = "Ship";
-"gameDetails.yellowCastleCell" = "Yellow castle";
-"gameDetails.greenCastleCell" = "Green castle";
-"gameDetails.blueCastleCell" = "Blue castle";
 "gameDetails.expectedCount" = "Expected count";
 "gameDetails.actualCount" = "Actual count";
+
+// MARK: Common
+"shipDescription" = "Ship";
+"castleDescription" = "%@ Castle";

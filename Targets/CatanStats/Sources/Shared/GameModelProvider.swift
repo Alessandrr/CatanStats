@@ -8,21 +8,20 @@
 import Foundation
 
 protocol GameModelProviderProtocol {
-	func makeModelsForSection(_ section: RollSection) -> [RollModel]
+	func makeModelsForSection(_ section: RollSection) -> [DiceModel]
 }
 
 struct GameModelProvider: GameModelProviderProtocol {
-	func makeModelsForSection(_ section: RollSection) -> [RollModel] {
+	func makeModelsForSection(_ section: RollSection) -> [DiceModel] {
 		switch section {
 		case .numberRolls:
-			(2...12).map { RollModel.number(rollResult: $0) }
-		case .ship:
-			[RollModel.ship]
-		case .castles:
+			(2...12).map { NumberDiceModel(rollResult: $0) }
+		case .shipAndCastles:
 			[
-				RollModel.castle(color: CastleColor.yellow),
-				RollModel.castle(color: CastleColor.blue),
-				RollModel.castle(color: CastleColor.green)
+				ShipAndCastlesDiceModel(rollResult: .ship),
+				ShipAndCastlesDiceModel(rollResult: .castle(color: .yellow)),
+				ShipAndCastlesDiceModel(rollResult: .castle(color: .blue)),
+				ShipAndCastlesDiceModel(rollResult: .castle(color: .green))
 			]
 		}
 	}

@@ -66,24 +66,37 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 	}
 
 	// MARK: Private methods
+	private func prepareViewData(from counters: [RollModelCounter]) -> GameDetailsViewData {
+		let tableViewCounters: [RollSection: [RollModelCounter]] = [
+			.numberRolls: filterCounters(counters, for: .numberRolls),
+			.shipAndCastles: filterCounters(counters, for: .shipAndCastles)
+		]
+		let chartViewCounters: [RollModelCounter] = prepareDiceModelCountersForChart(counters)
+
+		return GameDetailsViewData(
+			tableViewCounters: tableViewCounters.filter { !$0.value.isEmpty },
+			chartViewCounters: chartViewCounters
+		)
+	}
+
 	private func mapSnapshotToRollCounters(
 		_ snapshot: NSDiffableDataSourceSnapshot<String, NSManagedObjectID>
 	) -> [RollModelCounter] {
-		var counts: [RollModel: Int] = [:]
+		var counts: [DiceModel: Int] = [:]
 
 		for id in snapshot.itemIdentifiers {
 			guard let roll = try? coreDataStack.managedContext.existingObject(with: id) as? Roll else { return [] }
 
 			switch roll {
 			case let roll as DiceRoll:
-				let model = RollModel.number(rollResult: Int(roll.value))
+				let model = NumberDiceModel(rollResult: Int(roll.value))
 				counts[model, default: 0] += 1
 			case roll as ShipRoll:
-				let model = RollModel.ship
+				let model = ShipAndCastlesDiceModel(rollResult: .ship)
 				counts[model, default: 0] += 1
 			case let roll as CastleRoll:
 				if let color = roll.color, let castleColor = CastleColor(rawValue: color) {
-					let model = RollModel.castle(color: castleColor)
+					let model = ShipAndCastlesDiceModel(rollResult: .castle(color: castleColor))
 					counts[model, default: 0] += 1
 				}
 			default:
@@ -91,7 +104,7 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 			}
 		}
 
-		return counts.map { RollModelCounter(rollModel: $0.key, count: $0.value) }.sorted { counter1, counter2 in
+		return counts.map { RollModelCounter(diceModel: $0.key, count: $0.value) }.sorted { counter1, counter2 in
 			if counter1.count != counter2.count {
 				return counter1.count > counter2.count
 			}
@@ -100,24 +113,36 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 		}
 	}
 
-	private func prepareCountersForChart(_ counters: [RollModelCounter]) -> [RollModelCounter] {
+	private func filterCounters(_ counters: [RollModelCounter], for section: RollSection) -> [RollModelCounter] {
+		switch section {
+		case .numberRolls:
+			counters.filter { $0.diceModel is NumberDiceModel }
+		case .shipAndCastles:
+			counters.filter { $0.diceModel is ShipAndCastlesDiceModel }
+		}
+	}
+
+	private func prepareDiceModelCountersForChart(_ counters: [RollModelCounter]) -> [RollModelCounter] {
 		var chartCounters: [RollModelCounter] = []
 
-		gameModelProvider.makeModelsForSection(.numberRolls).forEach { rollModel in
-			guard case let RollModel.number(expectedRoll) = rollModel else { return }
+		gameModelProvider.makeModelsForSection(.numberRolls).forEach { diceModel in
+			guard let expectedDiceModel = diceModel as? NumberDiceModel else { return }
 
-			let foundCounter = counters.first { counter in
-				if case .number(let rollResult) = counter.rollModel, rollResult == expectedRoll {
-					return true
-				}
-				return false
-			}
+			chartCounters.append(
+				counters.first { counter in
+					counter.diceModel == expectedDiceModel
+				} ?? RollModelCounter(diceModel: expectedDiceModel, count: 0)
+			)
+		}
 
-			if let foundCounter = foundCounter {
-				chartCounters.append(foundCounter)
-			} else {
-				chartCounters.append(RollModelCounter(rollModel: rollModel, count: 0))
-			}
+		gameModelProvider.makeModelsForSection(.shipAndCastles).forEach { diceModel in
+			guard let expectedDiceModel = diceModel as? ShipAndCastlesDiceModel else { return }
+
+			chartCounters.append(
+				counters.first { counter in
+					counter.diceModel ==  expectedDiceModel
+				} ?? RollModelCounter(diceModel: expectedDiceModel, count: 0)
+			)
 		}
 
 		return chartCounters
@@ -130,9 +155,9 @@ extension GameDetailsPresenter: NSFetchedResultsControllerDelegate {
 		_ controller: NSFetchedResultsController<NSFetchRequestResult>,
 		didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
 	) {
-		let tableViewCounters = mapSnapshotToRollCounters(snapshot as NSDiffableDataSourceSnapshot<String, NSManagedObjectID>)
-		let chartCounters = prepareCountersForChart(tableViewCounters)
-		viewController?.updateTableViewModel(tableViewCounters)
-		viewController?.updateChartModel(chartCounters)
+		let counters = mapSnapshotToRollCounters(snapshot as NSDiffableDataSourceSnapshot<String, NSManagedObjectID>)
+		let viewData = prepareViewData(from: counters)
+
+		viewController?.render(viewData)
 	}
 }

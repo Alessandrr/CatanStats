@@ -17,10 +17,8 @@ struct SectionLayoutProviderFactory {
 		switch section {
 		case .numberRolls:
 			return RollsSectionLayoutProvider()
-		case .ship:
-			return ShipSectionLayoutProvider()
-		case .castles:
-			return CastlesSectionLayoutProvider()
+		case .shipAndCastles:
+			return ShipAndCastlesSectionLayoutProvider()
 		}
 	}
 }
@@ -46,7 +44,7 @@ struct RollsSectionLayoutProvider: ISectionLayoutProvider {
 	}
 }
 
-struct ShipSectionLayoutProvider: ISectionLayoutProvider {
+struct ShipAndCastlesSectionLayoutProvider: ISectionLayoutProvider {
 	func generateLayoutSection() -> NSCollectionLayoutSection {
 		let item = NSCollectionLayoutItem(
 			layoutSize: NSCollectionLayoutSize(
@@ -56,21 +54,23 @@ struct ShipSectionLayoutProvider: ISectionLayoutProvider {
 		)
 		item.contentInsets = Sizes.defaultInsets
 
-		let group = NSCollectionLayoutGroup.horizontal(
+		let shipGroup = NSCollectionLayoutGroup.horizontal(
 			layoutSize: NSCollectionLayoutSize(
 				widthDimension: .fractionalWidth(1.0),
 				heightDimension: .fractionalWidth(1/7)
 			),
 			subitems: [item]
 		)
-		return NSCollectionLayoutSection(group: group)
-	}
-}
 
-struct CastlesSectionLayoutProvider: ISectionLayoutProvider {
-	func generateLayoutSection() -> NSCollectionLayoutSection {
-		let group = makeThreeButtonGroup()
-		return NSCollectionLayoutSection(group: group)
+		let combinedGroup = NSCollectionLayoutGroup.vertical(
+			layoutSize: NSCollectionLayoutSize(
+				widthDimension: .fractionalWidth(1.0),
+				heightDimension: .fractionalWidth(12/35)
+			),
+			subitems: [shipGroup, makeThreeButtonGroup()]
+		)
+
+		return NSCollectionLayoutSection(group: combinedGroup)
 	}
 }
 

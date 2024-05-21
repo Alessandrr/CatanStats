@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 protocol NewRollPresenterProtocol {
-	func didSelectRollItem(_ item: RollModel)
+	func didSelectRollItem(_ item: DiceModel)
 	func loadData()
 	func addNewGame()
 }
@@ -26,35 +26,40 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 		self.coreDataStack = coreDataStack
 	}
 
-	func didSelectRollItem(_ item: RollModel) {
+	func didSelectRollItem(_ item: DiceModel) {
 		if currentGame?.managedObjectContext == nil {
 			createFirstGame()
 		}
 
 		switch item {
-		case .number(let rollResult):
+		case let item as NumberDiceModel:
 			guard let roll = NSEntityDescription.insertNewObject(
 				forEntityName: "DiceRoll",
 				into: coreDataStack.managedContext
 			) as? DiceRoll else { return }
-			roll.value = Int16(rollResult)
+			roll.value = Int16(item.rollResult)
 			roll.dateCreated = Date.now
 			currentGame?.addToRolls(roll)
-		case .ship:
-			guard let ship = NSEntityDescription.insertNewObject(
-				forEntityName: "ShipRoll",
-				into: coreDataStack.managedContext
-			) as? ShipRoll else { return }
-			ship.dateCreated = Date.now
-			currentGame?.addToRolls(ship)
-		case .castle(let color):
-			guard let castle = NSEntityDescription.insertNewObject(
-				forEntityName: "CastleRoll",
-				into: coreDataStack.managedContext
-			) as? CastleRoll else { return }
-			castle.dateCreated = Date.now
-			castle.color = color.rawValue
-			currentGame?.addToRolls(castle)
+		case let item as ShipAndCastlesDiceModel:
+			switch item.rollResult {
+			case .ship:
+				guard let ship = NSEntityDescription.insertNewObject(
+					forEntityName: "ShipRoll",
+					into: coreDataStack.managedContext
+				) as? ShipRoll else { return }
+				ship.dateCreated = Date.now
+				currentGame?.addToRolls(ship)
+			case .castle(color: let color):
+				guard let castle = NSEntityDescription.insertNewObject(
+					forEntityName: "CastleRoll",
+					into: coreDataStack.managedContext
+				) as? CastleRoll else { return }
+				castle.dateCreated = Date.now
+				castle.color = color.rawValue
+				currentGame?.addToRolls(castle)
+			}
+		default:
+			assertionFailure("New type of roll not processed")
 		}
 		coreDataStack.saveContext()
 	}

@@ -9,8 +9,7 @@ import UIKit
 import SwiftUI
 
 protocol GameDetailsViewControllerProtocol: AnyObject {
-	func updateTableViewModel(_ models: [RollModelCounter])
-	func updateChartModel(_ models: [RollModelCounter])
+	func render(_ viewData: GameDetailsViewData)
 }
 
 final class GameDetailsViewController: UIViewController {
@@ -24,9 +23,9 @@ final class GameDetailsViewController: UIViewController {
 		tableView.delegate = self
 		return tableView
 	}()
-	private lazy var chartHostingController: UIHostingController<RollDistributionChartView> = {
+	private lazy var chartHostingController: UIHostingController<RollChartsGroupView> = {
 		return UIHostingController(
-			rootView: RollDistributionChartView(counterModel: chartCountersModel)
+			rootView: RollChartsGroupView(counterModel: chartCountersModel)
 		)
 	}()
 
@@ -70,7 +69,7 @@ private extension GameDetailsViewController {
 
 			tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
 			tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-			tableView.topAnchor.constraint(equalTo: chartHostingController.view.bottomAnchor, constant: 10),
+			tableView.topAnchor.constraint(equalTo: chartHostingController.view.bottomAnchor),
 			tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
 		])
 	}
@@ -105,23 +104,16 @@ extension GameDetailsViewController: UITableViewDelegate {
 
 // MARK: GameDetailsViewControllerProtocol
 extension GameDetailsViewController: GameDetailsViewControllerProtocol {
-	func updateTableViewModel(_ models: [RollModelCounter]) {
+	func render(_ viewData: GameDetailsViewData) {
 		var snapshot = NSDiffableDataSourceSnapshot<RollSection, RollModelCounter>()
-		snapshot.appendSections([.numberRolls, .castles, .ship])
-		for model in models {
-			switch model.rollModel {
-			case .number:
-				snapshot.appendItems([model], toSection: .numberRolls)
-			case .ship:
-				snapshot.appendItems([model], toSection: .ship)
-			case .castle:
-				snapshot.appendItems([model], toSection: .castles)
-			}
+		snapshot.appendSections(Array(viewData.tableViewCounters.keys).sorted())
+
+		for section in snapshot.sectionIdentifiers {
+			guard let counters = viewData.tableViewCounters[section] else { return }
+			snapshot.appendItems(counters, toSection: section)
 		}
 		self.snapshot = snapshot
-	}
 
-	func updateChartModel(_ models: [RollModelCounter]) {
-		chartCountersModel.counters = models
+		chartCountersModel.counters = viewData.chartViewCounters
 	}
 }

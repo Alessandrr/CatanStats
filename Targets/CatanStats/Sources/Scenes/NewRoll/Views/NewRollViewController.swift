@@ -12,7 +12,7 @@ final class NewRollViewController: UIViewController {
 
 	// MARK: Private properties
 	private var collectionView: UICollectionView!
-	private var dataSource: UICollectionViewDiffableDataSource<RollSection, RollModel>!
+	private var dataSource: UICollectionViewDiffableDataSource<RollSection, DiceModel>!
 	private var sections: [RollSection]
 
 	// MARK: Dependencies
@@ -64,18 +64,18 @@ final class NewRollViewController: UIViewController {
 
 	private func configureDataSource() {
 		dataSource = UICollectionViewDiffableDataSource
-		<RollSection, RollModel>(collectionView: collectionView) { (collectionView, indexPath, newRollModel)
+		<RollSection, DiceModel>(collectionView: collectionView) { (collectionView, indexPath, newDiceModel)
 			-> UICollectionViewCell? in
 			guard let cell = collectionView.dequeueReusableCell(
 				withReuseIdentifier: NewRollCell.reuseIdentifier,
 				for: indexPath
 			) as? NewRollCell else { return UICollectionViewCell() }
 
-			cell.configure(with: newRollModel)
+			cell.configure(with: newDiceModel)
 			return cell
 		}
 
-		var snapshot = NSDiffableDataSourceSnapshot<RollSection, RollModel>()
+		var snapshot = NSDiffableDataSourceSnapshot<RollSection, DiceModel>()
 		snapshot.appendSections(sections)
 		for section in sections {
 			snapshot.appendItems(modelProvider.makeModelsForSection(section), toSection: section)
@@ -115,6 +115,7 @@ extension NewRollViewController: UICollectionViewDelegate {
 		if let cell = collectionView.cellForItem(at: indexPath) as? NewRollCell {
 			cell.animateTap()
 		}
-		presenter.didSelectRollItem(dataSource.itemIdentifier(for: indexPath) ?? RollModel.ship)
+		guard let diceModel = dataSource.itemIdentifier(for: indexPath) else { return }
+		presenter.didSelectRollItem(diceModel)
 	}
 }

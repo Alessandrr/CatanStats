@@ -12,24 +12,31 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name
 public enum CatanStatsTestsStrings {
+  /// %@ Castle
+  public static func castleDescription(_ p1: Any) -> String {
+    return CatanStatsTestsStrings.tr("Localizable", "castleDescription",String(describing: p1))
+  }
+  /// Ship
+  public static let shipDescription = CatanStatsTestsStrings.tr("Localizable", "shipDescription")
+
+  public enum CastleColor {
+  /// Blue
+    public static let blue = CatanStatsTestsStrings.tr("Localizable", "castleColor.blue")
+    /// Green
+    public static let green = CatanStatsTestsStrings.tr("Localizable", "castleColor.green")
+    /// Yellow
+    public static let yellow = CatanStatsTestsStrings.tr("Localizable", "castleColor.yellow")
+  }
 
   public enum GameDetails {
   /// Actual count
     public static let actualCount = CatanStatsTestsStrings.tr("Localizable", "gameDetails.actualCount")
-    /// Blue castle
-    public static let blueCastleCell = CatanStatsTestsStrings.tr("Localizable", "gameDetails.blueCastleCell")
     /// Rolled %d
     public static func diceCell(_ p1: Int) -> String {
       return CatanStatsTestsStrings.tr("Localizable", "gameDetails.diceCell",p1)
     }
     /// Expected count
     public static let expectedCount = CatanStatsTestsStrings.tr("Localizable", "gameDetails.expectedCount")
-    /// Green castle
-    public static let greenCastleCell = CatanStatsTestsStrings.tr("Localizable", "gameDetails.greenCastleCell")
-    /// Ship
-    public static let shipCell = CatanStatsTestsStrings.tr("Localizable", "gameDetails.shipCell")
-    /// Yellow castle
-    public static let yellowCastleCell = CatanStatsTestsStrings.tr("Localizable", "gameDetails.yellowCastleCell")
   }
 
   public enum GameList {
@@ -49,12 +56,10 @@ public enum CatanStatsTestsStrings {
   }
 
   public enum RollSection {
-  /// Castle
-    public static let castles = CatanStatsTestsStrings.tr("Localizable", "rollSection.castles")
-    /// Rolls
+  /// Rolls
     public static let rolls = CatanStatsTestsStrings.tr("Localizable", "rollSection.rolls")
-    /// Ship
-    public static let ship = CatanStatsTestsStrings.tr("Localizable", "rollSection.ship")
+    /// Ship and castles
+    public static let shipAndCastles = CatanStatsTestsStrings.tr("Localizable", "rollSection.shipAndCastles")
   }
 
   public enum TabBar {

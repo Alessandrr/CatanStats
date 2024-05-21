@@ -13,4 +13,13 @@ final class ChartCountersModel: ObservableObject {
 	init(counters: [RollModelCounter] = []) {
 		self.counters = counters
 	}
+
+	func getCounters(for section: RollSection) -> [RollModelCounter] {
+		switch section {
+		case .numberRolls:
+			return counters.filter { $0.diceModel is NumberDiceModel }
+		case .shipAndCastles:
+			return counters.filter { $0.diceModel is ShipAndCastlesDiceModel }
+		}
+	}
 }

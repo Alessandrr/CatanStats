@@ -8,6 +8,6 @@
 import Foundation
 
 struct RollModelCounter: Hashable {
-	let rollModel: RollModel
+	let diceModel: DiceModel
 	var count: Int
 }

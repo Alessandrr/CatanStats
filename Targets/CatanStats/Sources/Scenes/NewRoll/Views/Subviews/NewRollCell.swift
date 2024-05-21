@@ -24,24 +24,29 @@ final class NewRollCell: UICollectionViewCell {
 	}
 
 	// MARK: Public methods
-	func configure(with model: RollModel) {
+	func configure(with model: DiceModel) {
 		switch model {
-		case .number(let rollResult):
-			imageView.image = UIImage(systemName: "\(rollResult).circle")
+		case let model as NumberDiceModel:
+			imageView.image = UIImage(systemName: "\(model.rollResult).circle")
 			backgroundColor = Color.red
-		case .ship:
-			imageView.image = UIImage(systemName: "sailboat")
-			backgroundColor = UIColor.systemGray
-		case .castle(let color):
-			imageView.image = UIImage(systemName: "house.lodge")
-			switch color {
-			case .yellow:
-				backgroundColor = Color.lightOrange
-			case .green:
-				backgroundColor = Color.green
-			case .blue:
-				backgroundColor = Color.lightBlue
+		case let model as ShipAndCastlesDiceModel:
+			switch model.rollResult {
+			case .ship:
+				imageView.image = UIImage(systemName: "sailboat")
+				backgroundColor = UIColor.systemGray
+			case .castle(color: let color):
+				imageView.image = UIImage(systemName: "house.lodge")
+				switch color {
+				case .yellow:
+					backgroundColor = Color.lightOrange
+				case .green:
+					backgroundColor = Color.green
+				case .blue:
+					backgroundColor = Color.lightBlue
+				}
 			}
+		default:
+			assertionFailure("New roll type not processed")
 		}
 	}
 

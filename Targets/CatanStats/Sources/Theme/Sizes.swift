@@ -11,7 +11,8 @@ import UIKit
 enum Sizes {
 	enum Padding {
 		static let small: CGFloat = 5
-		static let large: CGFloat = 15
+		static let normal: CGFloat = 15
+		static let large: CGFloat = 25
 	}
 
 	enum TextSizes {

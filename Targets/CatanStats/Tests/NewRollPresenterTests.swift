@@ -52,10 +52,10 @@ final class NewRollPresenterTests: XCTestCase {
 	func test_didSelectRollItem_numberSelected_shouldSaveCorrectRoll() {
 		let sut = makePresenter()
 		let expectedRollValue = 2
-		let rollModel = RollModel.number(rollResult: expectedRollValue)
+		let diceModel = NumberDiceModel(rollResult: expectedRollValue)
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
-		sut.didSelectRollItem(rollModel)
+		sut.didSelectRollItem(diceModel)
 		waitForExpectations(timeout: 0.5) { error in
 			XCTAssertNil(error, "Managed context wasn't saved")
 		}
@@ -72,7 +72,7 @@ final class NewRollPresenterTests: XCTestCase {
 	func test_didSelectRoll_numberSelected_shouldAddToCurrentGame() {
 		let sut = makePresenter()
 		let expectedRollValue = 2
-		let rollModel = RollModel.number(rollResult: expectedRollValue)
+		let rollModel = NumberDiceModel(rollResult: expectedRollValue)
 
 		sut.loadData()
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
@@ -87,7 +87,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_didSelectRollItem_shipSelected_shouldSaveShip() {
 		let sut = makePresenter()
-		let shipModel = RollModel.ship
+		let shipModel = ShipAndCastlesDiceModel(rollResult: .ship)
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
 		sut.didSelectRollItem(shipModel)
@@ -105,7 +105,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_didSelectRollItem_shipSelected_shouldAddToCurrentGame() {
 		let sut = makePresenter()
-		let shipModel = RollModel.ship
+		let shipModel = ShipAndCastlesDiceModel(rollResult: .ship)
 
 		sut.loadData()
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
@@ -121,7 +121,7 @@ final class NewRollPresenterTests: XCTestCase {
 	func test_didSelectRollItem_castleSelected_shouldSaveCorrectCastle() {
 		let sut = makePresenter()
 		let expectedColor = CastleColor.green
-		let castleModel = RollModel.castle(color: expectedColor)
+		let castleModel = ShipAndCastlesDiceModel(rollResult: .castle(color: expectedColor))
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
 		sut.didSelectRollItem(castleModel)
@@ -144,7 +144,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_didSelectRollItem_castleSelected_shouldAddToCurrentGame() {
 		let sut = makePresenter()
-		let castleModel = RollModel.castle(color: CastleColor.green)
+		let castleModel = ShipAndCastlesDiceModel(rollResult: .castle(color: .green))
 
 		sut.loadData()
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
@@ -159,7 +159,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_didSelectRollItem_withNilCurrentGame_shouldCreateNewGame() {
 		let sut = makePresenter()
-		let castleModel = RollModel.castle(color: CastleColor.green)
+		let castleModel = ShipAndCastlesDiceModel(rollResult: .castle(color: .green))
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
 		sut.didSelectRollItem(castleModel)
