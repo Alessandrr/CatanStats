@@ -14,6 +14,10 @@ enum Sizes {
 		static let large: CGFloat = 15
 	}
 
+	enum TextSizes {
+		static let normal: CGFloat = 14
+	}
+
 	static let defaultInsets = NSDirectionalEdgeInsets(
 		top: 5,
 		leading: 5,
@@ -23,5 +27,5 @@ enum Sizes {
 
 	static let rollCellCornerRadius: CGFloat = 10
 
-	static let historyHeaderViewHeight: CGFloat = 25
+	static let sectionHeaderViewHeight: CGFloat = 25
 }

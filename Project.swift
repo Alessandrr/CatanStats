@@ -8,7 +8,7 @@ enum ProjectSettings {
 	static var projectName: String { "CatanStats" }
 	static var bundleId: String { "\(organizationName).\(projectName)" }
 	static var destinations: Set<Destination> = Set<Destination>([Destination.iPhone])
-	static var targetVersion: String { "15.0" }
+	static var targetVersion: String { "16.0" }
 }
 
 private var swiftLintTargetScript: TargetScript {

@@ -8,20 +8,14 @@
 
 import UIKit
 
-enum NewRollSection {
-	case rolls
-	case ship
-	case castles
-}
-
 protocol ISectionLayoutProvider {
 	func generateLayoutSection() -> NSCollectionLayoutSection
 }
 
 struct SectionLayoutProviderFactory {
-	func makeSectionProvider(for section: NewRollSection) -> ISectionLayoutProvider {
+	func makeSectionProvider(for section: RollSection) -> ISectionLayoutProvider {
 		switch section {
-		case .rolls:
+		case .numberRolls:
 			return RollsSectionLayoutProvider()
 		case .ship:
 			return ShipSectionLayoutProvider()
@@ -143,8 +137,7 @@ extension ISectionLayoutProvider {
 				widthDimension: .fractionalWidth(1/2),
 				heightDimension: .fractionalHeight(1.0)
 			),
-			subitem: pairItem,
-			count: 2
+			subitems: [pairItem, pairItem]
 		)
 
 		let largeWithPairGroup = NSCollectionLayoutGroup.horizontal(

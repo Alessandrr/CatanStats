@@ -8,13 +8,29 @@
 
 // MARK: TabBar
 "tabBar.rollsPageTitle" = "New roll";
-"tabBar.historyPageTitle" = "Game history";
+"tabBar.historyPageTitle" = "Game list";
 
-// MARK: GameHistory scene
+// MARK: Roll section
 
-"gameHistory.sectionTitle" = "Game %d";
-"gameHistory.navigationBarTitle" = "Game history";
+"rollSection.ship" = "Ship";
+"rollSection.castles" = "Castle";
+"rollSection.rolls" = "Rolls";
+
+// MARK: GameList scene
+
+"gameList.sectionTitle" = "Game %d";
+"gameList.navigationBarTitle" = "Game history";
+"gameList.deleteActionTitle" = "Delete";
 
 // MARK: NewRoll scene
 
 "newRoll.navigationBarTitle" = "Roll stats";
+
+// MARK: GameDetails scene
+"gameDetails.diceCell" = "Rolled %d";
+"gameDetails.shipCell" = "Ship";
+"gameDetails.yellowCastleCell" = "Yellow castle";
+"gameDetails.greenCastleCell" = "Green castle";
+"gameDetails.blueCastleCell" = "Blue castle";
+"gameDetails.expectedCount" = "Expected count";
+"gameDetails.actualCount" = "Actual count";

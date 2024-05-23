@@ -13,7 +13,8 @@ final class NewRollAssembly {
 		let presenter = NewRollPresenter(coreDataStack: coreDataStack)
 		let rollStatsViewController = NewRollViewController(
 			presenter: presenter,
-			sectionLayoutProviderFactory: SectionLayoutProviderFactory()
+			sectionLayoutProviderFactory: SectionLayoutProviderFactory(),
+			modelProvider: GameModelProvider()
 		)
 
 		return rollStatsViewController

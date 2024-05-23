@@ -24,29 +24,36 @@ final class NewRollCell: UICollectionViewCell {
 	}
 
 	// MARK: Public methods
-	func configure(with model: NewRollModel) {
+	func configure(with model: RollModel) {
 		switch model {
 		case .number(let rollResult):
 			imageView.image = UIImage(systemName: "\(rollResult).circle")
-			layer.backgroundColor = Colors.red.colorValue.cgColor
+			backgroundColor = Color.red
 		case .ship:
 			imageView.image = UIImage(systemName: "sailboat")
-			layer.backgroundColor = UIColor.systemGray.cgColor
+			backgroundColor = UIColor.systemGray
 		case .castle(let color):
 			imageView.image = UIImage(systemName: "house.lodge")
-			layer.backgroundColor = color.colorValue.cgColor
+			switch color {
+			case .yellow:
+				backgroundColor = Color.lightOrange
+			case .green:
+				backgroundColor = Color.green
+			case .blue:
+				backgroundColor = Color.lightBlue
+			}
 		}
 	}
 
 	func animateTap() {
-		let originalBackgroundColor = layer.backgroundColor ?? Colors.lightBlue.colorValue.cgColor
+		guard let originalBackgroundColor = backgroundColor else { return }
 		UIView.animate(
 			withDuration: 0.15,
 			delay: 0,
 			options: [.allowUserInteraction],
 			animations: { [unowned self] in
 				contentView.alpha = 0.5
-				layer.backgroundColor = UIColor(cgColor: originalBackgroundColor).withAlphaComponent(0.5).cgColor
+				backgroundColor = originalBackgroundColor.withAlphaComponent(0.5)
 			}
 		)
 		UIView.animate(
@@ -55,7 +62,7 @@ final class NewRollCell: UICollectionViewCell {
 			options: [.allowUserInteraction],
 			animations: { [unowned self] in
 				contentView.alpha = 1
-				layer.backgroundColor = originalBackgroundColor
+				backgroundColor = originalBackgroundColor
 			}
 		)
 	}
