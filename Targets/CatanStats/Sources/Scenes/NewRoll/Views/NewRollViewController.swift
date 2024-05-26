@@ -44,14 +44,9 @@ final class NewRollViewController: UIViewController {
 		configureCollectionView()
 		configureDataSource()
 		setupUI()
-		presenter.loadData()
 	}
 
 	// MARK: Private methods
-	@objc private func newGameTapped() {
-		presenter.addNewGame()
-	}
-
 	private func configureCollectionView() {
 		let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: generateLayout())
 		view.addSubview(collectionView)
@@ -90,12 +85,6 @@ extension NewRollViewController {
 		navigationItem.title = CatanStatsStrings.NewRoll.navigationBarTitle
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationController?.navigationBar.sizeToFit()
-
-		navigationItem.rightBarButtonItem = UIBarButtonItem(
-			barButtonSystemItem: .add,
-			target: self,
-			action: #selector(newGameTapped)
-		)
 	}
 
 	private func generateLayout() -> UICollectionViewLayout {

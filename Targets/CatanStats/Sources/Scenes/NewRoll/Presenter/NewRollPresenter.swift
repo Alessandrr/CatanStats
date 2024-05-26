@@ -11,25 +11,20 @@ import CoreData
 
 protocol NewRollPresenterProtocol {
 	func didSelectRollItem(_ item: DiceModel)
-	func loadData()
-	func addNewGame()
 }
 
 final class NewRollPresenter: NewRollPresenterProtocol {
 	// MARK: Dependencies
 	private var coreDataStack: CoreDataStack
+	private var gameManager: GameManagerProtocol
 
-	// MARK: Private properties
-	private(set) var currentGame: Game?
-
-	init(coreDataStack: CoreDataStack) {
+	init(coreDataStack: CoreDataStack, gameManager: GameManagerProtocol) {
 		self.coreDataStack = coreDataStack
+		self.gameManager = gameManager
 	}
 
 	func didSelectRollItem(_ item: DiceModel) {
-		if currentGame?.managedObjectContext == nil {
-			createFirstGame()
-		}
+		guard let currentGame = gameManager.getCurrentGame() else { return }
 
 		switch item {
 		case let item as NumberDiceModel:
@@ -39,7 +34,7 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 			) as? DiceRoll else { return }
 			roll.value = Int16(item.rollResult)
 			roll.dateCreated = Date.now
-			currentGame?.addToRolls(roll)
+			currentGame.addToRolls(roll)
 		case let item as ShipAndCastlesDiceModel:
 			switch item.rollResult {
 			case .ship:
@@ -48,7 +43,7 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 					into: coreDataStack.managedContext
 				) as? ShipRoll else { return }
 				ship.dateCreated = Date.now
-				currentGame?.addToRolls(ship)
+				currentGame.addToRolls(ship)
 			case .castle(color: let color):
 				guard let castle = NSEntityDescription.insertNewObject(
 					forEntityName: "CastleRoll",
@@ -56,49 +51,11 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 				) as? CastleRoll else { return }
 				castle.dateCreated = Date.now
 				castle.color = color.rawValue
-				currentGame?.addToRolls(castle)
+				currentGame.addToRolls(castle)
 			}
 		default:
 			assertionFailure("New type of roll not processed")
 		}
-		coreDataStack.saveContext()
-	}
-
-	func loadData() {
-		do {
-			let gameRequest = NSFetchRequest<Game>(entityName: "Game")
-			let sortByTitle = NSSortDescriptor(key: #keyPath(Game.dateCreated), ascending: true)
-			gameRequest.sortDescriptors = [sortByTitle]
-			let results = try coreDataStack.managedContext.fetch(gameRequest)
-			if results.isEmpty {
-				createFirstGame()
-			} else {
-				currentGame = results.last
-			}
-		} catch let error {
-			print("Fetch error \(error.localizedDescription)")
-		}
-	}
-
-	func addNewGame() {
-		do {
-			let gameRequest = Game.fetchRequest()
-			let gameCount = try coreDataStack.managedContext.count(for: gameRequest)
-			currentGame = Game(context: coreDataStack.managedContext)
-			currentGame?.title = CatanStatsStrings.GameList.sectionTitle(gameCount + 1)
-			coreDataStack.saveContext()
-		} catch let error {
-			assertionFailure(error.localizedDescription)
-		}
-	}
-
-	private func createFirstGame() {
-		currentGame = NSEntityDescription.insertNewObject(
-			forEntityName: "Game",
-			into: coreDataStack.managedContext
-		) as? Game
-		currentGame?.dateCreated = Date.now
-		currentGame?.title = CatanStatsStrings.GameList.sectionTitle(1)
 		coreDataStack.saveContext()
 	}
 }

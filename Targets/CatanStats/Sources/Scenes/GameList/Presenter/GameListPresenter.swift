@@ -7,18 +7,19 @@
 
 import Foundation
 import CoreData
-import Combine
 
 protocol GameListPresenterProtocol {
 	func initialFetch()
 	func getGameForCellAt(_ indexPath: IndexPath) -> Game
 	func deleteGameAt(_ indexPath: IndexPath)
+	func addNewGame()
 }
 
 final class GameListPresenter: GameListPresenterProtocol {
 
-	// MARK: Dependenciesn
+	// MARK: Dependencies
 	private var coreDataStack: CoreDataStack
+	private var gameManager: GameManagerProtocol
 	private weak var viewController: GameListViewControllerProtocol?
 
 	// MARK: Private properties
@@ -42,9 +43,14 @@ final class GameListPresenter: GameListPresenterProtocol {
 	}()
 
 	// MARK: Initialization
-	init(coreDataStack: CoreDataStack, gameListViewController: GameListViewController) {
+	init (
+		coreDataStack: CoreDataStack,
+		gameListViewController: GameListViewControllerProtocol,
+		gameManager: GameManagerProtocol
+	) {
 		self.coreDataStack = coreDataStack
 		self.viewController = gameListViewController
+		self.gameManager = gameManager
 	}
 
 	// MARK: Internal methods
@@ -62,14 +68,12 @@ final class GameListPresenter: GameListPresenterProtocol {
 
 	func deleteGameAt(_ indexPath: IndexPath) {
 		let gameToDelete = fetchedResultsController.object(at: indexPath)
-		coreDataStack.managedContext.delete(gameToDelete)
+		gameManager.deleteGame(gameToDelete)
+		viewController?.render()
+	}
 
-		do {
-			try coreDataStack.managedContext.save()
-		} catch let error {
-			assertionFailure(error.localizedDescription)
-		}
-
-		viewController?.gameDeleted(gameToDelete.objectID)
+	func addNewGame() {
+		gameManager.createGame()
+		viewController?.render()
 	}
 }

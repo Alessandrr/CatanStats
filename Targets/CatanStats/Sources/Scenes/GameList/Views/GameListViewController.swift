@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 protocol GameListViewControllerProtocol: NSFetchedResultsControllerDelegate {
-	func gameDeleted(_ id: NSManagedObjectID)
+	func render()
 }
 
 final class GameListViewController: UITableViewController {
@@ -45,20 +45,28 @@ final class GameListViewController: UITableViewController {
 		super.viewDidAppear(animated)
 		presenter?.initialFetch()
 		if let snapshot = dataSourceSnapshot {
-			dataSource?.apply(snapshot)
+			dataSource?.apply(snapshot, animatingDifferences: false)
 		}
 	}
 
+	// MARK: Private methods
 	private func setupUI() {
 		navigationItem.title = CatanStatsStrings.GameList.navigationBarTitle
+
+		navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .add,
+			target: self,
+			action: #selector(newGameTapped)
+		)
 	}
 
+	@objc private func newGameTapped() {
+		presenter?.addNewGame()
+	}
 }
 
-// MARK: GameListViewControllerProtocol
 extension GameListViewController: GameListViewControllerProtocol {
-	func gameDeleted(_ id: NSManagedObjectID) {
-		dataSourceSnapshot?.deleteItems([id])
+	func render() {
 		if let snapshot = dataSourceSnapshot {
 			dataSource?.apply(snapshot, animatingDifferences: true)
 		}
