@@ -12,6 +12,9 @@ final class NewRollCell: UICollectionViewCell {
 	static let reuseIdentifier = "newRollButtonIdentifier"
 
 	private lazy var imageView = UIImageView()
+	private var targetNumberImageSize: CGSize {
+		CGSize(width: contentView.bounds.height * 0.5, height: contentView.bounds.width * 0.5)
+	}
 
 	// MARK: Initialization
 	override init(frame: CGRect) {
@@ -27,7 +30,8 @@ final class NewRollCell: UICollectionViewCell {
 	func configure(with model: DiceModel) {
 		switch model {
 		case let model as NumberDiceModel:
-			imageView.image = UIImage(systemName: "\(model.rollResult).circle")
+			imageView.image = UIImage(systemName: "\(model.rollResult).circle")?
+				.scalePreservingAspectRatio(targetSize: targetNumberImageSize)
 			backgroundColor = Color.red
 		case let model as ShipAndCastlesDiceModel:
 			switch model.rollResult {
