@@ -10,13 +10,17 @@ import UIKit
 
 final class NewRollAssembly {
 	func makeViewController(coreDataStack: CoreDataStack, gameManager: GameManagerProtocol) -> UIViewController {
-		let presenter = NewRollPresenter(coreDataStack: coreDataStack, gameManager: gameManager)
-		let rollStatsViewController = NewRollViewController(
-			presenter: presenter,
+		let newRollViewController = NewRollViewController(
 			sectionLayoutProviderFactory: SectionLayoutProviderFactory(),
 			modelProvider: GameModelProvider()
 		)
+		let presenter = NewRollPresenter(
+			coreDataStack: coreDataStack,
+			gameManager: gameManager,
+			viewController: newRollViewController
+		)
+		newRollViewController.presenter = presenter
 
-		return rollStatsViewController
+		return newRollViewController
 	}
 }

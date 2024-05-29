@@ -17,6 +17,7 @@ enum Sizes {
 
 	enum TextSizes {
 		static let normal: CGFloat = 14
+		static let large: CGFloat = 28
 	}
 
 	static let defaultInsets = NSDirectionalEdgeInsets(

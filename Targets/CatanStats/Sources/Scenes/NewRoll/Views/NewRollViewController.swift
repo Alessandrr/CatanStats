@@ -8,26 +8,29 @@
 
 import UIKit
 
+protocol NewRollViewControllerProtocol: AnyObject {
+	func render(newRollsDisabled: Bool)
+}
+
 final class NewRollViewController: UIViewController {
 
 	// MARK: Private properties
 	private var collectionView: UICollectionView!
 	private var dataSource: UICollectionViewDiffableDataSource<RollSection, DiceModel>!
 	private var sections: [RollSection]
+	private let overlayView = NewRollOverlayView()
 
 	// MARK: Dependencies
-	private var presenter: NewRollPresenterProtocol
+	var presenter: NewRollPresenterProtocol?
 	private var sectionLayoutProviderFactory: SectionLayoutProviderFactory
 	private var modelProvider: GameModelProviderProtocol
 
 	// MARK: Initialization
 	init(
-		presenter: NewRollPresenterProtocol,
 		sectionLayoutProviderFactory: SectionLayoutProviderFactory,
 		modelProvider: GameModelProviderProtocol,
 		sections: [RollSection] = RollSection.allCases
 	) {
-		self.presenter = presenter
 		self.sectionLayoutProviderFactory = sectionLayoutProviderFactory
 		self.modelProvider = modelProvider
 		self.sections = sections
@@ -85,6 +88,15 @@ extension NewRollViewController {
 		navigationItem.title = CatanStatsStrings.NewRoll.navigationBarTitle
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationController?.navigationBar.sizeToFit()
+
+		overlayView.translatesAutoresizingMaskIntoConstraints = false
+		view.addSubview(overlayView)
+		NSLayoutConstraint.activate([
+			overlayView.topAnchor.constraint(equalTo: collectionView.topAnchor),
+			overlayView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+			overlayView.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
+			overlayView.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor)
+		])
 	}
 
 	private func generateLayout() -> UICollectionViewLayout {
@@ -98,6 +110,13 @@ extension NewRollViewController {
 	}
 }
 
+// MARK: NewRollViewControllerProtocol
+extension NewRollViewController: NewRollViewControllerProtocol {
+	func render(newRollsDisabled: Bool) {
+		overlayView.isHidden = !newRollsDisabled
+	}
+}
+
 // MARK: UICollectionViewDelegate
 extension NewRollViewController: UICollectionViewDelegate {
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -105,6 +124,6 @@ extension NewRollViewController: UICollectionViewDelegate {
 			cell.animateTap()
 		}
 		guard let diceModel = dataSource.itemIdentifier(for: indexPath) else { return }
-		presenter.didSelectRollItem(diceModel)
+		presenter?.didSelectRollItem(diceModel)
 	}
 }

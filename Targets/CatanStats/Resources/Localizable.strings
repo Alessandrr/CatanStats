@@ -25,10 +25,13 @@
 "gameList.sectionTitle" = "Game %d";
 "gameList.navigationBarTitle" = "Game history";
 "gameList.deleteActionTitle" = "Delete";
+"gameList.setCurrentActionTitle" = "Activate";
+"gameList.gameCellCurrentLabel" = "Current";
 
 // MARK: NewRoll scene
 
 "newRoll.navigationBarTitle" = "Roll stats";
+"newRoll.overlayWarningText" = "Create a new game before proceeding";
 
 // MARK: GameDetails scene
 "gameDetails.diceCell" = "Rolled %d";

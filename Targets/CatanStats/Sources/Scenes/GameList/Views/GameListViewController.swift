@@ -11,20 +11,20 @@ import CoreData
 
 protocol GameListViewControllerProtocol: NSFetchedResultsControllerDelegate {
 	func render()
+	func renderUpdate(for items: [NSManagedObjectID])
 }
 
 final class GameListViewController: UITableViewController {
-
-	// MARK: Dependencies
-	private var router: GameListRouterProtocol
-	var presenter: GameListPresenterProtocol?
 
 	// MARK: Private properties
 	private var dataSource: UITableViewDiffableDataSource<String, NSManagedObjectID>?
 	private var dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, NSManagedObjectID>?
 
-	// MARK: Initialization
+	// MARK: Dependencies
+	private var router: GameListRouterProtocol
+	var presenter: GameListPresenterProtocol?
 
+	// MARK: Initialization
 	init(router: GameListRouterProtocol) {
 		self.router = router
 		super.init(nibName: nil, bundle: nil)
@@ -44,9 +44,6 @@ final class GameListViewController: UITableViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		presenter?.initialFetch()
-		if let snapshot = dataSourceSnapshot {
-			dataSource?.apply(snapshot, animatingDifferences: false)
-		}
 	}
 
 	// MARK: Private methods
@@ -58,6 +55,8 @@ final class GameListViewController: UITableViewController {
 			target: self,
 			action: #selector(newGameTapped)
 		)
+
+		tableView.register(GameListTableViewCell.self, forCellReuseIdentifier: GameListTableViewCell.reuseIdentifier)
 	}
 
 	@objc private func newGameTapped() {
@@ -65,11 +64,17 @@ final class GameListViewController: UITableViewController {
 	}
 }
 
+// MARK: GameListViewControllerProtocol
 extension GameListViewController: GameListViewControllerProtocol {
 	func render() {
 		if let snapshot = dataSourceSnapshot {
 			dataSource?.apply(snapshot, animatingDifferences: true)
 		}
+	}
+
+	func renderUpdate(for items: [NSManagedObjectID]) {
+		dataSourceSnapshot?.reconfigureItems(items)
+		render()
 	}
 }
 
@@ -81,17 +86,19 @@ extension GameListViewController {
 				return UITableViewCell()
 			}
 
-			let cell = UITableViewCell()
-			var content = cell.defaultContentConfiguration()
-			content.text = game.title
-			cell.contentConfiguration = content
+			guard let cell = self?.tableView.dequeueReusableCell(
+				withIdentifier: GameListTableViewCell.reuseIdentifier
+			) as? GameListTableViewCell else {
+				return UITableViewCell()
+			}
+			cell.configure(with: game)
 
 			return cell
 		}
 	}
 }
 
-// MARK: tableView delegate
+// MARK: TableView Delegate
 extension GameListViewController {
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		guard let gameId = dataSource?.itemIdentifier(for: indexPath) else { return }
@@ -102,16 +109,24 @@ extension GameListViewController {
 		_ tableView: UITableView,
 		trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
 	) -> UISwipeActionsConfiguration? {
+
 		let deleteAction = UIContextualAction(
 			style: .destructive,
 			title: CatanStatsStrings.GameList.deleteActionTitle
 		) { [weak self] _, _, _ in
 			self?.presenter?.deleteGameAt(indexPath)
 		}
-
 		deleteAction.backgroundColor = .red
 
-		let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+		let setCurrentAction = UIContextualAction(
+			style: .normal,
+			title: CatanStatsStrings.GameList.setCurrentActionTitle
+		) { [weak self] _, _, _ in
+			self?.presenter?.currentGameSelectedAt(indexPath)
+		}
+		setCurrentAction.backgroundColor = Color.lightBlue
+
+		let configuration = UISwipeActionsConfiguration(actions: [deleteAction, setCurrentAction])
 		configuration.performsFirstActionWithFullSwipe = true
 		return configuration
 	}
@@ -124,5 +139,6 @@ extension GameListViewController {
 		didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
 	) {
 		dataSourceSnapshot = snapshot as NSDiffableDataSourceSnapshot<String, NSManagedObjectID>
+		render()
 	}
 }

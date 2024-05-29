@@ -14,9 +14,6 @@ protocol GameDetailsViewControllerProtocol: AnyObject {
 
 final class GameDetailsViewController: UIViewController {
 
-	// MARK: Dependencies
-	var presenter: GameDetailsPresenterProtocol?
-
 	// MARK: Private properties
 	private lazy var tableView: UITableView = {
 		let tableView = UITableView()
@@ -32,6 +29,9 @@ final class GameDetailsViewController: UIViewController {
 	private var dataSource: UITableViewDiffableDataSource<RollSection, RollModelCounter>?
 	private var snapshot: NSDiffableDataSourceSnapshot<RollSection, RollModelCounter>?
 	private var chartCountersModel = ChartCountersModel()
+
+	// MARK: Dependencies
+	var presenter: GameDetailsPresenterProtocol?
 
 	// MARK: Life cycle
 	override func viewDidLoad() {

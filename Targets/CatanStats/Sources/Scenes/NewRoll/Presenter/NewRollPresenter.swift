@@ -8,24 +8,33 @@
 
 import Foundation
 import CoreData
+import Combine
 
 protocol NewRollPresenterProtocol {
 	func didSelectRollItem(_ item: DiceModel)
 }
 
 final class NewRollPresenter: NewRollPresenterProtocol {
+
+	// MARK: Private properties
+	private var currentGame: Game?
+	private var cancellables = Set<AnyCancellable>()
+
 	// MARK: Dependencies
 	private var coreDataStack: CoreDataStack
 	private var gameManager: GameManagerProtocol
+	private weak var viewController: NewRollViewControllerProtocol?
 
-	init(coreDataStack: CoreDataStack, gameManager: GameManagerProtocol) {
+	// MARK: Initializer
+	init(coreDataStack: CoreDataStack, gameManager: GameManagerProtocol, viewController: NewRollViewControllerProtocol) {
 		self.coreDataStack = coreDataStack
 		self.gameManager = gameManager
+		self.viewController = viewController
+		setupBindings()
 	}
 
+	// MARK: Internal methods
 	func didSelectRollItem(_ item: DiceModel) {
-		guard let currentGame = gameManager.getCurrentGame() else { return }
-
 		switch item {
 		case let item as NumberDiceModel:
 			guard let roll = NSEntityDescription.insertNewObject(
@@ -34,7 +43,7 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 			) as? DiceRoll else { return }
 			roll.value = Int16(item.rollResult)
 			roll.dateCreated = Date.now
-			currentGame.addToRolls(roll)
+			currentGame?.addToRolls(roll)
 		case let item as ShipAndCastlesDiceModel:
 			switch item.rollResult {
 			case .ship:
@@ -43,7 +52,7 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 					into: coreDataStack.managedContext
 				) as? ShipRoll else { return }
 				ship.dateCreated = Date.now
-				currentGame.addToRolls(ship)
+				currentGame?.addToRolls(ship)
 			case .castle(color: let color):
 				guard let castle = NSEntityDescription.insertNewObject(
 					forEntityName: "CastleRoll",
@@ -51,11 +60,21 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 				) as? CastleRoll else { return }
 				castle.dateCreated = Date.now
 				castle.color = color.rawValue
-				currentGame.addToRolls(castle)
+				currentGame?.addToRolls(castle)
 			}
 		default:
 			assertionFailure("New type of roll not processed")
 		}
 		coreDataStack.saveContext()
+	}
+
+	// MARK: Private methods
+	private func setupBindings() {
+		gameManager.currentGamePublisher
+			.sink { [unowned self] game in
+				currentGame = game
+				viewController?.render(newRollsDisabled: currentGame == nil)
+			}
+			.store(in: &cancellables)
 	}
 }

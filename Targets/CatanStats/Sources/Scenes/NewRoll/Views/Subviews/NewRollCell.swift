@@ -11,6 +11,7 @@ import UIKit
 final class NewRollCell: UICollectionViewCell {
 	static let reuseIdentifier = "newRollButtonIdentifier"
 
+	// MARK: Private properties
 	private lazy var imageView = UIImageView()
 	private var targetNumberImageSize: CGSize {
 		CGSize(width: contentView.bounds.height * 0.5, height: contentView.bounds.width * 0.5)
@@ -26,7 +27,7 @@ final class NewRollCell: UICollectionViewCell {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	// MARK: Public methods
+	// MARK: Internal methods
 	func configure(with model: DiceModel) {
 		switch model {
 		case let model as NumberDiceModel:

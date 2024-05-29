@@ -14,12 +14,6 @@ protocol GameDetailsPresenterProtocol {
 
 final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 
-	// MARK: Dependencies
-	private weak var viewController: GameDetailsViewControllerProtocol?
-	private var coreDataStack: CoreDataStack
-	private var gameID: NSManagedObjectID
-	private var gameModelProvider: GameModelProviderProtocol
-
 	// MARK: Private properties
 	private lazy var fetchedResultsController: NSFetchedResultsController<Roll> = {
 		let fetchRequest = Roll.fetchRequest()
@@ -42,6 +36,12 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 
 		return fetchedResultsController
 	}()
+
+	// MARK: Dependencies
+	private weak var viewController: GameDetailsViewControllerProtocol?
+	private var coreDataStack: CoreDataStack
+	private var gameID: NSManagedObjectID
+	private var gameModelProvider: GameModelProviderProtocol
 
 	// MARK: Initialization
 	init(

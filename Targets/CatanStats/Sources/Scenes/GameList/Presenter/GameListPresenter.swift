@@ -7,20 +7,17 @@
 
 import Foundation
 import CoreData
+import Combine
 
 protocol GameListPresenterProtocol {
 	func initialFetch()
 	func getGameForCellAt(_ indexPath: IndexPath) -> Game
 	func deleteGameAt(_ indexPath: IndexPath)
 	func addNewGame()
+	func currentGameSelectedAt(_ indexPath: IndexPath)
 }
 
 final class GameListPresenter: GameListPresenterProtocol {
-
-	// MARK: Dependencies
-	private var coreDataStack: CoreDataStack
-	private var gameManager: GameManagerProtocol
-	private weak var viewController: GameListViewControllerProtocol?
 
 	// MARK: Private properties
 	private lazy var fetchedResultsController: NSFetchedResultsController<Game> = {
@@ -41,6 +38,12 @@ final class GameListPresenter: GameListPresenterProtocol {
 		fetchedResultsController.delegate = viewController
 		return fetchedResultsController
 	}()
+	private var cancellables = Set<AnyCancellable>()
+
+	// MARK: Dependencies
+	private var coreDataStack: CoreDataStack
+	private var gameManager: GameManagerProtocol
+	private weak var viewController: GameListViewControllerProtocol?
 
 	// MARK: Initialization
 	init (
@@ -51,12 +54,14 @@ final class GameListPresenter: GameListPresenterProtocol {
 		self.coreDataStack = coreDataStack
 		self.viewController = gameListViewController
 		self.gameManager = gameManager
+		setupBindings()
 	}
 
 	// MARK: Internal methods
 	func initialFetch() {
 		do {
 			try fetchedResultsController.performFetch()
+			viewController?.render()
 		} catch let error {
 			assertionFailure(error.localizedDescription)
 		}
@@ -69,11 +74,27 @@ final class GameListPresenter: GameListPresenterProtocol {
 	func deleteGameAt(_ indexPath: IndexPath) {
 		let gameToDelete = fetchedResultsController.object(at: indexPath)
 		gameManager.deleteGame(gameToDelete)
-		viewController?.render()
 	}
 
 	func addNewGame() {
 		gameManager.createGame()
-		viewController?.render()
+	}
+
+	func currentGameSelectedAt(_ indexPath: IndexPath) {
+		let gameToSetAsCurrent = fetchedResultsController.object(at: indexPath)
+		gameManager.setCurrentGame(gameToSetAsCurrent)
+	}
+
+	// MARK: Private methods
+	private func setupBindings() {
+		gameManager.currentGamePublisher
+			.scan((oldGame: Game?.none, newGame: Game?.none)) { ($0.1, $1) }
+			.sink { [weak self] (oldGame, newGame) in
+				let idsToReconfigure = [oldGame, newGame]
+					.filter { $0?.managedObjectContext != nil }
+					.compactMap { $0?.objectID }
+				self?.viewController?.renderUpdate(for: idsToReconfigure)
+			}
+			.store(in: &cancellables)
 	}
 }

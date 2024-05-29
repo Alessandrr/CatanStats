@@ -42,17 +42,23 @@ public enum CatanStatsStrings {
   public enum GameList {
   /// Delete
     public static let deleteActionTitle = CatanStatsStrings.tr("Localizable", "gameList.deleteActionTitle")
+    /// Current
+    public static let gameCellCurrentLabel = CatanStatsStrings.tr("Localizable", "gameList.gameCellCurrentLabel")
     /// Game history
     public static let navigationBarTitle = CatanStatsStrings.tr("Localizable", "gameList.navigationBarTitle")
     /// Game %d
     public static func sectionTitle(_ p1: Int) -> String {
       return CatanStatsStrings.tr("Localizable", "gameList.sectionTitle",p1)
     }
+    /// Activate
+    public static let setCurrentActionTitle = CatanStatsStrings.tr("Localizable", "gameList.setCurrentActionTitle")
   }
 
   public enum NewRoll {
   /// Roll stats
     public static let navigationBarTitle = CatanStatsStrings.tr("Localizable", "newRoll.navigationBarTitle")
+    /// Create a new game before proceeding
+    public static let overlayWarningText = CatanStatsStrings.tr("Localizable", "newRoll.overlayWarningText")
   }
 
   public enum RollSection {
