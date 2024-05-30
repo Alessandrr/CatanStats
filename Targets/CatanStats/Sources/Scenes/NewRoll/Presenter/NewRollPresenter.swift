@@ -12,6 +12,7 @@ import Combine
 
 protocol NewRollPresenterProtocol {
 	func didSelectRollItem(_ item: DiceModel)
+	func undoRoll()
 }
 
 final class NewRollPresenter: NewRollPresenterProtocol {
@@ -65,6 +66,16 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 		default:
 			assertionFailure("New type of roll not processed")
 		}
+		coreDataStack.saveContext()
+	}
+
+	func undoRoll() {
+		let rollRequest = Roll.fetchRequest()
+		let sortByDate = NSSortDescriptor(key: #keyPath(Roll.dateCreated), ascending: true)
+		rollRequest.sortDescriptors = [sortByDate]
+
+		guard let lastRoll = try? coreDataStack.managedContext.fetch(rollRequest).last else { return }
+		coreDataStack.managedContext.delete(lastRoll)
 		coreDataStack.saveContext()
 	}
 

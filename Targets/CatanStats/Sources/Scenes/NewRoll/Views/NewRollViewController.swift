@@ -14,6 +14,11 @@ protocol NewRollViewControllerProtocol: AnyObject {
 
 final class NewRollViewController: UIViewController {
 
+	// MARK: Internal properties
+	override var canBecomeFirstResponder: Bool {
+		true
+	}
+
 	// MARK: Private properties
 	private var collectionView: UICollectionView!
 	private var dataSource: UICollectionViewDiffableDataSource<RollSection, DiceModel>!
@@ -49,6 +54,14 @@ final class NewRollViewController: UIViewController {
 		setupUI()
 	}
 
+	override func viewDidAppear(_ animated: Bool) {
+		becomeFirstResponder()
+	}
+
+	override func viewWillDisappear(_ animated: Bool) {
+		resignFirstResponder()
+	}
+
 	// MARK: Private methods
 	private func configureCollectionView() {
 		let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: generateLayout())
@@ -80,6 +93,10 @@ final class NewRollViewController: UIViewController {
 		}
 		dataSource.apply(snapshot)
 	}
+
+	@objc private func undoRollSelected() {
+		presenter?.undoRoll()
+	}
 }
 
 // MARK: Layout
@@ -88,6 +105,12 @@ extension NewRollViewController {
 		navigationItem.title = CatanStatsStrings.NewRoll.navigationBarTitle
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationController?.navigationBar.sizeToFit()
+
+		navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .undo,
+			target: self,
+			action: #selector(undoRollSelected)
+		)
 
 		overlayView.translatesAutoresizingMaskIntoConstraints = false
 		view.addSubview(overlayView)
@@ -114,6 +137,15 @@ extension NewRollViewController {
 extension NewRollViewController: NewRollViewControllerProtocol {
 	func render(newRollsDisabled: Bool) {
 		overlayView.isHidden = !newRollsDisabled
+	}
+}
+
+// MARK: UIResponder
+extension NewRollViewController {
+	override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+		if motion == .motionShake {
+			undoRollSelected()
+		}
 	}
 }
 
