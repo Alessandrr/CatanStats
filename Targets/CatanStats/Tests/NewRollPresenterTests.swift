@@ -21,34 +21,6 @@ final class NewRollPresenterTests: XCTestCase {
 		coreDataStack = nil
 	}
 
-	func test_loadData_withoutGame_shouldCreateGame() {
-		let sut = makePresenter()
-
-		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
-		sut.loadData()
-		waitForExpectations(timeout: 0.5) { error in
-			XCTAssertNil(error, "Managed context wasn't saved")
-		}
-		let savedGames = try? fetchGames()
-		let expectedTitle = CatanStatsStrings.GameList.sectionTitle(1)
-
-		XCTAssertEqual(savedGames?.count, 1, "Expected to fetch 1 saved game")
-		XCTAssertEqual(savedGames?.first?.title, expectedTitle, "Expected title to be \(expectedTitle)")
-		XCTAssertNotNil(sut.currentGame, "Current game wasn't set")
-	}
-
-	func test_loadData_withTwoGames_shouldGetLastGame() {
-		let expectedTitle = "Game 2"
-		let sut = makePresenterWithTwoGames(lastGameTitle: expectedTitle)
-
-		sut.loadData()
-		let savedGames = try? fetchGames()
-
-		XCTAssertEqual(savedGames?.count, 2, "Expected to fetch 2 saved games")
-		XCTAssertNotNil(sut.currentGame, "Current game wasn't set")
-		XCTAssertEqual(sut.currentGame?.title, expectedTitle, "Expected title of current game to be \(expectedTitle)")
-	}
-
 	func test_didSelectRollItem_numberSelected_shouldSaveCorrectRoll() {
 		let sut = makePresenter()
 		let expectedRollValue = 2
@@ -59,9 +31,10 @@ final class NewRollPresenterTests: XCTestCase {
 		waitForExpectations(timeout: 0.5) { error in
 			XCTAssertNil(error, "Managed context wasn't saved")
 		}
+
 		let savedRolls = try? fetchRolls()
 
-		guard let roll = savedRolls?.first as? DiceRoll else {
+		guard let roll = savedRolls?.last as? DiceRoll else {
 			XCTFail("Expected to get DiceRoll")
 			return
 		}
@@ -74,7 +47,6 @@ final class NewRollPresenterTests: XCTestCase {
 		let expectedRollValue = 2
 		let rollModel = NumberDiceModel(rollResult: expectedRollValue)
 
-		sut.loadData()
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
 		sut.didSelectRollItem(rollModel)
 		waitForExpectations(timeout: 0.5) { error in
@@ -96,7 +68,7 @@ final class NewRollPresenterTests: XCTestCase {
 		}
 		let savedRolls = try? fetchRolls()
 
-		guard let roll = savedRolls?.first as? ShipRoll else {
+		guard let roll = savedRolls?.last as? ShipRoll else {
 			XCTFail("Expected to get ShipRoll")
 			return
 		}
@@ -107,7 +79,6 @@ final class NewRollPresenterTests: XCTestCase {
 		let sut = makePresenter()
 		let shipModel = ShipAndCastlesDiceModel(rollResult: .ship)
 
-		sut.loadData()
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
 		sut.didSelectRollItem(shipModel)
 		waitForExpectations(timeout: 0.5) { error in
@@ -130,7 +101,7 @@ final class NewRollPresenterTests: XCTestCase {
 		}
 		let savedRolls = try? fetchRolls()
 
-		guard let roll = savedRolls?.first as? CastleRoll else {
+		guard let roll = savedRolls?.last as? CastleRoll else {
 			XCTFail("Expected to get CastleRoll")
 			return
 		}
@@ -146,7 +117,6 @@ final class NewRollPresenterTests: XCTestCase {
 		let sut = makePresenter()
 		let castleModel = ShipAndCastlesDiceModel(rollResult: .castle(color: .green))
 
-		sut.loadData()
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
 		sut.didSelectRollItem(castleModel)
 		waitForExpectations(timeout: 0.5) { error in
@@ -157,43 +127,59 @@ final class NewRollPresenterTests: XCTestCase {
 		XCTAssertNotNil(savedGame?.rolls?.lastObject as? CastleRoll, "Expected castle roll to be added")
 	}
 
-	func test_didSelectRollItem_withNilCurrentGame_shouldCreateNewGame() {
+	func test_undoRoll_withOneRoll_shouldRemoveRoll() {
 		let sut = makePresenter()
-		let castleModel = ShipAndCastlesDiceModel(rollResult: .castle(color: .green))
+		let shipModel = ShipAndCastlesDiceModel(rollResult: .ship)
+		sut.didSelectRollItem(shipModel)
+		var savedRolls = try? fetchRolls()
+		XCTAssertEqual(savedRolls?.count, 1, "Expected to get 1 roll after adding a roll")
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
-		sut.didSelectRollItem(castleModel)
+		sut.undoRoll()
 		waitForExpectations(timeout: 0.5) { error in
 			XCTAssertNil(error, "Managed context wasn't saved")
 		}
-		XCTAssertNotNil(sut.currentGame, "New game wasn't set as current")
-		XCTAssertNotNil(sut.currentGame?.managedObjectContext, "Current game wasn't saved to coreData")
+		savedRolls = try? fetchRolls()
+
+		XCTAssertEqual(savedRolls?.count, 0, "Expected to get 0 rolls")
+	}
+
+	func test_undoRoll_withTwoRolls_shouldRemoveLatest() {
+		let sut = makePresenter()
+		let shipModel = ShipAndCastlesDiceModel(rollResult: .ship)
+
+		sut.didSelectRollItem(shipModel)
+		sut.didSelectRollItem(shipModel)
+
+		var savedRolls = try? fetchRolls()
+		XCTAssertEqual(savedRolls?.count, 2, "Expected to get 2 rolls after adding two rolls")
+		let firstRollId = savedRolls?.first?.objectID
+		let secondRollId = savedRolls?.last?.objectID
+
+		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
+		sut.undoRoll()
+		waitForExpectations(timeout: 0.5) { error in
+			XCTAssertNil(error, "Managed context wasn't saved")
+		}
+
+		do {
+			let savedRolls = try fetchRolls()
+			XCTAssertEqual(savedRolls.count, 1, "Expected to get 1 roll")
+			XCTAssertFalse(savedRolls.contains { $0.objectID == secondRollId }, "Expected the latest roll to be removed")
+			XCTAssertTrue(savedRolls.contains { $0.objectID == firstRollId }, "Expected first roll not to be removed")
+		} catch let error {
+			XCTFail("Core data error \(error)")
+		}
 	}
 }
 
 private extension NewRollPresenterTests {
 	func makePresenter() -> NewRollPresenter {
-		NewRollPresenter(coreDataStack: coreDataStack)
-	}
-
-	func makePresenterWithTwoGames(lastGameTitle: String) -> NewRollPresenter {
-		let presenter = NewRollPresenter(coreDataStack: coreDataStack)
-
-		let firstGame = NSEntityDescription.insertNewObject(
-			forEntityName: "Game",
-			into: coreDataStack.managedContext
-		) as? Game
-		firstGame?.dateCreated = Date.now
-
-		let secondGame = NSEntityDescription.insertNewObject(
-			forEntityName: "Game",
-			into: coreDataStack.managedContext
-		) as? Game
-		secondGame?.dateCreated = Date.now
-		secondGame?.title = lastGameTitle
-
-		coreDataStack.saveContext()
-		return presenter
+		NewRollPresenter(
+			coreDataStack: coreDataStack,
+			gameManager: GameManagerStub(coreDataStack: coreDataStack),
+			viewController: NewRollViewControllerStub()
+		)
 	}
 
 	func fetchGames() throws -> [Game] {
@@ -204,6 +190,9 @@ private extension NewRollPresenterTests {
 
 	func fetchRolls() throws -> [Roll] {
 		let fetchRequest = Roll.fetchRequest()
+		let sortByDate = NSSortDescriptor(key: #keyPath(Roll.dateCreated), ascending: true)
+		fetchRequest.sortDescriptors = [sortByDate]
+
 		let results = try coreDataStack.managedContext.fetch(fetchRequest)
 		return results
 	}
