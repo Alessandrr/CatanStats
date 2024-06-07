@@ -11,7 +11,7 @@ import Combine
 
 protocol GameManagerProtocol {
 	func deleteGame(_ game: Game)
-	func createGame()
+	func createGame() -> Game?
 	func setCurrentGame(_ game: Game)
 	var currentGamePublisher: AnyPublisher<Game?, Never> { get }
 }
@@ -33,7 +33,7 @@ final class GameManager: GameManagerProtocol {
 	// MARK: Initializers
 	init(coreDataStack: CoreDataStack) {
 		self.coreDataStack = coreDataStack
-		setupBidnings()
+		setupBindings()
 		fetchCurrentGame()
 	}
 
@@ -51,22 +51,23 @@ final class GameManager: GameManagerProtocol {
 		}
 	}
 
-	func createGame() {
+	func createGame() -> Game? {
 		do {
 			let gameRequest = Game.fetchRequest()
 			let gameCount = try coreDataStack.managedContext.count(for: gameRequest)
 			guard let newGame = NSEntityDescription.insertNewObject(
 				forEntityName: "Game",
 				into: coreDataStack.managedContext
-			) as? Game else { return }
+			) as? Game else { return nil }
 			newGame.dateCreated = Date.now
 			newGame.title = CatanStatsStrings.GameList.sectionTitle(gameCount + 1)
 			try coreDataStack.managedContext.obtainPermanentIDs(for: [newGame])
 			coreDataStack.saveContext()
-			currentGameSubject.value = newGame
+			return newGame
 		} catch let error {
 			assertionFailure(error.localizedDescription)
 		}
+		return nil
 	}
 
 	// MARK: Private Methods
@@ -107,7 +108,7 @@ final class GameManager: GameManagerProtocol {
 		return firstGame
 	}
 
-	private func setupBidnings() {
+	private func setupBindings() {
 		currentGameSubject
 			.scan((oldGame: Game?.none, newGame: Game?.none)) { ($0.1, $1) }
 			.sink { [weak self] (oldGame, newGame) in

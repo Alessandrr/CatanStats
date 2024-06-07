@@ -77,7 +77,10 @@ final class GameListPresenter: GameListPresenterProtocol {
 	}
 
 	func addNewGame() {
-		gameManager.createGame()
+		let newGame = gameManager.createGame()
+		if let newGame = newGame {
+			gameManager.setCurrentGame(newGame)
+		}
 	}
 
 	func currentGameSelectedAt(_ indexPath: IndexPath) {
