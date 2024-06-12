@@ -43,19 +43,10 @@ struct RollChartsGroupView: View {
 	RollChartsGroupView(
 		counterModel: ChartCountersModel(
 			counters:
-				[
-					RollModelCounter(diceModel: NumberDiceModel(rollResult: 2), count: 2),
-					RollModelCounter(diceModel: NumberDiceModel(rollResult: 3), count: 3),
-					RollModelCounter(diceModel: NumberDiceModel(rollResult: 4), count: 4),
-					RollModelCounter(diceModel: NumberDiceModel(rollResult: 5), count: 5),
-					RollModelCounter(diceModel: NumberDiceModel(rollResult: 6), count: 6),
-					RollModelCounter(diceModel: NumberDiceModel(rollResult: 7), count: 7),
-					RollModelCounter(diceModel: NumberDiceModel(rollResult: 8), count: 5),
-					RollModelCounter(diceModel: NumberDiceModel(rollResult: 9), count: 5),
-					RollModelCounter(diceModel: NumberDiceModel(rollResult: 10), count: 3),
-					RollModelCounter(diceModel: NumberDiceModel(rollResult: 11), count: 1),
-					RollModelCounter(diceModel: NumberDiceModel(rollResult: 12), count: 1)
-				]
+				(2...12).map { number in
+					let randomCount = Int.random(in: 2...10)
+					return RollModelCounter(diceModel: DiceModel(rollResult: .number(number)), count: randomCount)
+				}
 		)
 	)
 }

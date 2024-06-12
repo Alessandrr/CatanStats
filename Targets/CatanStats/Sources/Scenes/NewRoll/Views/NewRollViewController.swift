@@ -56,6 +56,7 @@ final class NewRollViewController: UIViewController {
 
 	override func viewDidAppear(_ animated: Bool) {
 		becomeFirstResponder()
+		navigationItem.rightBarButtonItem?.isEnabled = overlayView.isHidden
 	}
 
 	override func viewWillDisappear(_ animated: Bool) {

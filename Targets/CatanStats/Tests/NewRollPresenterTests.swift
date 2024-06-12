@@ -24,7 +24,7 @@ final class NewRollPresenterTests: XCTestCase {
 	func test_didSelectRollItem_numberSelected_shouldSaveCorrectRoll() {
 		let sut = makePresenter()
 		let expectedRollValue = 2
-		let diceModel = NumberDiceModel(rollResult: expectedRollValue)
+		let diceModel = DiceModel(rollResult: .number(expectedRollValue))
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
 		sut.didSelectRollItem(diceModel)
@@ -45,7 +45,7 @@ final class NewRollPresenterTests: XCTestCase {
 	func test_didSelectRoll_numberSelected_shouldAddToCurrentGame() {
 		let sut = makePresenter()
 		let expectedRollValue = 2
-		let rollModel = NumberDiceModel(rollResult: expectedRollValue)
+		let rollModel = DiceModel(rollResult: .number(expectedRollValue))
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
 		sut.didSelectRollItem(rollModel)
@@ -59,7 +59,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_didSelectRollItem_shipSelected_shouldSaveShip() {
 		let sut = makePresenter()
-		let shipModel = ShipAndCastlesDiceModel(rollResult: .ship)
+		let shipModel = DiceModel(rollResult: .castleShip(.ship))
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
 		sut.didSelectRollItem(shipModel)
@@ -77,7 +77,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_didSelectRollItem_shipSelected_shouldAddToCurrentGame() {
 		let sut = makePresenter()
-		let shipModel = ShipAndCastlesDiceModel(rollResult: .ship)
+		let shipModel = DiceModel(rollResult: .castleShip(.ship))
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
 		sut.didSelectRollItem(shipModel)
@@ -92,7 +92,7 @@ final class NewRollPresenterTests: XCTestCase {
 	func test_didSelectRollItem_castleSelected_shouldSaveCorrectCastle() {
 		let sut = makePresenter()
 		let expectedColor = CastleColor.green
-		let castleModel = ShipAndCastlesDiceModel(rollResult: .castle(color: expectedColor))
+		let castleModel = DiceModel(rollResult: .castleShip(.castle(color: expectedColor)))
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
 		sut.didSelectRollItem(castleModel)
@@ -115,7 +115,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_didSelectRollItem_castleSelected_shouldAddToCurrentGame() {
 		let sut = makePresenter()
-		let castleModel = ShipAndCastlesDiceModel(rollResult: .castle(color: .green))
+		let castleModel = DiceModel(rollResult: .castleShip(.castle(color: .green)))
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
 		sut.didSelectRollItem(castleModel)
@@ -129,7 +129,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_undoRoll_withOneRoll_shouldRemoveRoll() {
 		let sut = makePresenter()
-		let shipModel = ShipAndCastlesDiceModel(rollResult: .ship)
+		let shipModel = DiceModel(rollResult: .castleShip(.ship))
 		sut.didSelectRollItem(shipModel)
 		var savedRolls = try? fetchRolls()
 		XCTAssertEqual(savedRolls?.count, 1, "Expected to get 1 roll after adding a roll")
@@ -139,19 +139,18 @@ final class NewRollPresenterTests: XCTestCase {
 		waitForExpectations(timeout: 0.5) { error in
 			XCTAssertNil(error, "Managed context wasn't saved")
 		}
-		savedRolls = try? fetchRolls()
 
+		savedRolls = try? fetchRolls()
 		XCTAssertEqual(savedRolls?.count, 0, "Expected to get 0 rolls")
 	}
 
 	func test_undoRoll_withTwoRolls_shouldRemoveLatest() {
 		let sut = makePresenter()
-		let shipModel = ShipAndCastlesDiceModel(rollResult: .ship)
-
+		let shipModel = DiceModel(rollResult: .castleShip(.ship))
 		sut.didSelectRollItem(shipModel)
 		sut.didSelectRollItem(shipModel)
 
-		var savedRolls = try? fetchRolls()
+		let savedRolls = try? fetchRolls()
 		XCTAssertEqual(savedRolls?.count, 2, "Expected to get 2 rolls after adding two rolls")
 		let firstRollId = savedRolls?.first?.objectID
 		let secondRollId = savedRolls?.last?.objectID
@@ -168,7 +167,7 @@ final class NewRollPresenterTests: XCTestCase {
 			XCTAssertFalse(savedRolls.contains { $0.objectID == secondRollId }, "Expected the latest roll to be removed")
 			XCTAssertTrue(savedRolls.contains { $0.objectID == firstRollId }, "Expected first roll not to be removed")
 		} catch let error {
-			XCTFail("Core data error \(error)")
+			XCTFail("Core data error: \(error)")
 		}
 	}
 }

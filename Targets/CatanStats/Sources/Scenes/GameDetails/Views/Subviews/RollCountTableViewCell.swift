@@ -15,18 +15,16 @@ final class RollCountTableViewCell: UITableViewCell {
 		var contentConfiguration = UIListContentConfiguration.valueCell()
 		let diceModel = model.diceModel
 
-		switch diceModel {
-		case let diceModel as NumberDiceModel:
-			contentConfiguration.text = CatanStatsStrings.GameDetails.diceCell(diceModel.rollResult)
-		case let diceModel as ShipAndCastlesDiceModel:
-			switch diceModel.rollResult {
+		switch diceModel.rollResult {
+		case .number(let rollValue):
+			contentConfiguration.text = CatanStatsStrings.GameDetails.diceCell(rollValue)
+		case .castleShip(let castleShipResult):
+			switch castleShipResult {
 			case .ship:
 				contentConfiguration.text = CatanStatsStrings.shipDescription
 			case .castle(color: let color):
 				contentConfiguration.text = CatanStatsStrings.castleDescription(color.description)
 			}
-		default:
-			assertionFailure("New type of roll not processed")
 		}
 
 		contentConfiguration.secondaryText = model.count.formatted()

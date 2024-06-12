@@ -89,14 +89,14 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 
 			switch roll {
 			case let roll as DiceRoll:
-				let model = NumberDiceModel(rollResult: Int(roll.value))
+				let model = DiceModel(rollResult: .number(Int(roll.value)))
 				counts[model, default: 0] += 1
 			case roll as ShipRoll:
-				let model = ShipAndCastlesDiceModel(rollResult: .ship)
+				let model = DiceModel(rollResult: .castleShip(.ship))
 				counts[model, default: 0] += 1
 			case let roll as CastleRoll:
 				if let color = roll.color, let castleColor = CastleColor(rawValue: color) {
-					let model = ShipAndCastlesDiceModel(rollResult: .castle(color: castleColor))
+					let model = DiceModel(rollResult: .castleShip(.castle(color: castleColor)))
 					counts[model, default: 0] += 1
 				}
 			default:
@@ -116,9 +116,19 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 	private func filterCounters(_ counters: [RollModelCounter], for section: RollSection) -> [RollModelCounter] {
 		switch section {
 		case .numberRolls:
-			counters.filter { $0.diceModel is NumberDiceModel }
+			return counters.filter {
+				if case .number = $0.diceModel.rollResult {
+					return true
+				}
+				return false
+			}
 		case .shipAndCastles:
-			counters.filter { $0.diceModel is ShipAndCastlesDiceModel }
+			return counters.filter {
+				if case .castleShip = $0.diceModel.rollResult {
+					return true
+				}
+				return false
+			}
 		}
 	}
 
@@ -126,22 +136,28 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 		var chartCounters: [RollModelCounter] = []
 
 		gameModelProvider.makeModelsForSection(.numberRolls).forEach { diceModel in
-			guard let expectedDiceModel = diceModel as? NumberDiceModel else { return }
+			guard case .number(let rollResult) = diceModel.rollResult else { return }
 
 			chartCounters.append(
 				counters.first { counter in
-					counter.diceModel == expectedDiceModel
-				} ?? RollModelCounter(diceModel: expectedDiceModel, count: 0)
+					if case .number(let expectedRollResult) = counter.diceModel.rollResult {
+						return expectedRollResult == rollResult
+					}
+					return false
+				} ?? RollModelCounter(diceModel: diceModel, count: 0)
 			)
 		}
 
 		gameModelProvider.makeModelsForSection(.shipAndCastles).forEach { diceModel in
-			guard let expectedDiceModel = diceModel as? ShipAndCastlesDiceModel else { return }
+			guard case .castleShip(let rollResult) = diceModel.rollResult else { return }
 
 			chartCounters.append(
 				counters.first { counter in
-					counter.diceModel ==  expectedDiceModel
-				} ?? RollModelCounter(diceModel: expectedDiceModel, count: 0)
+					if case .castleShip(let expectedRollResult) = counter.diceModel.rollResult {
+						return expectedRollResult == rollResult
+					}
+					return false
+				} ?? RollModelCounter(diceModel: diceModel, count: 0)
 			)
 		}
 

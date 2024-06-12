@@ -3,7 +3,6 @@
 //  CatanStats
 //
 //  Created by Aleksandr Mamlygo on 04.04.24.
-//  Copyright © 2024 tuist.io. All rights reserved.
 //
 
 import UIKit
@@ -29,17 +28,17 @@ final class NewRollCell: UICollectionViewCell {
 
 	// MARK: Internal methods
 	func configure(with model: DiceModel) {
-		switch model {
-		case let model as NumberDiceModel:
-			imageView.image = UIImage(systemName: "\(model.rollResult).circle")?
+		switch model.rollResult {
+		case .number(let value):
+			imageView.image = UIImage(systemName: "\(value).circle")?
 				.scalePreservingAspectRatio(targetSize: targetNumberImageSize)
 			backgroundColor = Color.red
-		case let model as ShipAndCastlesDiceModel:
-			switch model.rollResult {
+		case .castleShip(let castleShipResult):
+			switch castleShipResult {
 			case .ship:
 				imageView.image = UIImage(systemName: "sailboat")
 				backgroundColor = UIColor.systemGray
-			case .castle(color: let color):
+			case .castle(let color):
 				imageView.image = UIImage(systemName: "house.lodge")
 				switch color {
 				case .yellow:
@@ -50,8 +49,6 @@ final class NewRollCell: UICollectionViewCell {
 					backgroundColor = Color.lightBlue
 				}
 			}
-		default:
-			assertionFailure("New roll type not processed")
 		}
 	}
 

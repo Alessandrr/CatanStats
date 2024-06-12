@@ -38,8 +38,7 @@ struct RollDistributionChartView: View {
 	}
 
 	private func getRollDescriptionFromCounter(_ counter: RollModelCounter) -> String {
-		guard let diceModel = counter.diceModel as? (any Probabilistic) else { return "" }
-		return diceModel.rollResult.description
+		return counter.diceModel.rollResult.description
 	}
 
 	private func getRollCount() -> Int {
@@ -48,13 +47,11 @@ struct RollDistributionChartView: View {
 
 	private func expectedCount(rollsCount: Int, _ counter: RollModelCounter) -> Double {
 		let diceModel = counter.diceModel
-		switch diceModel {
-		case let diceModel as NumberDiceModel:
-			return Double(rollsCount) * diceModel.probability(for: diceModel.rollResult)
-		case let diceModel as ShipAndCastlesDiceModel:
-			return Double(rollsCount) * diceModel.probability(for: diceModel.rollResult)
-		default:
-			return 0
+		switch diceModel.rollResult {
+		case .number(let rollValue):
+			return Double(rollsCount) * DiceModel.probability(for: .number(rollValue))
+		case .castleShip(let castleShipResult):
+			return Double(rollsCount) * DiceModel.probability(for: .castleShip(castleShipResult))
 		}
 	}
 }
@@ -62,19 +59,10 @@ struct RollDistributionChartView: View {
 #Preview {
 	RollDistributionChartView(counterModel:
 		ChartCountersModel(counters:
-			[
-				RollModelCounter(diceModel: NumberDiceModel(rollResult: 2), count: 2),
-				RollModelCounter(diceModel: NumberDiceModel(rollResult: 3), count: 3),
-				RollModelCounter(diceModel: NumberDiceModel(rollResult: 4), count: 4),
-				RollModelCounter(diceModel: NumberDiceModel(rollResult: 5), count: 5),
-				RollModelCounter(diceModel: NumberDiceModel(rollResult: 6), count: 6),
-				RollModelCounter(diceModel: NumberDiceModel(rollResult: 7), count: 7),
-				RollModelCounter(diceModel: NumberDiceModel(rollResult: 8), count: 5),
-				RollModelCounter(diceModel: NumberDiceModel(rollResult: 9), count: 5),
-				RollModelCounter(diceModel: NumberDiceModel(rollResult: 10), count: 3),
-				RollModelCounter(diceModel: NumberDiceModel(rollResult: 11), count: 1),
-				RollModelCounter(diceModel: NumberDiceModel(rollResult: 12), count: 1)
-			]
+				(2...12).map { number in
+					let randomCount = Int.random(in: 2...10)
+					return RollModelCounter(diceModel: DiceModel(rollResult: .number(number)), count: randomCount)
+				}
 		)
 	)
 }

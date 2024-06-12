@@ -15,13 +15,13 @@ struct GameModelProvider: GameModelProviderProtocol {
 	func makeModelsForSection(_ section: RollSection) -> [DiceModel] {
 		switch section {
 		case .numberRolls:
-			(2...12).map { NumberDiceModel(rollResult: $0) }
+			(2...12).map { DiceModel(rollResult: .number($0)) }
 		case .shipAndCastles:
 			[
-				ShipAndCastlesDiceModel(rollResult: .ship),
-				ShipAndCastlesDiceModel(rollResult: .castle(color: .yellow)),
-				ShipAndCastlesDiceModel(rollResult: .castle(color: .blue)),
-				ShipAndCastlesDiceModel(rollResult: .castle(color: .green))
+				DiceModel(rollResult: .castleShip(.ship)),
+				DiceModel(rollResult: .castleShip(.castle(color: .yellow))),
+				DiceModel(rollResult: .castleShip(.castle(color: .blue))),
+				DiceModel(rollResult: .castleShip(.castle(color: .green)))
 			]
 		}
 	}

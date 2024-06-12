@@ -15,7 +15,6 @@
 		113E4001E8D31C235BF3A5A5 /* GameDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E7CC94B90F7FBCA5741A41 /* GameDetailsPresenter.swift */; };
 		12702FB8DC89B48744DE0E38 /* NewRollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5EF3B9AD3C88C8C0AE327E /* NewRollViewController.swift */; };
 		12DC914B7FDF409D76BEFCE4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BA590ED06C2CFE985953AB6 /* Localizable.strings */; };
-		13B10E6AEDB6A87C66D0C578 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F7604AF2E8B55FD62DE4BD /* AppTests.swift */; };
 		1525AC4247E804527856105D /* DiceRoll+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2760635E40B6453D49107A /* DiceRoll+CoreDataProperties.swift */; };
 		1F190988B2657F0C148CB6B3 /* Game+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5809355A53B7D67A562C6A3E /* Game+CoreDataClass.swift */; };
 		2A03A8F93B875F2296C31801 /* TabBarPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41156EC57A051B6791E6736 /* TabBarPage.swift */; };
@@ -130,7 +129,6 @@
 		9B39F6B73C362120A42642DE /* NewRollPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRollPresenterTests.swift; sourceTree = "<group>"; };
 		9B5399CCF7E72FFE65F648BC /* DiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceModel.swift; sourceTree = "<group>"; };
 		9D5BD30142B0F7EFF70876F3 /* UIImage+Scale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Scale.swift"; sourceTree = "<group>"; };
-		A1F7604AF2E8B55FD62DE4BD /* AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTests.swift; sourceTree = "<group>"; };
 		A63147C60EAB131889C7DE7E /* GameListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListTableViewCell.swift; sourceTree = "<group>"; };
 		A7E3AB24AAB4BE09B0ABFCBB /* GameModelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModelProvider.swift; sourceTree = "<group>"; };
 		AF27358E1D70896D00A857AE /* NewRollPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRollPresenter.swift; sourceTree = "<group>"; };
@@ -520,7 +518,6 @@
 			isa = PBXGroup;
 			children = (
 				C17D56FDCAC4212BEDEDFDC8 /* Test doubles */,
-				A1F7604AF2E8B55FD62DE4BD /* AppTests.swift */,
 				C923596410FB5D04F9B5D838 /* GameManagerTests.swift */,
 				9B39F6B73C362120A42642DE /* NewRollPresenterTests.swift */,
 			);
@@ -636,7 +633,6 @@
 			files = (
 				A17EF1029E3E81BF5E3A1173 /* TuistBundle+CatanStatsTests.swift in Sources */,
 				4065E151AED7E3FB9CE4BA52 /* TuistStrings+CatanStatsTests.swift in Sources */,
-				13B10E6AEDB6A87C66D0C578 /* AppTests.swift in Sources */,
 				08C180619E29D035C5F47B78 /* GameManagerTests.swift in Sources */,
 				903599D7F15624298A4DF14C /* NewRollPresenterTests.swift in Sources */,
 				F01C953A07407F7ADDA59248 /* GameManagerStub.swift in Sources */,

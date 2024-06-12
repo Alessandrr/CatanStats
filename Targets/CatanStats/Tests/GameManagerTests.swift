@@ -56,7 +56,6 @@ final class GameManagerTests: XCTestCase {
 			XCTAssertNil(error, "Managed context wasn't saved")
 		}
 
-		let endDate = Date()
 		XCTAssertEqual(expectedCount, getGameCount(), "Expected one game to be added")
 	}
 
@@ -82,17 +81,14 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertTrue(newGame === currentGame, "Wrong game was published")
 	}
 
-	func test_deleteGame_withTwoGames_shouldMakeCountOne() {
+	func test_deleteGame_withTwoGames_shouldMakeCountOne() throws {
 		let sut = makeGameManager()
-		let firstGame = sut.createGame()
+		_ = sut.createGame()
 		let secondGame = sut.createGame()
-		let gamePublishedExpectation = XCTestExpectation(description: "currentGamePublisher emitted a value other than the initial one")
 
-		guard let lastGameCreated = secondGame else {
-			XCTFail("Failed core data fetch")
-			return
-		}
-		let contextDidSaveExpectation = expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
+		let lastGameCreated = try XCTUnwrap(secondGame, "Create game method returned nil")
+
+		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
 		sut.deleteGame(lastGameCreated)
 		waitForExpectations(timeout: 0.5) { error in
 			XCTAssertNil(error, "Managed context wasn't saved")
@@ -102,12 +98,9 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertEqual(gameCount, 1, "Expected game count to be one")
 	}
 
-	func test_deleteGame_withOneGame_shouldPublishCurrentNil() {
+	func test_deleteGame_withOneGame_shouldPublishCurrentNil() throws {
 		let sut = makeGameManager()
-		guard let game = sut.createGame() else {
-			XCTFail("Creating game failed")
-			return
-		}
+		let game = try XCTUnwrap(sut.createGame(), "Create game method returned nil")
 		sut.setCurrentGame(game)
 
 		var currentGame: Game?
@@ -127,16 +120,10 @@ final class GameManagerTests: XCTestCase {
 		XCTAssertNil(currentGame, "Expected current game to be nil after deleting only game")
 	}
 
-	func test_deleteGame_nonCurrent_shouldNotPublish() {
+	func test_deleteGame_nonCurrent_shouldNotPublish() throws {
 		let sut = makeGameManager()
-		guard let firstGame = sut.createGame() else {
-			XCTFail("Creating game failed")
-			return
-		}
-		guard let secondGame = sut.createGame() else {
-			XCTFail("Creating game failed")
-			return
-		}
+		let firstGame = try XCTUnwrap(sut.createGame(), "Create game method returned nil")
+		let secondGame = try XCTUnwrap(sut.createGame(), "Create game method returned nil")
 		sut.setCurrentGame(secondGame)
 
 		let noEventExpectation = XCTestExpectation(description: "No update for current game should be emitted")
@@ -148,10 +135,10 @@ final class GameManagerTests: XCTestCase {
 			}
 			.store(in: &subscriptions)
 
-		let contetDidSaveExpectation = expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
+		let contextDidSaveExpectation = expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
 		sut.deleteGame(firstGame)
 
-		wait(for: [noEventExpectation, contetDidSaveExpectation], timeout: 0.5)
+		wait(for: [noEventExpectation, contextDidSaveExpectation], timeout: 0.5)
 	}
 }
 

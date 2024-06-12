@@ -3,7 +3,6 @@
 //  CatanStats
 //
 //  Created by Александр Мамлыго on /74/2567 BE.
-//  Copyright © 2567 BE tuist.io. All rights reserved.
 //
 
 import Foundation
@@ -36,17 +35,17 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 
 	// MARK: Internal methods
 	func didSelectRollItem(_ item: DiceModel) {
-		switch item {
-		case let item as NumberDiceModel:
+		switch item.rollResult {
+		case .number(let value):
 			guard let roll = NSEntityDescription.insertNewObject(
 				forEntityName: "DiceRoll",
 				into: coreDataStack.managedContext
 			) as? DiceRoll else { return }
-			roll.value = Int16(item.rollResult)
+			roll.value = Int16(value)
 			roll.dateCreated = Date.now
 			currentGame?.addToRolls(roll)
-		case let item as ShipAndCastlesDiceModel:
-			switch item.rollResult {
+		case .castleShip(let castleShipResult):
+			switch castleShipResult {
 			case .ship:
 				guard let ship = NSEntityDescription.insertNewObject(
 					forEntityName: "ShipRoll",
@@ -63,8 +62,6 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 				castle.color = color.rawValue
 				currentGame?.addToRolls(castle)
 			}
-		default:
-			assertionFailure("New type of roll not processed")
 		}
 		coreDataStack.saveContext()
 	}

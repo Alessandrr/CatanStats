@@ -31,7 +31,7 @@
 // MARK: NewRoll scene
 
 "newRoll.navigationBarTitle" = "Roll stats";
-"newRoll.overlayWarningText" = "Create a new game before proceeding";
+"newRoll.overlayWarningText" = "Create a new game on the second tab before proceeding";
 
 // MARK: GameDetails scene
 "gameDetails.diceCell" = "Rolled %d";

@@ -17,9 +17,19 @@ final class ChartCountersModel: ObservableObject {
 	func getCounters(for section: RollSection) -> [RollModelCounter] {
 		switch section {
 		case .numberRolls:
-			return counters.filter { $0.diceModel is NumberDiceModel }
+			return counters.filter {
+				if case .number = $0.diceModel.rollResult {
+					return true
+				}
+				return false
+			}
 		case .shipAndCastles:
-			return counters.filter { $0.diceModel is ShipAndCastlesDiceModel }
+			return counters.filter {
+				if case .castleShip = $0.diceModel.rollResult {
+					return true
+				}
+				return false
+			}
 		}
 	}
 }

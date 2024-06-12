@@ -57,7 +57,7 @@ public enum CatanStatsTestsStrings {
   public enum NewRoll {
   /// Roll stats
     public static let navigationBarTitle = CatanStatsTestsStrings.tr("Localizable", "newRoll.navigationBarTitle")
-    /// Create a new game before proceeding
+    /// Create a new game on the second tab before proceeding
     public static let overlayWarningText = CatanStatsTestsStrings.tr("Localizable", "newRoll.overlayWarningText")
   }
 
