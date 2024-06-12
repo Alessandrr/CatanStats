@@ -11,7 +11,7 @@ import CoreData
 final class GameDetailsAssembly {
 	func makeViewController(
 		coreDataStack: CoreDataStack,
-		gameID: NSManagedObjectID,
+		gameID: NSManagedObjectID?,
 		gameModelProvider: GameModelProviderProtocol = GameModelProvider()
 	) -> UIViewController {
 		let viewController = GameDetailsViewController()

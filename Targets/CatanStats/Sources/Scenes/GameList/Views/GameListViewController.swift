@@ -3,7 +3,6 @@
 //  CatanStats
 //
 //  Created by Aleksandr Mamlygo on 14.04.24.
-//  Copyright © 2024 tuist.io. All rights reserved.
 //
 
 import UIKit
@@ -39,10 +38,6 @@ final class GameListViewController: UITableViewController {
 		super.viewDidLoad()
 		setupUI()
 		setupDataSource()
-	}
-
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
 		presenter?.initialFetch()
 	}
 
@@ -56,11 +51,22 @@ final class GameListViewController: UITableViewController {
 			action: #selector(newGameTapped)
 		)
 
+		navigationItem.leftBarButtonItem = UIBarButtonItem(
+			image: UIImage(systemName: "chart.xyaxis.line"),
+			style: .plain,
+			target: self,
+			action: #selector(allTimeStatsTapped)
+		)
+
 		tableView.register(GameListTableViewCell.self, forCellReuseIdentifier: GameListTableViewCell.reuseIdentifier)
 	}
 
 	@objc private func newGameTapped() {
 		presenter?.addNewGame()
+	}
+
+	@objc private func allTimeStatsTapped() {
+		router.routeToGameDetails(for: nil)
 	}
 }
 
@@ -69,6 +75,7 @@ extension GameListViewController: GameListViewControllerProtocol {
 	func render() {
 		if let snapshot = dataSourceSnapshot {
 			dataSource?.apply(snapshot, animatingDifferences: true)
+			navigationItem.leftBarButtonItem?.isEnabled = snapshot.numberOfItems != 0
 		}
 	}
 

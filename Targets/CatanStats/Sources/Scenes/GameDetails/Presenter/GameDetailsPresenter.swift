@@ -24,7 +24,9 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 		)
 
 		fetchRequest.sortDescriptors = [sortDescriptor]
-		fetchRequest.predicate = NSPredicate(format: "game == %@", gameID)
+		if let gameID = gameID {
+			fetchRequest.predicate = NSPredicate(format: "game == %@", gameID)
+		}
 
 		let fetchedResultsController = NSFetchedResultsController(
 			fetchRequest: fetchRequest,
@@ -40,14 +42,14 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 	// MARK: Dependencies
 	private weak var viewController: GameDetailsViewControllerProtocol?
 	private var coreDataStack: CoreDataStack
-	private var gameID: NSManagedObjectID
+	private var gameID: NSManagedObjectID?
 	private var gameModelProvider: GameModelProviderProtocol
 
 	// MARK: Initialization
 	init(
 		viewController: GameDetailsViewControllerProtocol,
 		coreDataStack: CoreDataStack,
-		gameID: NSManagedObjectID,
+		gameID: NSManagedObjectID?,
 		gameModelProvider: GameModelProviderProtocol
 	) {
 		self.viewController = viewController

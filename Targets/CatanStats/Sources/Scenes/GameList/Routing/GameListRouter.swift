@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 
 protocol GameListRouterProtocol {
-	func routeToGameDetails(for gameID: NSManagedObjectID)
+	func routeToGameDetails(for gameID: NSManagedObjectID?)
 }
 
 final class GameListRouter: GameListRouterProtocol {
@@ -21,7 +21,7 @@ final class GameListRouter: GameListRouterProtocol {
 		self.coreDataStack = coreDataStack
 	}
 
-	func routeToGameDetails(for gameID: NSManagedObjectID) {
+	func routeToGameDetails(for gameID: NSManagedObjectID?) {
 		navigationController?.pushViewController(
 			GameDetailsAssembly().makeViewController(coreDataStack: coreDataStack, gameID: gameID),
 			animated: true
