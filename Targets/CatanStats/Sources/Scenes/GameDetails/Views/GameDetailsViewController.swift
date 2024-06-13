@@ -115,5 +115,7 @@ extension GameDetailsViewController: GameDetailsViewControllerProtocol {
 		self.snapshot = snapshot
 
 		chartCountersModel.counters = viewData.chartViewCounters
+
+		navigationItem.title = viewData.navigationTitle
 	}
 }

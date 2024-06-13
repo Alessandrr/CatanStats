@@ -37,6 +37,7 @@
 "gameDetails.diceCell" = "Rolled %d";
 "gameDetails.expectedCount" = "Expected count";
 "gameDetails.actualCount" = "Actual count";
+"gameDetails.allTimeStatsTitle" = "All time stats";
 
 // MARK: Common
 "shipDescription" = "Ship";

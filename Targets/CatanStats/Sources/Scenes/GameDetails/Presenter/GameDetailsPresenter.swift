@@ -76,6 +76,7 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 		let chartViewCounters: [RollModelCounter] = prepareDiceModelCountersForChart(counters)
 
 		return GameDetailsViewData(
+			navigationTitle: getGameDetailsTitle(),
 			tableViewCounters: tableViewCounters.filter { !$0.value.isEmpty },
 			chartViewCounters: chartViewCounters
 		)
@@ -164,6 +165,15 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 		}
 
 		return chartCounters
+	}
+
+	private func getGameDetailsTitle() -> String {
+		guard let gameID = gameID else {
+			return CatanStatsStrings.GameDetails.allTimeStatsTitle
+		}
+		let game = coreDataStack.managedContext.object(with: gameID) as? Game
+
+		return game?.title ?? ""
 	}
 }
 
