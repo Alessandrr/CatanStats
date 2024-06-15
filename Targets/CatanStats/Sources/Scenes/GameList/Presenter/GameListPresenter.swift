@@ -12,6 +12,8 @@ import Combine
 protocol GameListPresenterProtocol {
 	func initialFetch()
 	func getGameForCellAt(_ indexPath: IndexPath) -> Game
+	func gameSelectedAt(_ indexPath: IndexPath)
+	func allTimeStatsSelected()
 	func deleteGameAt(_ indexPath: IndexPath)
 	func addNewGame()
 	func currentGameSelectedAt(_ indexPath: IndexPath)
@@ -44,16 +46,19 @@ final class GameListPresenter: GameListPresenterProtocol {
 	private var coreDataStack: CoreDataStack
 	private var gameManager: GameManagerProtocol
 	private weak var viewController: GameListViewControllerProtocol?
+	private var router: GameListRouterProtocol
 
 	// MARK: Initialization
 	init (
 		coreDataStack: CoreDataStack,
 		gameListViewController: GameListViewControllerProtocol,
-		gameManager: GameManagerProtocol
+		gameManager: GameManagerProtocol,
+		router: GameListRouterProtocol
 	) {
 		self.coreDataStack = coreDataStack
 		self.viewController = gameListViewController
 		self.gameManager = gameManager
+		self.router = router
 		setupBindings()
 	}
 
@@ -69,6 +74,15 @@ final class GameListPresenter: GameListPresenterProtocol {
 
 	func getGameForCellAt(_ indexPath: IndexPath) -> Game {
 		fetchedResultsController.object(at: indexPath)
+	}
+
+	func gameSelectedAt(_ indexPath: IndexPath) {
+		let game = fetchedResultsController.object(at: indexPath)
+		router.routeToGameDetails(for: game.objectID)
+	}
+
+	func allTimeStatsSelected() {
+		router.routeToGameDetails(for: nil)
 	}
 
 	func deleteGameAt(_ indexPath: IndexPath) {

@@ -14,11 +14,12 @@ final class GameListAssembly {
 		gameManager: GameManager
 	) -> UIViewController {
 		let router = GameListRouter(navigationController: navigationController, coreDataStack: coreDataStack)
-		let viewController = GameListViewController(router: router)
+		let viewController = GameListViewController()
 		let presenter = GameListPresenter(
 			coreDataStack: coreDataStack,
 			gameListViewController: viewController,
-			gameManager: gameManager
+			gameManager: gameManager,
+			router: router
 		)
 
 		viewController.presenter = presenter

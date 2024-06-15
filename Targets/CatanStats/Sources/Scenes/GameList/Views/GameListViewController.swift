@@ -20,18 +20,7 @@ final class GameListViewController: UITableViewController {
 	private var dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, NSManagedObjectID>?
 
 	// MARK: Dependencies
-	private var router: GameListRouterProtocol
 	var presenter: GameListPresenterProtocol?
-
-	// MARK: Initialization
-	init(router: GameListRouterProtocol) {
-		self.router = router
-		super.init(nibName: nil, bundle: nil)
-	}
-
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
 
 	// MARK: View life cycle
 	override func viewDidLoad() {
@@ -66,7 +55,7 @@ final class GameListViewController: UITableViewController {
 	}
 
 	@objc private func allTimeStatsTapped() {
-		router.routeToGameDetails(for: nil)
+		presenter?.allTimeStatsSelected()
 	}
 }
 
@@ -108,8 +97,7 @@ extension GameListViewController {
 // MARK: TableView Delegate
 extension GameListViewController {
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		guard let gameId = dataSource?.itemIdentifier(for: indexPath) else { return }
-		router.routeToGameDetails(for: gameId)
+		presenter?.gameSelectedAt(indexPath)
 	}
 
 	override func tableView(
