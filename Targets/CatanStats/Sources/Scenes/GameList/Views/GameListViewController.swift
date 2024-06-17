@@ -116,8 +116,9 @@ extension GameListViewController {
 		let setCurrentAction = UIContextualAction(
 			style: .normal,
 			title: CatanStatsStrings.GameList.setCurrentActionTitle
-		) { [weak self] _, _, _ in
+		) { [weak self] _, _, actionPerformed in
 			self?.presenter?.currentGameSelectedAt(indexPath)
+			actionPerformed(true)
 		}
 		setCurrentAction.backgroundColor = Color.lightBlue
 

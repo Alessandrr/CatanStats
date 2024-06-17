@@ -107,6 +107,7 @@ final class GameListPresenter: GameListPresenterProtocol {
 		gameManager.currentGamePublisher
 			.scan((oldGame: Game?.none, newGame: Game?.none)) { ($0.1, $1) }
 			.sink { [weak self] (oldGame, newGame) in
+				if oldGame === newGame { return }
 				let idsToReconfigure = [oldGame, newGame]
 					.filter { $0?.managedObjectContext != nil }
 					.compactMap { $0?.objectID }
