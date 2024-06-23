@@ -8,7 +8,6 @@
 import Foundation
 
 struct GameDetailsViewData {
-	var navigationTitle: String
-	var tableViewCounters: [RollSection: [RollModelCounter]]
-	var chartViewCounters: [RollModelCounter]
+	var tableViewModels: [RollSection: [DiceModel]]
+	var chartViewModels: [DiceModel]
 }

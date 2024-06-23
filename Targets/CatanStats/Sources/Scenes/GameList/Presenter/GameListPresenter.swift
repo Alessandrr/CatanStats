@@ -43,10 +43,10 @@ final class GameListPresenter: GameListPresenterProtocol {
 	private var cancellables = Set<AnyCancellable>()
 
 	// MARK: Dependencies
-	private var coreDataStack: CoreDataStack
-	private var gameManager: GameManagerProtocol
+	private let coreDataStack: CoreDataStack
+	private let gameManager: GameManagerProtocol
 	private weak var viewController: GameListViewControllerProtocol?
-	private var router: GameListRouterProtocol
+	private let router: GameListRouterProtocol
 
 	// MARK: Initialization
 	init (
@@ -91,8 +91,7 @@ final class GameListPresenter: GameListPresenterProtocol {
 	}
 
 	func addNewGame() {
-		let newGame = gameManager.createGame()
-		if let newGame = newGame {
+		if let newGame = gameManager.createGame() {
 			gameManager.setCurrentGame(newGame)
 		}
 	}

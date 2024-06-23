@@ -21,8 +21,8 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 	private var cancellables = Set<AnyCancellable>()
 
 	// MARK: Dependencies
-	private var coreDataStack: CoreDataStack
-	private var gameManager: GameManagerProtocol
+	private let coreDataStack: CoreDataStack
+	private let gameManager: GameManagerProtocol
 	private weak var viewController: NewRollViewControllerProtocol?
 
 	// MARK: Initializer
@@ -37,30 +37,30 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 	func didSelectRollItem(_ item: DiceModel) {
 		switch item.rollResult {
 		case .number(let value):
-			guard let roll = NSEntityDescription.insertNewObject(
-				forEntityName: "DiceRoll",
+			guard let numberRoll = NSEntityDescription.insertNewObject(
+				forEntityName: "NumberRoll",
 				into: coreDataStack.managedContext
-			) as? DiceRoll else { return }
-			roll.value = Int16(value)
-			roll.dateCreated = Date.now
-			currentGame?.addToRolls(roll)
+			) as? NumberRoll else { return }
+			numberRoll.value = Int16(value)
+			numberRoll.dateCreated = Date.now
+			currentGame?.addToRolls(numberRoll)
 		case .castleShip(let castleShipResult):
 			switch castleShipResult {
 			case .ship:
-				guard let ship = NSEntityDescription.insertNewObject(
+				guard let shipRoll = NSEntityDescription.insertNewObject(
 					forEntityName: "ShipRoll",
 					into: coreDataStack.managedContext
 				) as? ShipRoll else { return }
-				ship.dateCreated = Date.now
-				currentGame?.addToRolls(ship)
+				shipRoll.dateCreated = Date.now
+				currentGame?.addToRolls(shipRoll)
 			case .castle(color: let color):
-				guard let castle = NSEntityDescription.insertNewObject(
+				guard let castleRoll = NSEntityDescription.insertNewObject(
 					forEntityName: "CastleRoll",
 					into: coreDataStack.managedContext
 				) as? CastleRoll else { return }
-				castle.dateCreated = Date.now
-				castle.color = color.rawValue
-				currentGame?.addToRolls(castle)
+				castleRoll.dateCreated = Date.now
+				castleRoll.color = color.rawValue
+				currentGame?.addToRolls(castleRoll)
 			}
 		}
 		coreDataStack.saveContext()

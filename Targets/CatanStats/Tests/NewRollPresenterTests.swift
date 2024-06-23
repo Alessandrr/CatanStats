@@ -34,8 +34,8 @@ final class NewRollPresenterTests: XCTestCase {
 
 		let savedRolls = try? fetchRolls()
 
-		guard let roll = savedRolls?.last as? DiceRoll else {
-			XCTFail("Expected to get DiceRoll")
+		guard let roll = savedRolls?.last as? NumberRoll else {
+			XCTFail("Expected to get NumberRoll")
 			return
 		}
 		XCTAssertNotNil(roll.dateCreated, "Expected date to be not nil")
@@ -54,7 +54,7 @@ final class NewRollPresenterTests: XCTestCase {
 		}
 		let savedGame = try? fetchGames().last
 
-		XCTAssertNotNil(savedGame?.rolls?.lastObject as? DiceRoll, "Expected dice roll to be added")
+		XCTAssertNotNil(savedGame?.rolls?.lastObject as? NumberRoll, "Expected dice roll to be added")
 	}
 
 	func test_didSelectRollItem_shipSelected_shouldSaveShip() {

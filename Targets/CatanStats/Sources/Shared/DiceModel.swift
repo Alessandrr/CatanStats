@@ -68,10 +68,12 @@ final class DiceModel: Hashable {
 
 	// MARK: Properties
 	let rollResult: RollResult
+	var counter: Int
 
 	// MARK: Initialization
-	init(rollResult: RollResult) {
+	init(rollResult: RollResult, counter: Int = 0) {
 		self.rollResult = rollResult
+		self.counter = counter
 	}
 
 	// MARK: Static functions

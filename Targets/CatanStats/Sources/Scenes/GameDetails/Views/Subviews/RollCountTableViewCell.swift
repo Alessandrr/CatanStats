@@ -11,9 +11,8 @@ final class RollCountTableViewCell: UITableViewCell {
 
 	static let reuseIdentifier = "rollCountTableViewCell"
 
-	func configure(with model: RollModelCounter) {
+	func configure(with diceModel: DiceModel) {
 		var contentConfiguration = UIListContentConfiguration.valueCell()
-		let diceModel = model.diceModel
 
 		switch diceModel.rollResult {
 		case .number(let rollValue):
@@ -27,7 +26,7 @@ final class RollCountTableViewCell: UITableViewCell {
 			}
 		}
 
-		contentConfiguration.secondaryText = model.count.formatted()
+		contentConfiguration.secondaryText = diceModel.counter.formatted()
 		self.contentConfiguration = contentConfiguration
 	}
 }

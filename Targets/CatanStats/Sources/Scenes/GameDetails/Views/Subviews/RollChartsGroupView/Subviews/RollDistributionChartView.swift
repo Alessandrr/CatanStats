@@ -9,21 +9,21 @@ import SwiftUI
 import Charts
 
 struct RollDistributionChartView: View {
-	@ObservedObject var counterModel: ChartCountersModel
+	@ObservedObject var viewModel: RollChartViewModel
 
 	var body: some View {
 		Chart {
-			ForEach(counterModel.counters, id: \.self) { counter in
+			ForEach(viewModel.diceModels, id: \.self) { diceModel in
 				BarMark(
-					x: .value("Roll", getRollDescriptionFromCounter(counter)),
-					y: .value("Count", counter.count)
+					x: .value("Roll", getRollDescriptionFromModel(diceModel)),
+					y: .value("Count", diceModel.counter)
 				)
 				RuleMark(
-					xStart: .value("Roll", getRollDescriptionFromCounter(counter)),
-					xEnd: .value("Roll", getRollDescriptionFromCounter(counter)),
+					xStart: .value("Roll", getRollDescriptionFromModel(diceModel)),
+					xEnd: .value("Roll", getRollDescriptionFromModel(diceModel)),
 					y: .value(
 						"Expected count",
-						expectedCount(rollsCount: getRollCount(), counter)
+						expectedCount(rollsCount: getRollCount(), diceModel)
 					)
 				)
 				.foregroundStyle(.purple)
@@ -37,16 +37,15 @@ struct RollDistributionChartView: View {
 		.padding()
 	}
 
-	private func getRollDescriptionFromCounter(_ counter: RollModelCounter) -> String {
-		return counter.diceModel.rollResult.description
+	private func getRollDescriptionFromModel(_ model: DiceModel) -> String {
+		return model.rollResult.description
 	}
 
 	private func getRollCount() -> Int {
-		counterModel.counters.reduce(0) { $0 + $1.count }
+		viewModel.diceModels.reduce(0) { $0 + $1.counter }
 	}
 
-	private func expectedCount(rollsCount: Int, _ counter: RollModelCounter) -> Double {
-		let diceModel = counter.diceModel
+	private func expectedCount(rollsCount: Int, _ diceModel: DiceModel) -> Double {
 		switch diceModel.rollResult {
 		case .number(let rollValue):
 			return Double(rollsCount) * DiceModel.probability(for: .number(rollValue))
@@ -57,11 +56,11 @@ struct RollDistributionChartView: View {
 }
 
 #Preview {
-	RollDistributionChartView(counterModel:
-		ChartCountersModel(counters:
-				(2...12).map { number in
+	RollDistributionChartView(viewModel:
+		RollChartViewModel(models:
+				(2...12).map { value in
 					let randomCount = Int.random(in: 2...10)
-					return RollModelCounter(diceModel: DiceModel(rollResult: .number(number)), count: randomCount)
+					return DiceModel(rollResult: .number(value), counter: randomCount)
 				}
 		)
 	)

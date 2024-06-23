@@ -8,28 +8,28 @@
 import SwiftUI
 
 struct RollChartsGroupView: View {
-	@ObservedObject var counterModel: ChartCountersModel
+	@ObservedObject var viewModel: RollChartViewModel
 
-	private var numberRollsCounters: [RollModelCounter] {
-		counterModel.getCounters(for: .numberRolls)
+	private var numberRolls: [DiceModel] {
+		viewModel.getModels(for: .numberRolls)
 	}
 
-	private var shipAndCastlesRollsCounters: [RollModelCounter] {
-		counterModel.getCounters(for: .shipAndCastles)
+	private var shipAndCastlesRolls: [DiceModel] {
+		viewModel.getModels(for: .shipAndCastles)
 	}
 
 	var body: some View {
 		TabView {
 			RollDistributionChartView(
-				counterModel: ChartCountersModel(
-					counters: numberRollsCounters
+				viewModel: RollChartViewModel(
+					models: numberRolls
 				)
 			)
 			.padding(EdgeInsets(top: 0, leading: 0, bottom: Sizes.Padding.large, trailing: 0))
 
 			RollDistributionChartView(
-				counterModel: ChartCountersModel(
-					counters: shipAndCastlesRollsCounters
+				viewModel: RollChartViewModel(
+					models: shipAndCastlesRolls
 				)
 			)
 			.padding(EdgeInsets(top: 0, leading: 0, bottom: Sizes.Padding.large, trailing: 0))
@@ -41,11 +41,11 @@ struct RollChartsGroupView: View {
 
 #Preview {
 	RollChartsGroupView(
-		counterModel: ChartCountersModel(
-			counters:
+		viewModel: RollChartViewModel(
+			models:
 				(2...12).map { number in
 					let randomCount = Int.random(in: 2...10)
-					return RollModelCounter(diceModel: DiceModel(rollResult: .number(number)), count: randomCount)
+					return DiceModel(rollResult: .number(number), counter: randomCount)
 				}
 		)
 	)

@@ -10,6 +10,7 @@ import SwiftUI
 
 protocol GameDetailsViewControllerProtocol: AnyObject {
 	func render(_ viewData: GameDetailsViewData)
+	func setTitle(_ title: String)
 }
 
 final class GameDetailsViewController: UIViewController {
@@ -22,13 +23,13 @@ final class GameDetailsViewController: UIViewController {
 	}()
 	private lazy var chartHostingController: UIHostingController<RollChartsGroupView> = {
 		return UIHostingController(
-			rootView: RollChartsGroupView(counterModel: chartCountersModel)
+			rootView: RollChartsGroupView(viewModel: chartViewModel)
 		)
 	}()
 
-	private var dataSource: UITableViewDiffableDataSource<RollSection, RollModelCounter>?
-	private var snapshot: NSDiffableDataSourceSnapshot<RollSection, RollModelCounter>?
-	private var chartCountersModel = ChartCountersModel()
+	private var dataSource: UITableViewDiffableDataSource<RollSection, DiceModel>?
+	private var snapshot: NSDiffableDataSourceSnapshot<RollSection, DiceModel>?
+	private var chartViewModel = RollChartViewModel()
 
 	// MARK: Dependencies
 	var presenter: GameDetailsPresenterProtocol?
@@ -41,12 +42,6 @@ final class GameDetailsViewController: UIViewController {
 		setupDataSource()
 		presenter?.loadData()
 		layout()
-	}
-
-	override func viewDidAppear(_ animated: Bool) {
-		if let snapshot = snapshot {
-			dataSource?.apply(snapshot, animatingDifferences: true)
-		}
 	}
 }
 
@@ -77,13 +72,13 @@ private extension GameDetailsViewController {
 	func setupDataSource() {
 		tableView.register(RollCountTableViewCell.self, forCellReuseIdentifier: RollCountTableViewCell.reuseIdentifier)
 
-		dataSource = UITableViewDiffableDataSource(tableView: tableView) { tableView, indexPath, rollModelCounter in
+		dataSource = UITableViewDiffableDataSource(tableView: tableView) { tableView, indexPath, diceModel in
 			guard let cell = tableView.dequeueReusableCell(
 				withIdentifier: RollCountTableViewCell.reuseIdentifier,
 				for: indexPath
 			) as? RollCountTableViewCell else { return UITableViewCell() }
 
-			cell.configure(with: rollModelCounter)
+			cell.configure(with: diceModel)
 			return cell
 		}
 	}
@@ -104,18 +99,24 @@ extension GameDetailsViewController: UITableViewDelegate {
 
 // MARK: GameDetailsViewControllerProtocol
 extension GameDetailsViewController: GameDetailsViewControllerProtocol {
+	func setTitle(_ title: String) {
+		navigationItem.title = title
+	}
+
 	func render(_ viewData: GameDetailsViewData) {
-		var snapshot = NSDiffableDataSourceSnapshot<RollSection, RollModelCounter>()
-		snapshot.appendSections(Array(viewData.tableViewCounters.keys).sorted())
+		var snapshot = NSDiffableDataSourceSnapshot<RollSection, DiceModel>()
+		snapshot.appendSections(Array(viewData.tableViewModels.keys).sorted())
 
 		for section in snapshot.sectionIdentifiers {
-			guard let counters = viewData.tableViewCounters[section] else { return }
-			snapshot.appendItems(counters, toSection: section)
+			guard let diceModels = viewData.tableViewModels[section] else { return }
+			snapshot.appendItems(diceModels, toSection: section)
 		}
 		self.snapshot = snapshot
 
-		chartCountersModel.counters = viewData.chartViewCounters
+		chartViewModel.diceModels = viewData.chartViewModels
 
-		navigationItem.title = viewData.navigationTitle
+		if let newSnapshot = self.snapshot {
+			dataSource?.apply(newSnapshot, animatingDifferences: false)
+		}
 	}
 }
