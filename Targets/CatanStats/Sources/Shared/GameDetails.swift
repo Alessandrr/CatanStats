@@ -1,15 +1,13 @@
 //
-//  Game+CoreDataClass.swift
+//  GameDetails.swift
 //  CatanStats
 //
 //  Created by Aleksandr Mamlygo on 24.06.24.
 //
-//
 
 import Foundation
-import CoreData
 
-
-public class Game: NSManagedObject {
-
+struct GameDetails {
+	let title: String
+	let playerNames: [String]
 }

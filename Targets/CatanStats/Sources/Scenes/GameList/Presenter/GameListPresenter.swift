@@ -15,7 +15,7 @@ protocol GameListPresenterProtocol {
 	func gameSelectedAt(_ indexPath: IndexPath)
 	func allTimeStatsSelected()
 	func deleteGameAt(_ indexPath: IndexPath)
-	func addNewGame()
+	func didSelectAddGame()
 	func currentGameSelectedAt(_ indexPath: IndexPath)
 }
 
@@ -90,10 +90,8 @@ final class GameListPresenter: GameListPresenterProtocol {
 		gameManager.deleteGame(gameToDelete)
 	}
 
-	func addNewGame() {
-		if let newGame = gameManager.createGame() {
-			gameManager.setCurrentGame(newGame)
-		}
+	func didSelectAddGame() {
+		router.routeToNewGame()
 	}
 
 	func currentGameSelectedAt(_ indexPath: IndexPath) {

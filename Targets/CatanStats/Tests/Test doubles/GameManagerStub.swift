@@ -16,6 +16,8 @@ final class GameManagerStub: GameManagerProtocol {
 		return Just(stubGame).eraseToAnyPublisher()
 	}
 
+	private(set) var didCallRollAdded = false
+
 	private var coreDataStack: CoreDataStack
 	private var stubGame: Game?
 
@@ -25,15 +27,27 @@ final class GameManagerStub: GameManagerProtocol {
 			forEntityName: "Game",
 			into: coreDataStack.managedContext
 		) as? Game
+		stubGame?.isCurrent = true
+
+		guard let stubPlayer = NSEntityDescription.insertNewObject(
+			forEntityName: "Player",
+			into: coreDataStack.managedContext
+		) as? Player else { return }
+		stubGame?.insertIntoPlayers(stubPlayer, at: 0)
 	}
 
 	func deleteGame(_ game: CatanStats.Game) {
 	}
 
-	func createGame() -> Game? {
+
+	func setCurrentGame(_ game: CatanStats.Game) {
+	}
+
+	func createGame(with gameDetails: CatanStats.GameDetails) -> CatanStats.Game? {
 		return nil
 	}
 
-	func setCurrentGame(_ game: CatanStats.Game) {
+	func rollAdded() {
+		didCallRollAdded = true
 	}
 }

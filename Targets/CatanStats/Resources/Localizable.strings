@@ -28,6 +28,11 @@
 "gameList.setCurrentActionTitle" = "Activate";
 "gameList.gameCellCurrentLabel" = "Current";
 
+// MARK: NewGame scene
+
+"newGame.navigationBarTitle" = "Add game";
+"newGame.playerNamePlaceholder" = "Player %d";
+
 // MARK: NewRoll scene
 
 "newRoll.navigationBarTitle" = "Roll stats";

@@ -35,6 +35,8 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 
 	// MARK: Internal methods
 	func didSelectRollItem(_ item: DiceModel) {
+		let currentPlayer = getCurrentPlayer()
+
 		switch item.rollResult {
 		case .number(let value):
 			guard let numberRoll = NSEntityDescription.insertNewObject(
@@ -44,6 +46,7 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 			numberRoll.value = Int16(value)
 			numberRoll.dateCreated = Date.now
 			currentGame?.addToRolls(numberRoll)
+			currentPlayer?.addToRolls(numberRoll)
 		case .castleShip(let castleShipResult):
 			switch castleShipResult {
 			case .ship:
@@ -53,6 +56,7 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 				) as? ShipRoll else { return }
 				shipRoll.dateCreated = Date.now
 				currentGame?.addToRolls(shipRoll)
+				currentPlayer?.addToRolls(shipRoll)
 			case .castle(color: let color):
 				guard let castleRoll = NSEntityDescription.insertNewObject(
 					forEntityName: "CastleRoll",
@@ -61,8 +65,10 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 				castleRoll.dateCreated = Date.now
 				castleRoll.color = color.rawValue
 				currentGame?.addToRolls(castleRoll)
+				currentPlayer?.addToRolls(castleRoll)
 			}
 		}
+		gameManager.rollAdded()
 		coreDataStack.saveContext()
 	}
 
@@ -77,9 +83,20 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 	}
 
 	// MARK: Private methods
+	private func getCurrentPlayer() -> Player? {
+		guard let currentGame = currentGame else { return nil }
+		let currentPlayerIndex = Int(currentGame.currentPlayerIndex)
+		guard let players = currentGame.players,
+			(0..<players.count).contains(currentPlayerIndex) else {
+			return nil
+		}
+		return players[currentPlayerIndex] as? Player
+	}
+
 	private func setupBindings() {
 		gameManager.currentGamePublisher
-			.sink { [unowned self] game in
+			.sink { [weak self] game in
+				guard let self = self else { return }
 				currentGame = game
 				viewController?.render(newRollsDisabled: currentGame == nil)
 			}

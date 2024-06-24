@@ -10,20 +10,30 @@ import CoreData
 
 protocol GameListRouterProtocol {
 	func routeToGameDetails(for gameID: NSManagedObjectID?)
+	func routeToNewGame()
 }
 
 final class GameListRouter: GameListRouterProtocol {
 	private weak var navigationController: UINavigationController?
-	private var coreDataStack: CoreDataStack
+	private let coreDataStack: CoreDataStack
+	private let gameManager: GameManagerProtocol
 
-	init(navigationController: UINavigationController?, coreDataStack: CoreDataStack) {
+	init(navigationController: UINavigationController?, coreDataStack: CoreDataStack, gameManager: GameManagerProtocol) {
 		self.navigationController = navigationController
 		self.coreDataStack = coreDataStack
+		self.gameManager = gameManager
 	}
 
 	func routeToGameDetails(for gameID: NSManagedObjectID?) {
 		navigationController?.pushViewController(
 			GameDetailsAssembly().makeViewController(coreDataStack: coreDataStack, gameID: gameID),
+			animated: true
+		)
+	}
+
+	func routeToNewGame() {
+		navigationController?.present(
+			UINavigationController(rootViewController: NewGameAssembly().makeViewController(gameManager: gameManager)),
 			animated: true
 		)
 	}

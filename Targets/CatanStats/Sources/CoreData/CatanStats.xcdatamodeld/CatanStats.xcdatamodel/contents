@@ -4,17 +4,25 @@
         <attribute name="color" optional="YES" attributeType="String" valueTransformerName="ColorAttributeTransformer" customClassName="UIColor"/>
     </entity>
     <entity name="Game" representedClassName=".Game" syncable="YES">
+        <attribute name="currentPlayerIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="isCurrent" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="players" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Player" inverseName="game" inverseEntity="Player"/>
         <relationship name="rolls" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Roll" inverseName="game" inverseEntity="Roll"/>
     </entity>
     <entity name="NumberRoll" representedClassName=".NumberRoll" parentEntity="Roll" syncable="YES">
         <attribute name="value" attributeType="Integer 16" minValueString="2" maxValueString="12" defaultValueString="2" usesScalarValueType="YES"/>
     </entity>
+    <entity name="Player" representedClassName="Player" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="game" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Game" inverseName="players" inverseEntity="Game"/>
+        <relationship name="rolls" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Roll" inverseName="player" inverseEntity="Roll"/>
+    </entity>
     <entity name="Roll" representedClassName=".Roll" isAbstract="YES" syncable="YES">
         <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="game" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Game" inverseName="rolls" inverseEntity="Game"/>
+        <relationship name="player" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Player" inverseName="rolls" inverseEntity="Player"/>
     </entity>
     <entity name="ShipRoll" representedClassName=".ShipRoll" parentEntity="Roll" syncable="YES"/>
 </model>

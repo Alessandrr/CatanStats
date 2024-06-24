@@ -51,7 +51,7 @@ final class GameListViewController: UITableViewController {
 	}
 
 	@objc private func newGameTapped() {
-		presenter?.addNewGame()
+		presenter?.didSelectAddGame()
 	}
 
 	@objc private func allTimeStatsTapped() {

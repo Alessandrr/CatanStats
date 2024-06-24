@@ -56,6 +56,15 @@ public enum CatanStatsStrings {
     public static let setCurrentActionTitle = CatanStatsStrings.tr("Localizable", "gameList.setCurrentActionTitle")
   }
 
+  public enum NewGame {
+  /// Add game
+    public static let navigationBarTitle = CatanStatsStrings.tr("Localizable", "newGame.navigationBarTitle")
+    /// Player %d
+    public static func playerNamePlaceholder(_ p1: Int) -> String {
+      return CatanStatsStrings.tr("Localizable", "newGame.playerNamePlaceholder",p1)
+    }
+  }
+
   public enum NewRoll {
   /// Roll stats
     public static let navigationBarTitle = CatanStatsStrings.tr("Localizable", "newRoll.navigationBarTitle")

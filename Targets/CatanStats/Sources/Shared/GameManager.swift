@@ -11,8 +11,9 @@ import Combine
 
 protocol GameManagerProtocol {
 	func deleteGame(_ game: Game)
-	func createGame() -> Game?
+	func createGame(with gameDetails: GameDetails) -> Game?
 	func setCurrentGame(_ game: Game)
+	func rollAdded()
 	var currentGamePublisher: AnyPublisher<Game?, Never> { get }
 }
 
@@ -51,23 +52,36 @@ final class GameManager: GameManagerProtocol {
 		}
 	}
 
-	func createGame() -> Game? {
+	func createGame(with gameDetails: GameDetails) -> Game? {
 		do {
-			let gameRequest = Game.fetchRequest()
-			let gameCount = try coreDataStack.managedContext.count(for: gameRequest)
 			guard let newGame = NSEntityDescription.insertNewObject(
 				forEntityName: "Game",
 				into: coreDataStack.managedContext
 			) as? Game else { return nil }
 			newGame.dateCreated = Date.now
-			newGame.title = CatanStatsStrings.GameList.sectionTitle(gameCount + 1)
+			newGame.title = gameDetails.title
+			gameDetails.playerNames.forEach { playerName in
+				guard let player = createPlayer(name: playerName) else { return }
+				newGame.addToPlayers(player)
+			}
+			newGame.currentPlayerIndex = 0
 			try coreDataStack.managedContext.obtainPermanentIDs(for: [newGame])
 			coreDataStack.saveContext()
 			return newGame
-		} catch let error {
+		} catch {
 			assertionFailure(error.localizedDescription)
 		}
 		return nil
+	}
+
+	func rollAdded() {
+		guard let currentGame = currentGameSubject.value else { return }
+		guard let playerCount = currentGame.players?.count else { return }
+		if (0..<playerCount).contains(Int(currentGame.currentPlayerIndex + 1)) {
+			currentGame.currentPlayerIndex += 1
+		} else {
+			currentGame.currentPlayerIndex = 0
+		}
 	}
 
 	// MARK: Private Methods
@@ -106,6 +120,15 @@ final class GameManager: GameManagerProtocol {
 		try? coreDataStack.managedContext.obtainPermanentIDs(for: [firstGame])
 		coreDataStack.saveContext()
 		return firstGame
+	}
+
+	private func createPlayer(name: String) -> Player? {
+		guard let player = NSEntityDescription.insertNewObject(
+			forEntityName: "Player",
+			into: coreDataStack.managedContext
+		) as? Player else { return nil }
+		player.name = name
+		return player
 	}
 
 	private func setupBindings() {

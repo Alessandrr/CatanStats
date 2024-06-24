@@ -14,6 +14,11 @@ enum Color {
 		dark: UIColor(red: 157, green: 71, blue: 71)
 	)
 
+	static let lightRed = UIColor.color(
+		light: UIColor(red: 255, green: 204, blue: 204),
+		dark: UIColor(red: 255, green: 77, blue: 77)
+	)
+
 	static let green = UIColor.color(
 		light: UIColor(red: 187, green: 201, blue: 173),
 		dark: UIColor(red: 137, green: 151, blue: 123)
