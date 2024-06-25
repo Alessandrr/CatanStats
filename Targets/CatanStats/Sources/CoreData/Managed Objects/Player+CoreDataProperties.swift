@@ -17,6 +17,7 @@ extension Player {
     }
 
     @NSManaged public var name: String?
+    @NSManaged public var isCurrent: Bool
     @NSManaged public var game: Game?
     @NSManaged public var rolls: NSOrderedSet?
 

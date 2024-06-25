@@ -14,7 +14,9 @@ protocol GameManagerProtocol {
 	func createGame(with gameDetails: GameDetails) -> Game?
 	func setCurrentGame(_ game: Game)
 	func rollAdded()
+	func rollUndone()
 	var currentGamePublisher: AnyPublisher<Game?, Never> { get }
+	var currentPlayerPublisher: AnyPublisher<Player?, Never> { get }
 }
 
 final class GameManager: GameManagerProtocol {
@@ -24,8 +26,14 @@ final class GameManager: GameManagerProtocol {
 		return currentGameSubject.eraseToAnyPublisher()
 	}
 
+	var currentPlayerPublisher: AnyPublisher<Player?, Never> {
+		return currentPlayerSubject.eraseToAnyPublisher()
+	}
+
 	// MARK: Private properties
+	// TODO: Add error instead of nil?
 	private var currentGameSubject = CurrentValueSubject<Game?, Never>(nil)
+	private var currentPlayerSubject = CurrentValueSubject<Player?, Never>(nil)
 	private var cancellables = Set<AnyCancellable>()
 
 	// MARK: Dependencies
@@ -36,6 +44,7 @@ final class GameManager: GameManagerProtocol {
 		self.coreDataStack = coreDataStack
 		setupBindings()
 		fetchCurrentGame()
+		fetchCurrentPlayer()
 	}
 
 	// MARK: Internal Methods
@@ -65,6 +74,7 @@ final class GameManager: GameManagerProtocol {
 				newGame.addToPlayers(player)
 			}
 			newGame.currentPlayerIndex = 0
+			currentPlayerSubject.value = newGame.players?[0] as? Player
 			try coreDataStack.managedContext.obtainPermanentIDs(for: [newGame])
 			coreDataStack.saveContext()
 			return newGame
@@ -82,6 +92,21 @@ final class GameManager: GameManagerProtocol {
 		} else {
 			currentGame.currentPlayerIndex = 0
 		}
+		let playerIndex = Int(currentGame.currentPlayerIndex)
+		currentPlayerSubject.value = currentGame.players?[playerIndex] as? Player
+	}
+
+	func rollUndone() {
+		guard let currentGame = currentGameSubject.value else { return }
+		guard let playerCount = currentGame.players?.count else { return }
+
+		if currentGame.currentPlayerIndex > 0 {
+			currentGame.currentPlayerIndex -= 1
+		} else {
+			currentGame.currentPlayerIndex = Int16(playerCount - 1)
+		}
+		let playerIndex = Int(currentGame.currentPlayerIndex)
+		currentPlayerSubject.value = currentGame.players?[playerIndex] as? Player
 	}
 
 	// MARK: Private Methods
@@ -105,6 +130,18 @@ final class GameManager: GameManagerProtocol {
 		do {
 			let results = try coreDataStack.managedContext.fetch(gameRequest)
 			currentGameSubject.value = results.last
+		} catch let error {
+			assertionFailure(error.localizedDescription)
+		}
+	}
+
+	private func fetchCurrentPlayer() {
+		let gameRequest = Player.fetchRequest()
+		gameRequest.predicate = NSPredicate(format: "isCurrent == %@", NSNumber(value: true))
+
+		do {
+			let results = try coreDataStack.managedContext.fetch(gameRequest)
+			currentPlayerSubject.value = results.last
 		} catch let error {
 			assertionFailure(error.localizedDescription)
 		}
@@ -139,6 +176,15 @@ final class GameManager: GameManagerProtocol {
 					oldGame?.isCurrent = false
 				}
 				newGame?.isCurrent = true
+				self?.coreDataStack.saveContext()
+			}
+			.store(in: &cancellables)
+
+		currentPlayerSubject
+			.scan((oldPlayer: Player?.none, newPlayer: Player?.none)) { ($0.1, $1) }
+			.sink { [weak self] (oldPlayer, newPlayer) in
+				oldPlayer?.isCurrent = false
+				newPlayer?.isCurrent = true
 				self?.coreDataStack.saveContext()
 			}
 			.store(in: &cancellables)

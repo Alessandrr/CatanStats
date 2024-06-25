@@ -12,12 +12,14 @@ import Combine
 protocol NewRollPresenterProtocol {
 	func didSelectRollItem(_ item: DiceModel)
 	func undoRoll()
+	func initialSetup()
 }
 
 final class NewRollPresenter: NewRollPresenterProtocol {
 
 	// MARK: Private properties
 	private var currentGame: Game?
+	private var currentPlayer: Player?
 	private var cancellables = Set<AnyCancellable>()
 
 	// MARK: Dependencies
@@ -30,13 +32,14 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 		self.coreDataStack = coreDataStack
 		self.gameManager = gameManager
 		self.viewController = viewController
-		setupBindings()
 	}
 
 	// MARK: Internal methods
-	func didSelectRollItem(_ item: DiceModel) {
-		let currentPlayer = getCurrentPlayer()
+	func initialSetup() {
+		setupBindings()
+	}
 
+	func didSelectRollItem(_ item: DiceModel) {
 		switch item.rollResult {
 		case .number(let value):
 			guard let numberRoll = NSEntityDescription.insertNewObject(
@@ -79,26 +82,26 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 
 		guard let lastRoll = try? coreDataStack.managedContext.fetch(rollRequest).last else { return }
 		coreDataStack.managedContext.delete(lastRoll)
+		gameManager.rollUndone()
 		coreDataStack.saveContext()
 	}
 
 	// MARK: Private methods
-	private func getCurrentPlayer() -> Player? {
-		guard let currentGame = currentGame else { return nil }
-		let currentPlayerIndex = Int(currentGame.currentPlayerIndex)
-		guard let players = currentGame.players,
-			(0..<players.count).contains(currentPlayerIndex) else {
-			return nil
-		}
-		return players[currentPlayerIndex] as? Player
-	}
-
 	private func setupBindings() {
 		gameManager.currentGamePublisher
 			.sink { [weak self] game in
 				guard let self = self else { return }
 				currentGame = game
-				viewController?.render(newRollsDisabled: currentGame == nil)
+				viewController?.renderOverlay(newRollsDisabled: currentGame == nil)
+			}
+			.store(in: &cancellables)
+
+		gameManager.currentPlayerPublisher
+			.sink { [weak self] player in
+				guard let self = self else { return }
+				currentPlayer = player
+				guard let playerName = player?.name else { return }
+				viewController?.renderCurrentPlayer(playerName)
 			}
 			.store(in: &cancellables)
 	}

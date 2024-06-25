@@ -9,6 +9,9 @@ import Foundation
 @testable import CatanStats
 
 final class NewRollViewControllerStub: NewRollViewControllerProtocol {
-	func render(newRollsDisabled: Bool) {
+	func renderCurrentPlayer(_ name: String) {
+	}
+	
+	func renderOverlay(newRollsDisabled: Bool) {
 	}
 }

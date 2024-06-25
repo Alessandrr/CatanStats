@@ -9,7 +9,8 @@
 import UIKit
 
 protocol NewRollViewControllerProtocol: AnyObject {
-	func render(newRollsDisabled: Bool)
+	func renderOverlay(newRollsDisabled: Bool)
+	func renderCurrentPlayer(_ name: String)
 }
 
 final class NewRollViewController: UIViewController {
@@ -52,6 +53,7 @@ final class NewRollViewController: UIViewController {
 		configureCollectionView()
 		configureDataSource()
 		setupUI()
+		presenter?.initialSetup()
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
@@ -136,8 +138,12 @@ extension NewRollViewController {
 
 // MARK: NewRollViewControllerProtocol
 extension NewRollViewController: NewRollViewControllerProtocol {
-	func render(newRollsDisabled: Bool) {
+	func renderOverlay(newRollsDisabled: Bool) {
 		overlayView.isHidden = !newRollsDisabled
+	}
+
+	func renderCurrentPlayer(_ name: String) {
+		navigationItem.title = "\(name) rolls"
 	}
 }
 

@@ -15,6 +15,7 @@
         <attribute name="value" attributeType="Integer 16" minValueString="2" maxValueString="12" defaultValueString="2" usesScalarValueType="YES"/>
     </entity>
     <entity name="Player" representedClassName="Player" syncable="YES">
+        <attribute name="isCurrent" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="game" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Game" inverseName="players" inverseEntity="Game"/>
         <relationship name="rolls" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Roll" inverseName="player" inverseEntity="Roll"/>
