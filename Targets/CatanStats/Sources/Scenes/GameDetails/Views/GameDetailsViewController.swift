@@ -27,9 +27,9 @@ final class GameDetailsViewController: UIViewController {
 		)
 	}()
 
-	private var dataSource: UITableViewDiffableDataSource<RollSection, DiceModel>?
-	private var snapshot: NSDiffableDataSourceSnapshot<RollSection, DiceModel>?
-	private var chartViewModel = RollChartViewModel()
+	private var dataSource: UITableViewDiffableDataSource<RollSection, TableRollDisplayItem>?
+	private var snapshot: NSDiffableDataSourceSnapshot<RollSection, TableRollDisplayItem>?
+	private var chartViewModel = RollChartGroupViewModel()
 
 	// MARK: Dependencies
 	var presenter: GameDetailsPresenterProtocol?
@@ -72,13 +72,13 @@ private extension GameDetailsViewController {
 	func setupDataSource() {
 		tableView.register(RollCountTableViewCell.self, forCellReuseIdentifier: RollCountTableViewCell.reuseIdentifier)
 
-		dataSource = UITableViewDiffableDataSource(tableView: tableView) { tableView, indexPath, diceModel in
+		dataSource = UITableViewDiffableDataSource(tableView: tableView) { tableView, indexPath, displayItem in
 			guard let cell = tableView.dequeueReusableCell(
 				withIdentifier: RollCountTableViewCell.reuseIdentifier,
 				for: indexPath
 			) as? RollCountTableViewCell else { return UITableViewCell() }
 
-			cell.configure(with: diceModel)
+			cell.configure(with: displayItem)
 			return cell
 		}
 	}
@@ -104,7 +104,7 @@ extension GameDetailsViewController: GameDetailsViewControllerProtocol {
 	}
 
 	func render(_ viewData: GameDetailsViewData) {
-		var snapshot = NSDiffableDataSourceSnapshot<RollSection, DiceModel>()
+		var snapshot = NSDiffableDataSourceSnapshot<RollSection, TableRollDisplayItem>()
 		snapshot.appendSections(Array(viewData.tableViewModels.keys).sorted())
 
 		for section in snapshot.sectionIdentifiers {
@@ -113,7 +113,7 @@ extension GameDetailsViewController: GameDetailsViewControllerProtocol {
 		}
 		self.snapshot = snapshot
 
-		chartViewModel.diceModels = viewData.chartViewModels
+		chartViewModel.displayItems = viewData.chartViewModels
 
 		if let newSnapshot = self.snapshot {
 			dataSource?.apply(newSnapshot, animatingDifferences: false)

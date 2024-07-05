@@ -9,6 +9,9 @@ import Foundation
 @testable import CatanStats
 
 final class NewRollViewControllerStub: NewRollViewControllerProtocol {
+	func renderUndoButton(undoPossible: Bool) {
+	}
+	
 	func renderCurrentPlayer(_ name: String) {
 	}
 	

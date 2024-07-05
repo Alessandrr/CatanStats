@@ -49,7 +49,7 @@ final class GameManagerStub: GameManagerProtocol {
 	func setCurrentGame(_ game: CatanStats.Game) {
 	}
 
-	func createGame(with gameDetails: CatanStats.GameDetails) -> CatanStats.Game? {
+	func createGame(with gameDetails: CatanStats.GameData) -> CatanStats.Game? {
 		return nil
 	}
 

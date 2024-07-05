@@ -39,7 +39,7 @@
 "newRoll.overlayWarningText" = "Create a new game on the second tab before proceeding";
 
 // MARK: GameDetails scene
-"gameDetails.diceCell" = "Rolled %d";
+"gameDetails.numberRollDescription" = "Rolled %@";
 "gameDetails.expectedCount" = "Expected count";
 "gameDetails.actualCount" = "Actual count";
 "gameDetails.allTimeStatsTitle" = "All time stats";

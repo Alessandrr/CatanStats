@@ -13,36 +13,25 @@ struct RollDistributionChartView: View {
 
 	var body: some View {
 		Chart {
-			ForEach(viewModel.diceModels, id: \.self) { diceModel in
+			ForEach(viewModel.displayItems, id: \.self) { displayItem in
 				BarMark(
-					x: .value("Roll", getRollDescriptionFromModel(diceModel)),
-					y: .value("Count", diceModel.counter)
+					x: .value("Roll", displayItem.description),
+					y: .value("Count", displayItem.count)
 				)
-				RuleMark(
-					xStart: .value("Roll", getRollDescriptionFromModel(diceModel)),
-					xEnd: .value("Roll", getRollDescriptionFromModel(diceModel)),
-					y: .value(
-						"Expected count",
-						expectedCount(rollsCount: getRollCount(), diceModel)
-					)
-				)
-				.foregroundStyle(.purple)
-				.lineStyle(.init(lineWidth: 3))
+				.foregroundStyle(by: .value("Player", displayItem.playerName))
+//				RuleMark(
+//					xStart: .value("Roll", getRollDescriptionFromModel(diceModel)),
+//					xEnd: .value("Roll", getRollDescriptionFromModel(diceModel)),
+//					y: .value(
+//						"Expected count",
+//						expectedCount(rollsCount: getRollCount(), diceModel)
+//					)
+//				)
+//				.foregroundStyle(.purple)
+//				.lineStyle(.init(lineWidth: 3))
 			}
 		}
-		.chartForegroundStyleScale([
-			CatanStatsStrings.GameDetails.expectedCount: .purple,
-			CatanStatsStrings.GameDetails.actualCount: .blue
-		])
 		.padding()
-	}
-
-	private func getRollDescriptionFromModel(_ model: DiceModel) -> String {
-		return model.rollResult.description
-	}
-
-	private func getRollCount() -> Int {
-		viewModel.diceModels.reduce(0) { $0 + $1.counter }
 	}
 
 	private func expectedCount(rollsCount: Int, _ diceModel: DiceModel) -> Double {
@@ -57,11 +46,11 @@ struct RollDistributionChartView: View {
 
 #Preview {
 	RollDistributionChartView(viewModel:
-		RollChartViewModel(models:
-				(2...12).map { value in
-					let randomCount = Int.random(in: 2...10)
-					return DiceModel(rollResult: .number(value), counter: randomCount)
-				}
+		RollChartViewModel(
+			displayItems: [
+				ChartRollDisplayItem(playerName: "One", description: "2", count: 2),
+				ChartRollDisplayItem(playerName: "Two", description: "2", count: 2)
+			]
 		)
 	)
 }

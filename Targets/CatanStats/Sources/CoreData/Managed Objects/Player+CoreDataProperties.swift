@@ -2,7 +2,7 @@
 //  Player+CoreDataProperties.swift
 //  CatanStats
 //
-//  Created by Aleksandr Mamlygo on 24.06.24.
+//  Created by Aleksandr Mamlygo on 26.06.24.
 //
 //
 
@@ -17,7 +17,6 @@ extension Player {
     }
 
     @NSManaged public var name: String?
-    @NSManaged public var isCurrent: Bool
     @NSManaged public var game: Game?
     @NSManaged public var rolls: NSOrderedSet?
 

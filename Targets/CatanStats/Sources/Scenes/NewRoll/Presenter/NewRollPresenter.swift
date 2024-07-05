@@ -72,6 +72,7 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 			}
 		}
 		gameManager.rollAdded()
+		checkUndoPossibility()
 		coreDataStack.saveContext()
 	}
 
@@ -79,19 +80,34 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 		let rollRequest = Roll.fetchRequest()
 		let sortByDate = NSSortDescriptor(key: #keyPath(Roll.dateCreated), ascending: true)
 		rollRequest.sortDescriptors = [sortByDate]
+		guard let gameID = currentGame?.objectID else { return }
 
-		guard let lastRoll = try? coreDataStack.managedContext.fetch(rollRequest).last else { return }
+		rollRequest.predicate = NSPredicate(format: "game == %@", gameID)
+
+		guard let lastRoll = try? coreDataStack.managedContext.fetch(rollRequest).last else {
+			viewController?.renderUndoButton(undoPossible: false)
+			return
+		}
 		coreDataStack.managedContext.delete(lastRoll)
 		gameManager.rollUndone()
 		coreDataStack.saveContext()
 	}
 
 	// MARK: Private methods
+	private func checkUndoPossibility() {
+		guard let rolls = currentGame?.rolls else {
+			viewController?.renderUndoButton(undoPossible: false)
+			return
+		}
+		viewController?.renderUndoButton(undoPossible: rolls.count != 0)
+	}
+
 	private func setupBindings() {
 		gameManager.currentGamePublisher
 			.sink { [weak self] game in
 				guard let self = self else { return }
 				currentGame = game
+				checkUndoPossibility()
 				viewController?.renderOverlay(newRollsDisabled: currentGame == nil)
 			}
 			.store(in: &cancellables)

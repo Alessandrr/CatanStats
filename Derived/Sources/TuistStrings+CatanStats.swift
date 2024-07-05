@@ -33,12 +33,12 @@ public enum CatanStatsStrings {
     public static let actualCount = CatanStatsStrings.tr("Localizable", "gameDetails.actualCount")
     /// All time stats
     public static let allTimeStatsTitle = CatanStatsStrings.tr("Localizable", "gameDetails.allTimeStatsTitle")
-    /// Rolled %d
-    public static func diceCell(_ p1: Int) -> String {
-      return CatanStatsStrings.tr("Localizable", "gameDetails.diceCell",p1)
-    }
     /// Expected count
     public static let expectedCount = CatanStatsStrings.tr("Localizable", "gameDetails.expectedCount")
+    /// Rolled %@
+    public static func numberRollDescription(_ p1: Any) -> String {
+      return CatanStatsStrings.tr("Localizable", "gameDetails.numberRollDescription",String(describing: p1))
+    }
   }
 
   public enum GameList {

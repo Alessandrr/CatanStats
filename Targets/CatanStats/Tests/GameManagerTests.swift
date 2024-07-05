@@ -13,7 +13,7 @@ import CoreData
 
 final class GameManagerTests: XCTestCase {
 
-	private var gameDetails = GameDetails(title: "test game", playerNames: [])
+	private var gameDetails = GameData(title: "test game", players: [])
 
 	private var coreDataStack: CoreDataStack!
 	private var subscriptions = Set<AnyCancellable>()

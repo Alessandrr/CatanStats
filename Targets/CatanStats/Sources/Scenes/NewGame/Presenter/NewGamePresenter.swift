@@ -28,7 +28,7 @@ struct ValidationErrors: Error {
 
 protocol NewGamePresenterProtocol {
 	func createGame(with input: NewGameUserInput)
-	func validate(_ input: NewGameUserInput) -> Result<GameDetails, ValidationErrors>
+	func validate(_ input: NewGameUserInput) -> Result<GameData, ValidationErrors>
 }
 
 final class NewGamePresenter: NewGamePresenterProtocol {
@@ -54,17 +54,19 @@ final class NewGamePresenter: NewGamePresenterProtocol {
 		}
 	}
 
-	func validate(_ input: NewGameUserInput) -> Result<GameDetails, ValidationErrors> {
+	func validate(_ input: NewGameUserInput) -> Result<GameData, ValidationErrors> {
 		var errors: [ValidationError] = []
 		let gameTitle = !input.gameTitle.isEmpty ? input.gameTitle : "New game"
 
-		let playerNames = Array(input.playerNames.prefix(input.playerCount))
+		let playerNames = Array(input.playerNames.prefix(input.playerCount)).map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
 		for index in 0..<playerNames.count where playerNames[index].isEmpty {
 				errors.append(.emptyPlayerName(index: index))
 		}
 
+		let playerData = playerNames.map { PlayerData(name: $0, rolls: []) }
+
 		if errors.isEmpty {
-			return .success(GameDetails(title: gameTitle, playerNames: playerNames))
+			return .success(GameData(title: gameTitle, players: playerData))
 		} else {
 			return .failure(ValidationErrors(validationErrors: errors))
 		}

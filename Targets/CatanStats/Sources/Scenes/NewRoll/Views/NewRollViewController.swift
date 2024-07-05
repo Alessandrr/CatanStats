@@ -11,6 +11,7 @@ import UIKit
 protocol NewRollViewControllerProtocol: AnyObject {
 	func renderOverlay(newRollsDisabled: Bool)
 	func renderCurrentPlayer(_ name: String)
+	func renderUndoButton(undoPossible: Bool)
 }
 
 final class NewRollViewController: UIViewController {
@@ -58,7 +59,6 @@ final class NewRollViewController: UIViewController {
 
 	override func viewDidAppear(_ animated: Bool) {
 		becomeFirstResponder()
-		navigationItem.rightBarButtonItem?.isEnabled = overlayView.isHidden
 	}
 
 	override func viewWillDisappear(_ animated: Bool) {
@@ -144,6 +144,10 @@ extension NewRollViewController: NewRollViewControllerProtocol {
 
 	func renderCurrentPlayer(_ name: String) {
 		navigationItem.title = "\(name) rolls"
+	}
+
+	func renderUndoButton(undoPossible: Bool) {
+		navigationItem.rightBarButtonItem?.isEnabled = undoPossible
 	}
 }
 

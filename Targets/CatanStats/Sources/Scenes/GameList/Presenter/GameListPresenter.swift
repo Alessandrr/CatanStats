@@ -106,7 +106,7 @@ final class GameListPresenter: GameListPresenterProtocol {
 			.sink { [weak self] (oldGame, newGame) in
 				if oldGame === newGame { return }
 				let idsToReconfigure = [oldGame, newGame]
-					.filter { $0?.managedObjectContext != nil }
+					.filter { $0?.managedObjectContext != nil && $0?.isDeleted != true }
 					.compactMap { $0?.objectID }
 				self?.viewController?.renderUpdate(for: idsToReconfigure)
 			}

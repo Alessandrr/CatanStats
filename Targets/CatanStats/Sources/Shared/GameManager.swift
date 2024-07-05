@@ -11,7 +11,7 @@ import Combine
 
 protocol GameManagerProtocol {
 	func deleteGame(_ game: Game)
-	func createGame(with gameDetails: GameDetails) -> Game?
+	func createGame(with gameDetails: GameData) -> Game?
 	func setCurrentGame(_ game: Game)
 	func rollAdded()
 	func rollUndone()
@@ -54,14 +54,14 @@ final class GameManager: GameManagerProtocol {
 
 	func deleteGame(_ game: Game) {
 		coreDataStack.managedContext.delete(game)
-		coreDataStack.saveContext()
 
 		if game === currentGameSubject.value {
 			setLatestGameAsCurrent()
 		}
+		coreDataStack.saveContext()
 	}
 
-	func createGame(with gameDetails: GameDetails) -> Game? {
+	func createGame(with gameDetails: GameData) -> Game? {
 		do {
 			guard let newGame = NSEntityDescription.insertNewObject(
 				forEntityName: "Game",
@@ -69,8 +69,8 @@ final class GameManager: GameManagerProtocol {
 			) as? Game else { return nil }
 			newGame.dateCreated = Date.now
 			newGame.title = gameDetails.title
-			gameDetails.playerNames.forEach { playerName in
-				guard let player = createPlayer(name: playerName) else { return }
+			gameDetails.players.forEach { player in
+				guard let player = createPlayer(name: player.name) else { return }
 				newGame.addToPlayers(player)
 			}
 			newGame.currentPlayerIndex = 0
@@ -136,15 +136,9 @@ final class GameManager: GameManagerProtocol {
 	}
 
 	private func fetchCurrentPlayer() {
-		let gameRequest = Player.fetchRequest()
-		gameRequest.predicate = NSPredicate(format: "isCurrent == %@", NSNumber(value: true))
-
-		do {
-			let results = try coreDataStack.managedContext.fetch(gameRequest)
-			currentPlayerSubject.value = results.last
-		} catch let error {
-			assertionFailure(error.localizedDescription)
-		}
+		guard let currentPlayerIndex = currentGameSubject.value?.currentPlayerIndex else { return }
+		guard let players = currentGameSubject.value?.players else { return }
+		currentPlayerSubject.value = players[Int(currentPlayerIndex)] as? Player
 	}
 
 	private func createFirstGame() -> Game? {
@@ -172,19 +166,11 @@ final class GameManager: GameManagerProtocol {
 		currentGameSubject
 			.scan((oldGame: Game?.none, newGame: Game?.none)) { ($0.1, $1) }
 			.sink { [weak self] (oldGame, newGame) in
+				self?.fetchCurrentPlayer()
 				if oldGame?.managedObjectContext != nil {
 					oldGame?.isCurrent = false
 				}
 				newGame?.isCurrent = true
-				self?.coreDataStack.saveContext()
-			}
-			.store(in: &cancellables)
-
-		currentPlayerSubject
-			.scan((oldPlayer: Player?.none, newPlayer: Player?.none)) { ($0.1, $1) }
-			.sink { [weak self] (oldPlayer, newPlayer) in
-				oldPlayer?.isCurrent = false
-				newPlayer?.isCurrent = true
 				self?.coreDataStack.saveContext()
 			}
 			.store(in: &cancellables)

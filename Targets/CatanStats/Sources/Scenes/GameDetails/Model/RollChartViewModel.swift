@@ -7,29 +7,18 @@
 
 import Foundation
 
-final class RollChartViewModel: ObservableObject {
-	@Published var diceModels: [DiceModel]
+final class RollChartGroupViewModel: ObservableObject {
+	@Published var displayItems: [RollSection: [ChartRollDisplayItem]]
 
-	init(models: [DiceModel] = []) {
-		self.diceModels = models
+	init(displayItems: [RollSection: [ChartRollDisplayItem]] = [:]) {
+		self.displayItems = displayItems
 	}
+}
 
-	func getModels(for section: RollSection) -> [DiceModel] {
-		switch section {
-		case .numberRolls:
-			return diceModels.filter {
-				if case .number = $0.rollResult {
-					return true
-				}
-				return false
-			}
-		case .shipAndCastles:
-			return diceModels.filter {
-				if case .castleShip = $0.rollResult {
-					return true
-				}
-				return false
-			}
-		}
+final class RollChartViewModel: ObservableObject {
+	@Published var displayItems: [ChartRollDisplayItem]
+
+	init(displayItems: [ChartRollDisplayItem] = []) {
+		self.displayItems = displayItems
 	}
 }
