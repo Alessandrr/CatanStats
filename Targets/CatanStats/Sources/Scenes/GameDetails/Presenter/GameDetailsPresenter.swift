@@ -80,57 +80,49 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 
 		return displayItemsBySection
 	}
-
+	
 	private func fetchRollsWithCount(playerID: NSManagedObjectID?) -> [DiceModel] {
 		var rolls: [DiceModel] = []
-
-		gameModelProvider.makeModelsForSection(.numberRolls).forEach { diceModel in
-			guard case .number(let rollValue) = diceModel.rollResult else { return }
-
-			diceModel.counter = getNumberRollsCount(value: rollValue, playerID: playerID)
-			rolls.append(diceModel)
+		
+		for section in RollSection.allCases {
+			let sectionRolls = gameModelProvider.makeModelsForSection(section).map { diceModel in
+				diceModel.counter = getRollCount(for: diceModel.rollResult, playerID: playerID)
+				return diceModel
+			}
+			rolls.append(contentsOf: sectionRolls)
 		}
-
-		gameModelProvider.makeModelsForSection(.shipAndCastles).forEach { diceModel in
-			guard case .castleShip(let castleShipRoll) = diceModel.rollResult else { return }
-
-			diceModel.counter = getCastleShipRollsCount(rollResult: castleShipRoll, playerID: playerID)
-			rolls.append(diceModel)
-		}
-
+		
 		return rolls
 	}
-
+	
 	private func prepareModelsForTableView(_ models: [DiceModel]) -> [RollSection: [TableRollDisplayItem]] {
 		var modelsBySection: [RollSection: [TableRollDisplayItem]] = [:]
 
-		let numberSectionRolls = filterDiceModels(models, for: .numberRolls)
-		if numberSectionRolls.contains(where: { $0.counter != 0 }) {
-			modelsBySection[.numberRolls] = numberSectionRolls
-				.filter { $0.counter != 0 }
-				.sorted { $0.counter > $1.counter }
-				.map {
-					TableRollDisplayItem(
-						rollDescription: CatanStatsStrings.GameDetails.numberRollDescription($0.rollResult.description),
-						rollCount: $0.counter.formatted()
-					)
-				}
-		}
-
-		let shipCastleSectionRolls = filterDiceModels(models, for: .shipAndCastles)
-		if shipCastleSectionRolls.contains(where: { $0.counter != 0 }) {
-			modelsBySection[.shipAndCastles] = shipCastleSectionRolls
-				.filter { $0.counter != 0 }
-				.sorted { $0.counter > $1.counter }
-				.map {
-					TableRollDisplayItem(
-						rollDescription: $0.rollResult.description,
-						rollCount: $0.counter.formatted()
-					)
-				}
+		for section in RollSection.allCases {
+			let sectionRolls = filterDiceModels(models, for: section)
+			if sectionRolls.contains(where: { $0.counter != 0 }) {
+				modelsBySection[section] = sectionRolls
+					.filter { $0.counter != 0 }
+					.sorted { $0.counter > $1.counter }
+					.map {
+						TableRollDisplayItem(
+							rollDescription: getRollDescriptionForTableView(for: $0),
+							rollCount: $0.counter.formatted()
+						)
+					}
+			}
 		}
 
 		return modelsBySection
+	}
+	
+	private func getRollDescriptionForTableView(for diceModel: DiceModel) -> String {
+		switch diceModel.rollResult {
+		case .number(let value):
+			return CatanStatsStrings.GameDetails.numberRollDescription(value.description)
+		case .castleShip(let castleShipResult):
+			return castleShipResult.description
+		}
 	}
 
 	private func filterDiceModels(_ models: [DiceModel], for section: RollSection) -> [DiceModel] {
@@ -149,61 +141,6 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 				}
 				return false
 			}
-		}
-	}
-
-	private func getNumberRollsCount(value: Int, playerID: NSManagedObjectID?) -> Int {
-		let fetchRequest: NSFetchRequest<NumberRoll> = NumberRoll.fetchRequest()
-		var subpredicates: [NSPredicate] = []
-
-		if let gameID {
-			subpredicates.append(NSPredicate(format: "game == %@", gameID))
-		}
-
-		if let playerID {
-			subpredicates.append(NSPredicate(format: "player == %@", playerID))
-		}
-
-		subpredicates.append(NSPredicate(format: "value == %d", value))
-
-		let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: subpredicates)
-		fetchRequest.predicate = compoundPredicate
-
-		return (try? coreDataStack.managedContext.count(for: fetchRequest)) ?? 0
-	}
-
-	private func getCastleShipRollsCount(rollResult: DiceModel.CastleShipResult, playerID: NSManagedObjectID?) -> Int {
-		switch rollResult {
-		case .ship:
-			let fetchRequest: NSFetchRequest<ShipRoll> = ShipRoll.fetchRequest()
-			var subpredicates: [NSPredicate] = []
-
-			if let gameID {
-				fetchRequest.predicate = NSPredicate(format: "game == %@", gameID)
-			}
-			if let playerID {
-				subpredicates.append(NSPredicate(format: "player == %@", playerID))
-			}
-
-			let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: subpredicates)
-			fetchRequest.predicate = compoundPredicate
-			return (try? coreDataStack.managedContext.count(for: fetchRequest)) ?? 0
-		case .castle(let color):
-			let fetchRequest: NSFetchRequest<CastleRoll> = CastleRoll.fetchRequest()
-			var subpredicates: [NSPredicate] = []
-
-			if let gameID {
-				subpredicates.append(NSPredicate(format: "game == %@", gameID))
-			}
-			if let playerID {
-				subpredicates.append(NSPredicate(format: "player == %@", playerID))
-			}
-
-			subpredicates.append(NSPredicate(format: "color == %@", color.rawValue))
-			let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: subpredicates)
-			fetchRequest.predicate = compoundPredicate
-
-			return (try? coreDataStack.managedContext.count(for: fetchRequest)) ?? 0
 		}
 	}
 
@@ -241,5 +178,54 @@ private extension GameDetailsPresenter {
 		let viewData = prepareViewData(from: rolls)
 
 		viewController?.render(viewData)
+	}
+}
+
+// MARK: Count fetch methods
+private extension GameDetailsPresenter {
+	private func getRollCount(for rollResult: DiceModel.RollResult, playerID: NSManagedObjectID?) -> Int {
+		switch rollResult {
+		case .number(let value):
+			return createFetchRequest(for: NumberRoll.self, rollResult: value, rollResultPropertyName: "value", playerID: playerID)
+		case .castleShip(let castleShipResult):
+			switch castleShipResult {
+			case .ship:
+				return createFetchRequest(for: ShipRoll.self, rollResult: nil, rollResultPropertyName: nil, playerID: playerID)
+			case .castle(color: let color):
+				return createFetchRequest(for: CastleRoll.self, rollResult: color.rawValue, rollResultPropertyName: "color", playerID: playerID)
+			}
+		}
+	}
+	
+	private func createFetchRequest<T: NSManagedObject>(
+		for entity: T.Type,
+		rollResult: Any? = nil,
+		rollResultPropertyName: String? = nil,
+		playerID: NSManagedObjectID?
+	) -> Int {
+		let fetchRequest = T.fetchRequest()
+		var subpredicates: [NSPredicate] = []
+		
+		if let gameID {
+			subpredicates.append(NSPredicate(format: "game == %@", gameID))
+		}
+		
+		if let playerID {
+			subpredicates.append(NSPredicate(format: "player == %@", playerID))
+		}
+		
+		if let rollResult = rollResult, let propertyName = rollResultPropertyName {
+			switch rollResult {
+			case let stringValue as String:
+				subpredicates.append(NSPredicate(format: "\(propertyName) == %@", stringValue))
+			case let intValue as Int:
+				subpredicates.append(NSPredicate(format: "\(propertyName) == %d", intValue))
+			default:
+				assertionFailure("Unexpected roll property type: \(type(of: rollResult))")
+			}
+		}
+		
+		fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: subpredicates)
+		return (try? coreDataStack.managedContext.count(for: fetchRequest)) ?? 0
 	}
 }
