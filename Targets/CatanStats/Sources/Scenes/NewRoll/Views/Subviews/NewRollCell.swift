@@ -3,7 +3,6 @@
 //  CatanStats
 //
 //  Created by Aleksandr Mamlygo on 04.04.24.
-//  Copyright © 2024 tuist.io. All rights reserved.
 //
 
 import UIKit
@@ -11,7 +10,11 @@ import UIKit
 final class NewRollCell: UICollectionViewCell {
 	static let reuseIdentifier = "newRollButtonIdentifier"
 
+	// MARK: Private properties
 	private lazy var imageView = UIImageView()
+	private var targetNumberImageSize: CGSize {
+		CGSize(width: contentView.bounds.height * 0.5, height: contentView.bounds.width * 0.5)
+	}
 
 	// MARK: Initialization
 	override init(frame: CGRect) {
@@ -23,24 +26,28 @@ final class NewRollCell: UICollectionViewCell {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	// MARK: Public methods
-	func configure(with model: RollModel) {
-		switch model {
-		case .number(let rollResult):
-			imageView.image = UIImage(systemName: "\(rollResult).circle")
+	// MARK: Internal methods
+	func configure(with model: DiceModel) {
+		switch model.rollResult {
+		case .number(let value):
+			imageView.image = UIImage(systemName: "\(value).circle")?
+				.scalePreservingAspectRatio(targetSize: targetNumberImageSize)
 			backgroundColor = Color.red
-		case .ship:
-			imageView.image = UIImage(systemName: "sailboat")
-			backgroundColor = UIColor.systemGray
-		case .castle(let color):
-			imageView.image = UIImage(systemName: "house.lodge")
-			switch color {
-			case .yellow:
-				backgroundColor = Color.lightOrange
-			case .green:
-				backgroundColor = Color.green
-			case .blue:
-				backgroundColor = Color.lightBlue
+		case .castleShip(let castleShipResult):
+			switch castleShipResult {
+			case .ship:
+				imageView.image = UIImage(systemName: "sailboat")
+				backgroundColor = UIColor.systemGray
+			case .castle(let color):
+				imageView.image = UIImage(systemName: "house.lodge")
+				switch color {
+				case .yellow:
+					backgroundColor = Color.lightOrange
+				case .green:
+					backgroundColor = Color.green
+				case .blue:
+					backgroundColor = Color.lightBlue
+				}
 			}
 		}
 	}

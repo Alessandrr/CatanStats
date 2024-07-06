@@ -11,11 +11,13 @@ import UIKit
 enum Sizes {
 	enum Padding {
 		static let small: CGFloat = 5
-		static let large: CGFloat = 15
+		static let normal: CGFloat = 15
+		static let large: CGFloat = 25
 	}
 
 	enum TextSizes {
 		static let normal: CGFloat = 14
+		static let large: CGFloat = 28
 	}
 
 	static let defaultInsets = NSDirectionalEdgeInsets(

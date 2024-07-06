@@ -20,7 +20,7 @@ class GameDetailsSectionHeaderView: UIView {
 		addSubview(headerLabel)
 		headerLabel.translatesAutoresizingMaskIntoConstraints = false
 		NSLayoutConstraint.activate([
-			headerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Sizes.Padding.large),
+			headerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Sizes.Padding.normal),
 			headerLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
 			headerLabel.topAnchor.constraint(equalTo: topAnchor, constant: Sizes.Padding.small)
 		])

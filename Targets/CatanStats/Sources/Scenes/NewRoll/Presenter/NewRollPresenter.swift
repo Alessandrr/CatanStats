@@ -3,97 +3,86 @@
 //  CatanStats
 //
 //  Created by Александр Мамлыго on /74/2567 BE.
-//  Copyright © 2567 BE tuist.io. All rights reserved.
 //
 
 import Foundation
 import CoreData
+import Combine
 
 protocol NewRollPresenterProtocol {
-	func didSelectRollItem(_ item: RollModel)
-	func loadData()
-	func addNewGame()
+	func didSelectRollItem(_ item: DiceModel)
+	func undoRoll()
 }
 
 final class NewRollPresenter: NewRollPresenterProtocol {
-	// MARK: Dependencies
-	private var coreDataStack: CoreDataStack
 
 	// MARK: Private properties
-	private(set) var currentGame: Game?
+	private var currentGame: Game?
+	private var cancellables = Set<AnyCancellable>()
 
-	init(coreDataStack: CoreDataStack) {
+	// MARK: Dependencies
+	private let coreDataStack: CoreDataStack
+	private let gameManager: GameManagerProtocol
+	private weak var viewController: NewRollViewControllerProtocol?
+
+	// MARK: Initializer
+	init(coreDataStack: CoreDataStack, gameManager: GameManagerProtocol, viewController: NewRollViewControllerProtocol) {
 		self.coreDataStack = coreDataStack
+		self.gameManager = gameManager
+		self.viewController = viewController
+		setupBindings()
 	}
 
-	func didSelectRollItem(_ item: RollModel) {
-		if currentGame?.managedObjectContext == nil {
-			createFirstGame()
-		}
-
-		switch item {
-		case .number(let rollResult):
-			guard let roll = NSEntityDescription.insertNewObject(
-				forEntityName: "DiceRoll",
+	// MARK: Internal methods
+	func didSelectRollItem(_ item: DiceModel) {
+		switch item.rollResult {
+		case .number(let value):
+			guard let numberRoll = NSEntityDescription.insertNewObject(
+				forEntityName: "NumberRoll",
 				into: coreDataStack.managedContext
-			) as? DiceRoll else { return }
-			roll.value = Int16(rollResult)
-			roll.dateCreated = Date.now
-			currentGame?.addToRolls(roll)
-		case .ship:
-			guard let ship = NSEntityDescription.insertNewObject(
-				forEntityName: "ShipRoll",
-				into: coreDataStack.managedContext
-			) as? ShipRoll else { return }
-			ship.dateCreated = Date.now
-			currentGame?.addToRolls(ship)
-		case .castle(let color):
-			guard let castle = NSEntityDescription.insertNewObject(
-				forEntityName: "CastleRoll",
-				into: coreDataStack.managedContext
-			) as? CastleRoll else { return }
-			castle.dateCreated = Date.now
-			castle.color = color.rawValue
-			currentGame?.addToRolls(castle)
-		}
-		coreDataStack.saveContext()
-	}
-
-	func loadData() {
-		do {
-			let gameRequest = NSFetchRequest<Game>(entityName: "Game")
-			let sortByTitle = NSSortDescriptor(key: #keyPath(Game.dateCreated), ascending: true)
-			gameRequest.sortDescriptors = [sortByTitle]
-			let results = try coreDataStack.managedContext.fetch(gameRequest)
-			if results.isEmpty {
-				createFirstGame()
-			} else {
-				currentGame = results.last
+			) as? NumberRoll else { return }
+			numberRoll.value = Int16(value)
+			numberRoll.dateCreated = Date.now
+			currentGame?.addToRolls(numberRoll)
+		case .castleShip(let castleShipResult):
+			switch castleShipResult {
+			case .ship:
+				guard let shipRoll = NSEntityDescription.insertNewObject(
+					forEntityName: "ShipRoll",
+					into: coreDataStack.managedContext
+				) as? ShipRoll else { return }
+				shipRoll.dateCreated = Date.now
+				currentGame?.addToRolls(shipRoll)
+			case .castle(color: let color):
+				guard let castleRoll = NSEntityDescription.insertNewObject(
+					forEntityName: "CastleRoll",
+					into: coreDataStack.managedContext
+				) as? CastleRoll else { return }
+				castleRoll.dateCreated = Date.now
+				castleRoll.color = color.rawValue
+				currentGame?.addToRolls(castleRoll)
 			}
-		} catch let error {
-			print("Fetch error \(error.localizedDescription)")
 		}
-	}
-
-	func addNewGame() {
-		do {
-			let gameRequest = Game.fetchRequest()
-			let gameCount = try coreDataStack.managedContext.count(for: gameRequest)
-			currentGame = Game(context: coreDataStack.managedContext)
-			currentGame?.title = CatanStatsStrings.GameList.sectionTitle(gameCount + 1)
-			coreDataStack.saveContext()
-		} catch let error {
-			assertionFailure(error.localizedDescription)
-		}
-	}
-
-	private func createFirstGame() {
-		currentGame = NSEntityDescription.insertNewObject(
-			forEntityName: "Game",
-			into: coreDataStack.managedContext
-		) as? Game
-		currentGame?.dateCreated = Date.now
-		currentGame?.title = CatanStatsStrings.GameList.sectionTitle(1)
 		coreDataStack.saveContext()
+	}
+
+	func undoRoll() {
+		let rollRequest = Roll.fetchRequest()
+		let sortByDate = NSSortDescriptor(key: #keyPath(Roll.dateCreated), ascending: true)
+		rollRequest.sortDescriptors = [sortByDate]
+
+		guard let lastRoll = try? coreDataStack.managedContext.fetch(rollRequest).last else { return }
+		coreDataStack.managedContext.delete(lastRoll)
+		coreDataStack.saveContext()
+	}
+
+	// MARK: Private methods
+	private func setupBindings() {
+		gameManager.currentGamePublisher
+			.sink { [unowned self] game in
+				currentGame = game
+				viewController?.render(newRollsDisabled: currentGame == nil)
+			}
+			.store(in: &cancellables)
 	}
 }

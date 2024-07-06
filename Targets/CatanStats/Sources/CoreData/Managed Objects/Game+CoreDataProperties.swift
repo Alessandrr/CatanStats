@@ -2,12 +2,13 @@
 //  Game+CoreDataProperties.swift
 //  CatanStats
 //
-//  Created by Aleksandr Mamlygo on 19.04.24.
+//  Created by Aleksandr Mamlygo on 07.06.24.
 //
 //
 
 import Foundation
 import CoreData
+
 
 extension Game {
 
@@ -15,8 +16,9 @@ extension Game {
         return NSFetchRequest<Game>(entityName: "Game")
     }
 
-    @NSManaged public var title: String?
     @NSManaged public var dateCreated: Date?
+    @NSManaged public var isCurrent: Bool
+    @NSManaged public var title: String?
     @NSManaged public var rolls: NSOrderedSet?
 
 }
@@ -56,6 +58,6 @@ extension Game {
 
 }
 
-extension Game: Identifiable {
+extension Game : Identifiable {
 
 }

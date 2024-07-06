@@ -8,26 +8,34 @@
 
 import UIKit
 
+protocol NewRollViewControllerProtocol: AnyObject {
+	func render(newRollsDisabled: Bool)
+}
+
 final class NewRollViewController: UIViewController {
+
+	// MARK: Internal properties
+	override var canBecomeFirstResponder: Bool {
+		true
+	}
 
 	// MARK: Private properties
 	private var collectionView: UICollectionView!
-	private var dataSource: UICollectionViewDiffableDataSource<RollSection, RollModel>!
+	private var dataSource: UICollectionViewDiffableDataSource<RollSection, DiceModel>!
 	private var sections: [RollSection]
+	private let overlayView = NewRollOverlayView()
 
 	// MARK: Dependencies
-	private var presenter: NewRollPresenterProtocol
+	var presenter: NewRollPresenterProtocol?
 	private var sectionLayoutProviderFactory: SectionLayoutProviderFactory
 	private var modelProvider: GameModelProviderProtocol
 
 	// MARK: Initialization
 	init(
-		presenter: NewRollPresenterProtocol,
 		sectionLayoutProviderFactory: SectionLayoutProviderFactory,
 		modelProvider: GameModelProviderProtocol,
 		sections: [RollSection] = RollSection.allCases
 	) {
-		self.presenter = presenter
 		self.sectionLayoutProviderFactory = sectionLayoutProviderFactory
 		self.modelProvider = modelProvider
 		self.sections = sections
@@ -44,14 +52,18 @@ final class NewRollViewController: UIViewController {
 		configureCollectionView()
 		configureDataSource()
 		setupUI()
-		presenter.loadData()
+	}
+
+	override func viewDidAppear(_ animated: Bool) {
+		becomeFirstResponder()
+		navigationItem.rightBarButtonItem?.isEnabled = overlayView.isHidden
+	}
+
+	override func viewWillDisappear(_ animated: Bool) {
+		resignFirstResponder()
 	}
 
 	// MARK: Private methods
-	@objc private func newGameTapped() {
-		presenter.addNewGame()
-	}
-
 	private func configureCollectionView() {
 		let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: generateLayout())
 		view.addSubview(collectionView)
@@ -64,23 +76,27 @@ final class NewRollViewController: UIViewController {
 
 	private func configureDataSource() {
 		dataSource = UICollectionViewDiffableDataSource
-		<RollSection, RollModel>(collectionView: collectionView) { (collectionView, indexPath, newRollModel)
+		<RollSection, DiceModel>(collectionView: collectionView) { (collectionView, indexPath, newDiceModel)
 			-> UICollectionViewCell? in
 			guard let cell = collectionView.dequeueReusableCell(
 				withReuseIdentifier: NewRollCell.reuseIdentifier,
 				for: indexPath
 			) as? NewRollCell else { return UICollectionViewCell() }
 
-			cell.configure(with: newRollModel)
+			cell.configure(with: newDiceModel)
 			return cell
 		}
 
-		var snapshot = NSDiffableDataSourceSnapshot<RollSection, RollModel>()
+		var snapshot = NSDiffableDataSourceSnapshot<RollSection, DiceModel>()
 		snapshot.appendSections(sections)
 		for section in sections {
 			snapshot.appendItems(modelProvider.makeModelsForSection(section), toSection: section)
 		}
 		dataSource.apply(snapshot)
+	}
+
+	@objc private func undoRollSelected() {
+		presenter?.undoRoll()
 	}
 }
 
@@ -92,10 +108,19 @@ extension NewRollViewController {
 		navigationController?.navigationBar.sizeToFit()
 
 		navigationItem.rightBarButtonItem = UIBarButtonItem(
-			barButtonSystemItem: .add,
+			barButtonSystemItem: .undo,
 			target: self,
-			action: #selector(newGameTapped)
+			action: #selector(undoRollSelected)
 		)
+
+		overlayView.translatesAutoresizingMaskIntoConstraints = false
+		view.addSubview(overlayView)
+		NSLayoutConstraint.activate([
+			overlayView.topAnchor.constraint(equalTo: collectionView.topAnchor),
+			overlayView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+			overlayView.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
+			overlayView.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor)
+		])
 	}
 
 	private func generateLayout() -> UICollectionViewLayout {
@@ -109,12 +134,29 @@ extension NewRollViewController {
 	}
 }
 
+// MARK: NewRollViewControllerProtocol
+extension NewRollViewController: NewRollViewControllerProtocol {
+	func render(newRollsDisabled: Bool) {
+		overlayView.isHidden = !newRollsDisabled
+	}
+}
+
+// MARK: UIResponder
+extension NewRollViewController {
+	override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+		if motion == .motionShake {
+			undoRollSelected()
+		}
+	}
+}
+
 // MARK: UICollectionViewDelegate
 extension NewRollViewController: UICollectionViewDelegate {
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		if let cell = collectionView.cellForItem(at: indexPath) as? NewRollCell {
 			cell.animateTap()
 		}
-		presenter.didSelectRollItem(dataSource.itemIdentifier(for: indexPath) ?? RollModel.ship)
+		guard let diceModel = dataSource.itemIdentifier(for: indexPath) else { return }
+		presenter?.didSelectRollItem(diceModel)
 	}
 }

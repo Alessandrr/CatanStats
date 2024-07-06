@@ -3,65 +3,74 @@
 //  CatanStats
 //
 //  Created by Aleksandr Mamlygo on 14.04.24.
-//  Copyright © 2024 tuist.io. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
 protocol GameListViewControllerProtocol: NSFetchedResultsControllerDelegate {
-	func gameDeleted(_ id: NSManagedObjectID)
+	func render()
+	func renderUpdate(for items: [NSManagedObjectID])
 }
 
 final class GameListViewController: UITableViewController {
-
-	// MARK: Dependencies
-	private var router: GameListRouterProtocol
-	var presenter: GameListPresenterProtocol?
 
 	// MARK: Private properties
 	private var dataSource: UITableViewDiffableDataSource<String, NSManagedObjectID>?
 	private var dataSourceSnapshot: NSDiffableDataSourceSnapshot<String, NSManagedObjectID>?
 
-	// MARK: Initialization
-
-	init(router: GameListRouterProtocol) {
-		self.router = router
-		super.init(nibName: nil, bundle: nil)
-	}
-
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
+	// MARK: Dependencies
+	var presenter: GameListPresenterProtocol?
 
 	// MARK: View life cycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupUI()
 		setupDataSource()
-	}
-
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
 		presenter?.initialFetch()
-		if let snapshot = dataSourceSnapshot {
-			dataSource?.apply(snapshot)
-		}
 	}
 
+	// MARK: Private methods
 	private func setupUI() {
 		navigationItem.title = CatanStatsStrings.GameList.navigationBarTitle
+
+		navigationItem.rightBarButtonItem = UIBarButtonItem(
+			barButtonSystemItem: .add,
+			target: self,
+			action: #selector(newGameTapped)
+		)
+
+		navigationItem.leftBarButtonItem = UIBarButtonItem(
+			image: UIImage(systemName: "chart.xyaxis.line"),
+			style: .plain,
+			target: self,
+			action: #selector(allTimeStatsTapped)
+		)
+
+		tableView.register(GameListTableViewCell.self, forCellReuseIdentifier: GameListTableViewCell.reuseIdentifier)
 	}
 
+	@objc private func newGameTapped() {
+		presenter?.addNewGame()
+	}
+
+	@objc private func allTimeStatsTapped() {
+		presenter?.allTimeStatsSelected()
+	}
 }
 
 // MARK: GameListViewControllerProtocol
 extension GameListViewController: GameListViewControllerProtocol {
-	func gameDeleted(_ id: NSManagedObjectID) {
-		dataSourceSnapshot?.deleteItems([id])
+	func render() {
 		if let snapshot = dataSourceSnapshot {
 			dataSource?.apply(snapshot, animatingDifferences: true)
+			navigationItem.leftBarButtonItem?.isEnabled = snapshot.numberOfItems != 0
 		}
+	}
+
+	func renderUpdate(for items: [NSManagedObjectID]) {
+		dataSourceSnapshot?.reconfigureItems(items)
+		render()
 	}
 }
 
@@ -73,37 +82,47 @@ extension GameListViewController {
 				return UITableViewCell()
 			}
 
-			let cell = UITableViewCell()
-			var content = cell.defaultContentConfiguration()
-			content.text = game.title
-			cell.contentConfiguration = content
+			guard let cell = self?.tableView.dequeueReusableCell(
+				withIdentifier: GameListTableViewCell.reuseIdentifier
+			) as? GameListTableViewCell else {
+				return UITableViewCell()
+			}
+			cell.configure(with: game)
 
 			return cell
 		}
 	}
 }
 
-// MARK: tableView delegate
+// MARK: TableView Delegate
 extension GameListViewController {
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		guard let gameId = dataSource?.itemIdentifier(for: indexPath) else { return }
-		router.routeToGameDetails(for: gameId)
+		presenter?.gameSelectedAt(indexPath)
 	}
 
 	override func tableView(
 		_ tableView: UITableView,
 		trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
 	) -> UISwipeActionsConfiguration? {
+
 		let deleteAction = UIContextualAction(
 			style: .destructive,
 			title: CatanStatsStrings.GameList.deleteActionTitle
 		) { [weak self] _, _, _ in
 			self?.presenter?.deleteGameAt(indexPath)
 		}
-
 		deleteAction.backgroundColor = .red
 
-		let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+		let setCurrentAction = UIContextualAction(
+			style: .normal,
+			title: CatanStatsStrings.GameList.setCurrentActionTitle
+		) { [weak self] _, _, actionPerformed in
+			self?.presenter?.currentGameSelectedAt(indexPath)
+			actionPerformed(true)
+		}
+		setCurrentAction.backgroundColor = Color.lightBlue
+
+		let configuration = UISwipeActionsConfiguration(actions: [deleteAction, setCurrentAction])
 		configuration.performsFirstActionWithFullSwipe = true
 		return configuration
 	}
@@ -116,5 +135,6 @@ extension GameListViewController {
 		didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
 	) {
 		dataSourceSnapshot = snapshot as NSDiffableDataSourceSnapshot<String, NSManagedObjectID>
+		render()
 	}
 }

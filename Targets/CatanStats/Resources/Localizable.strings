@@ -12,25 +12,33 @@
 
 // MARK: Roll section
 
-"rollSection.ship" = "Ship";
-"rollSection.castles" = "Castle";
+"rollSection.shipAndCastles" = "Ship and castles";
 "rollSection.rolls" = "Rolls";
+
+// MARK: Castle colors
+"castleColor.yellow" = "Yellow";
+"castleColor.green" = "Green";
+"castleColor.blue" = "Blue";
 
 // MARK: GameList scene
 
 "gameList.sectionTitle" = "Game %d";
 "gameList.navigationBarTitle" = "Game history";
 "gameList.deleteActionTitle" = "Delete";
+"gameList.setCurrentActionTitle" = "Activate";
+"gameList.gameCellCurrentLabel" = "Current";
 
 // MARK: NewRoll scene
 
 "newRoll.navigationBarTitle" = "Roll stats";
+"newRoll.overlayWarningText" = "Create a new game on the second tab before proceeding";
 
 // MARK: GameDetails scene
 "gameDetails.diceCell" = "Rolled %d";
-"gameDetails.shipCell" = "Ship";
-"gameDetails.yellowCastleCell" = "Yellow castle";
-"gameDetails.greenCastleCell" = "Green castle";
-"gameDetails.blueCastleCell" = "Blue castle";
 "gameDetails.expectedCount" = "Expected count";
 "gameDetails.actualCount" = "Actual count";
+"gameDetails.allTimeStatsTitle" = "All time stats";
+
+// MARK: Common
+"shipDescription" = "Ship";
+"castleDescription" = "%@ Castle";

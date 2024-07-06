@@ -11,27 +11,22 @@ final class RollCountTableViewCell: UITableViewCell {
 
 	static let reuseIdentifier = "rollCountTableViewCell"
 
-	func configure(with model: RollModelCounter) {
+	func configure(with diceModel: DiceModel) {
 		var contentConfiguration = UIListContentConfiguration.valueCell()
-		let rollModel = model.rollModel
 
-		switch rollModel {
-		case .number(let rollResult):
-			contentConfiguration.text = CatanStatsStrings.GameDetails.diceCell(rollResult)
-		case .ship:
-			contentConfiguration.text = CatanStatsStrings.GameDetails.shipCell
-		case .castle(let color):
-			switch color {
-			case .yellow:
-				contentConfiguration.text = CatanStatsStrings.GameDetails.yellowCastleCell
-			case .green:
-				contentConfiguration.text = CatanStatsStrings.GameDetails.greenCastleCell
-			case .blue:
-				contentConfiguration.text = CatanStatsStrings.GameDetails.blueCastleCell
+		switch diceModel.rollResult {
+		case .number(let rollValue):
+			contentConfiguration.text = CatanStatsStrings.GameDetails.diceCell(rollValue)
+		case .castleShip(let castleShipResult):
+			switch castleShipResult {
+			case .ship:
+				contentConfiguration.text = CatanStatsStrings.shipDescription
+			case .castle(color: let color):
+				contentConfiguration.text = CatanStatsStrings.castleDescription(color.description)
 			}
 		}
 
-		contentConfiguration.secondaryText = model.count.formatted()
+		contentConfiguration.secondaryText = diceModel.counter.formatted()
 		self.contentConfiguration = contentConfiguration
 	}
 }

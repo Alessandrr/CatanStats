@@ -11,7 +11,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	) -> Bool {
 		window = UIWindow(frame: UIScreen.main.bounds)
 
-		window?.rootViewController = MainPageViewController()
+		window?.rootViewController = MainPageViewController(coreDataStack: CoreDataStack(modelName: "CatanStats"))
 		window?.makeKeyAndVisible()
 
 		return true

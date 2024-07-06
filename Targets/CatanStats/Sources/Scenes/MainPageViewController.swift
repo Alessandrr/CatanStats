@@ -9,7 +9,19 @@
 import UIKit
 
 final class MainPageViewController: UITabBarController {
-	private let coreDataStack = CoreDataStack(modelName: "CatanStats")
+
+	private let gameManager: GameManager
+	private let coreDataStack: CoreDataStack
+
+	init(coreDataStack: CoreDataStack) {
+		self.coreDataStack = coreDataStack
+		self.gameManager = GameManager(coreDataStack: coreDataStack)
+		super.init(nibName: nil, bundle: nil)
+	}
+
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -28,12 +40,16 @@ final class MainPageViewController: UITabBarController {
 		switch page {
 		case .rolls:
 			navigationController.setViewControllers(
-				[NewRollAssembly().makeViewController(coreDataStack: coreDataStack)],
+				[NewRollAssembly().makeViewController(coreDataStack: coreDataStack, gameManager: gameManager)],
 				animated: true
 			)
 		case .history:
 			navigationController.setViewControllers(
-				[GameListAssembly().makeViewController(coreDataStack: coreDataStack, navigationController: navigationController)],
+				[GameListAssembly().makeViewController(
+					coreDataStack: coreDataStack,
+					navigationController: navigationController,
+					gameManager: gameManager
+				)],
 				animated: true
 			)
 		}

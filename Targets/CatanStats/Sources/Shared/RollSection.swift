@@ -7,19 +7,25 @@
 
 import Foundation
 
-enum RollSection: CaseIterable {
+enum RollSection: CaseIterable, Comparable {
 	case numberRolls
-	case ship
-	case castles
+	case shipAndCastles
 
 	var description: String {
 		switch self {
 		case .numberRolls:
 			CatanStatsStrings.RollSection.rolls
-		case .ship:
-			CatanStatsStrings.RollSection.ship
-		case .castles:
-			CatanStatsStrings.RollSection.castles
+		case .shipAndCastles:
+			CatanStatsStrings.RollSection.shipAndCastles
+		}
+	}
+
+	static func < (lhs: RollSection, rhs: RollSection) -> Bool {
+		switch (lhs, rhs) {
+		case (.numberRolls, .shipAndCastles):
+			return true
+		default:
+			return false
 		}
 	}
 }

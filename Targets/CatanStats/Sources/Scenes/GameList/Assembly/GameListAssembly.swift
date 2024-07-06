@@ -10,11 +10,17 @@ import UIKit
 final class GameListAssembly {
 	func makeViewController(
 		coreDataStack: CoreDataStack,
-		navigationController: UINavigationController
+		navigationController: UINavigationController,
+		gameManager: GameManager
 	) -> UIViewController {
 		let router = GameListRouter(navigationController: navigationController, coreDataStack: coreDataStack)
-		let viewController = GameListViewController(router: router)
-		let presenter = GameListPresenter(coreDataStack: coreDataStack, gameListViewController: viewController)
+		let viewController = GameListViewController()
+		let presenter = GameListPresenter(
+			coreDataStack: coreDataStack,
+			gameListViewController: viewController,
+			gameManager: gameManager,
+			router: router
+		)
 
 		viewController.presenter = presenter
 

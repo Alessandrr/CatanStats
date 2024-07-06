@@ -12,49 +12,62 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name
 public enum CatanStatsStrings {
+  /// %@ Castle
+  public static func castleDescription(_ p1: Any) -> String {
+    return CatanStatsStrings.tr("Localizable", "castleDescription",String(describing: p1))
+  }
+  /// Ship
+  public static let shipDescription = CatanStatsStrings.tr("Localizable", "shipDescription")
+
+  public enum CastleColor {
+  /// Blue
+    public static let blue = CatanStatsStrings.tr("Localizable", "castleColor.blue")
+    /// Green
+    public static let green = CatanStatsStrings.tr("Localizable", "castleColor.green")
+    /// Yellow
+    public static let yellow = CatanStatsStrings.tr("Localizable", "castleColor.yellow")
+  }
 
   public enum GameDetails {
   /// Actual count
     public static let actualCount = CatanStatsStrings.tr("Localizable", "gameDetails.actualCount")
-    /// Blue castle
-    public static let blueCastleCell = CatanStatsStrings.tr("Localizable", "gameDetails.blueCastleCell")
+    /// All time stats
+    public static let allTimeStatsTitle = CatanStatsStrings.tr("Localizable", "gameDetails.allTimeStatsTitle")
     /// Rolled %d
     public static func diceCell(_ p1: Int) -> String {
       return CatanStatsStrings.tr("Localizable", "gameDetails.diceCell",p1)
     }
     /// Expected count
     public static let expectedCount = CatanStatsStrings.tr("Localizable", "gameDetails.expectedCount")
-    /// Green castle
-    public static let greenCastleCell = CatanStatsStrings.tr("Localizable", "gameDetails.greenCastleCell")
-    /// Ship
-    public static let shipCell = CatanStatsStrings.tr("Localizable", "gameDetails.shipCell")
-    /// Yellow castle
-    public static let yellowCastleCell = CatanStatsStrings.tr("Localizable", "gameDetails.yellowCastleCell")
   }
 
   public enum GameList {
   /// Delete
     public static let deleteActionTitle = CatanStatsStrings.tr("Localizable", "gameList.deleteActionTitle")
+    /// Current
+    public static let gameCellCurrentLabel = CatanStatsStrings.tr("Localizable", "gameList.gameCellCurrentLabel")
     /// Game history
     public static let navigationBarTitle = CatanStatsStrings.tr("Localizable", "gameList.navigationBarTitle")
     /// Game %d
     public static func sectionTitle(_ p1: Int) -> String {
       return CatanStatsStrings.tr("Localizable", "gameList.sectionTitle",p1)
     }
+    /// Activate
+    public static let setCurrentActionTitle = CatanStatsStrings.tr("Localizable", "gameList.setCurrentActionTitle")
   }
 
   public enum NewRoll {
   /// Roll stats
     public static let navigationBarTitle = CatanStatsStrings.tr("Localizable", "newRoll.navigationBarTitle")
+    /// Create a new game on the second tab before proceeding
+    public static let overlayWarningText = CatanStatsStrings.tr("Localizable", "newRoll.overlayWarningText")
   }
 
   public enum RollSection {
-  /// Castle
-    public static let castles = CatanStatsStrings.tr("Localizable", "rollSection.castles")
-    /// Rolls
+  /// Rolls
     public static let rolls = CatanStatsStrings.tr("Localizable", "rollSection.rolls")
-    /// Ship
-    public static let ship = CatanStatsStrings.tr("Localizable", "rollSection.ship")
+    /// Ship and castles
+    public static let shipAndCastles = CatanStatsStrings.tr("Localizable", "rollSection.shipAndCastles")
   }
 
   public enum TabBar {

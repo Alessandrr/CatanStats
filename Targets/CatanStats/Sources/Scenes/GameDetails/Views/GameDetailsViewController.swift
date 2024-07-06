@@ -9,14 +9,11 @@ import UIKit
 import SwiftUI
 
 protocol GameDetailsViewControllerProtocol: AnyObject {
-	func updateTableViewModel(_ models: [RollModelCounter])
-	func updateChartModel(_ models: [RollModelCounter])
+	func render(_ viewData: GameDetailsViewData)
+	func setTitle(_ title: String)
 }
 
 final class GameDetailsViewController: UIViewController {
-
-	// MARK: Dependencies
-	var presenter: GameDetailsPresenterProtocol?
 
 	// MARK: Private properties
 	private lazy var tableView: UITableView = {
@@ -24,15 +21,18 @@ final class GameDetailsViewController: UIViewController {
 		tableView.delegate = self
 		return tableView
 	}()
-	private lazy var chartHostingController: UIHostingController<RollDistributionChartView> = {
+	private lazy var chartHostingController: UIHostingController<RollChartsGroupView> = {
 		return UIHostingController(
-			rootView: RollDistributionChartView(counterModel: chartCountersModel)
+			rootView: RollChartsGroupView(viewModel: chartViewModel)
 		)
 	}()
 
-	private var dataSource: UITableViewDiffableDataSource<RollSection, RollModelCounter>?
-	private var snapshot: NSDiffableDataSourceSnapshot<RollSection, RollModelCounter>?
-	private var chartCountersModel = ChartCountersModel()
+	private var dataSource: UITableViewDiffableDataSource<RollSection, DiceModel>?
+	private var snapshot: NSDiffableDataSourceSnapshot<RollSection, DiceModel>?
+	private var chartViewModel = RollChartViewModel()
+
+	// MARK: Dependencies
+	var presenter: GameDetailsPresenterProtocol?
 
 	// MARK: Life cycle
 	override func viewDidLoad() {
@@ -42,12 +42,6 @@ final class GameDetailsViewController: UIViewController {
 		setupDataSource()
 		presenter?.loadData()
 		layout()
-	}
-
-	override func viewDidAppear(_ animated: Bool) {
-		if let snapshot = snapshot {
-			dataSource?.apply(snapshot, animatingDifferences: true)
-		}
 	}
 }
 
@@ -70,7 +64,7 @@ private extension GameDetailsViewController {
 
 			tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
 			tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-			tableView.topAnchor.constraint(equalTo: chartHostingController.view.bottomAnchor, constant: 10),
+			tableView.topAnchor.constraint(equalTo: chartHostingController.view.bottomAnchor),
 			tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
 		])
 	}
@@ -78,13 +72,13 @@ private extension GameDetailsViewController {
 	func setupDataSource() {
 		tableView.register(RollCountTableViewCell.self, forCellReuseIdentifier: RollCountTableViewCell.reuseIdentifier)
 
-		dataSource = UITableViewDiffableDataSource(tableView: tableView) { tableView, indexPath, rollModelCounter in
+		dataSource = UITableViewDiffableDataSource(tableView: tableView) { tableView, indexPath, diceModel in
 			guard let cell = tableView.dequeueReusableCell(
 				withIdentifier: RollCountTableViewCell.reuseIdentifier,
 				for: indexPath
 			) as? RollCountTableViewCell else { return UITableViewCell() }
 
-			cell.configure(with: rollModelCounter)
+			cell.configure(with: diceModel)
 			return cell
 		}
 	}
@@ -105,23 +99,24 @@ extension GameDetailsViewController: UITableViewDelegate {
 
 // MARK: GameDetailsViewControllerProtocol
 extension GameDetailsViewController: GameDetailsViewControllerProtocol {
-	func updateTableViewModel(_ models: [RollModelCounter]) {
-		var snapshot = NSDiffableDataSourceSnapshot<RollSection, RollModelCounter>()
-		snapshot.appendSections([.numberRolls, .castles, .ship])
-		for model in models {
-			switch model.rollModel {
-			case .number:
-				snapshot.appendItems([model], toSection: .numberRolls)
-			case .ship:
-				snapshot.appendItems([model], toSection: .ship)
-			case .castle:
-				snapshot.appendItems([model], toSection: .castles)
-			}
-		}
-		self.snapshot = snapshot
+	func setTitle(_ title: String) {
+		navigationItem.title = title
 	}
 
-	func updateChartModel(_ models: [RollModelCounter]) {
-		chartCountersModel.counters = models
+	func render(_ viewData: GameDetailsViewData) {
+		var snapshot = NSDiffableDataSourceSnapshot<RollSection, DiceModel>()
+		snapshot.appendSections(Array(viewData.tableViewModels.keys).sorted())
+
+		for section in snapshot.sectionIdentifiers {
+			guard let diceModels = viewData.tableViewModels[section] else { return }
+			snapshot.appendItems(diceModels, toSection: section)
+		}
+		self.snapshot = snapshot
+
+		chartViewModel.diceModels = viewData.chartViewModels
+
+		if let newSnapshot = self.snapshot {
+			dataSource?.apply(newSnapshot, animatingDifferences: false)
+		}
 	}
 }
