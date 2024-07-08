@@ -37,6 +37,7 @@ final class GameManagerStub: GameManagerProtocol {
 			forEntityName: "Player",
 			into: coreDataStack.managedContext
 		) as? Player
+		stubPlayer?.name = "New player"
 		if let stubPlayer {
 			stubGame?.insertIntoPlayers(stubPlayer, at: 0)
 		}
