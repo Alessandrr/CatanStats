@@ -45,7 +45,7 @@ private var targets: [Target] {
 		infoPlist: .extendingDefault(with: infoPlist),
 		sources: ["Targets/\(ProjectSettings.projectName)/Sources/**"],
 		resources: ["Targets/\(ProjectSettings.projectName)/Resources/**"],
-		scripts: [swiftLintTargetScript],
+//		scripts: [swiftLintTargetScript],
 		dependencies: [],
 		coreDataModels: [
 			CoreDataModel("Targets/\(ProjectSettings.projectName)/Sources/CoreData/CatanStats.xcdatamodeld")

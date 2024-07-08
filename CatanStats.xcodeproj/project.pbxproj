@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,10 +16,8 @@
 		12702FB8DC89B48744DE0E38 /* NewRollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5EF3B9AD3C88C8C0AE327E /* NewRollViewController.swift */; };
 		12DC914B7FDF409D76BEFCE4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BA590ED06C2CFE985953AB6 /* Localizable.strings */; };
 		15F9299C97DFD9D112FB5C1D /* NewGameUserInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AE81FF75384AC741F1D254 /* NewGameUserInput.swift */; };
+		1D0C433839F1743BDA12E883 /* ValidationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC44ABF5378118D47BD29BB7 /* ValidationErrors.swift */; };
 		1F190988B2657F0C148CB6B3 /* Game+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5809355A53B7D67A562C6A3E /* Game+CoreDataClass.swift */; };
-		22611E242C39B9360019007E /* ValidationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22611E232C39B9360019007E /* ValidationErrors.swift */; };
-		22611E272C39BD9C0019007E /* Player+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22611E252C39BD9C0019007E /* Player+CoreDataClass.swift */; };
-		22611E282C39BD9C0019007E /* Player+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22611E262C39BD9C0019007E /* Player+CoreDataProperties.swift */; };
 		251C7BAACA558F930772B65B /* PlayerNameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2947FDC6580BF440BA5D1C /* PlayerNameTableViewCell.swift */; };
 		2A03A8F93B875F2296C31801 /* TabBarPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41156EC57A051B6791E6736 /* TabBarPage.swift */; };
 		2F4CCD46EA6A28FC07C3B123 /* UIImage+Scale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5BD30142B0F7EFF70876F3 /* UIImage+Scale.swift */; };
@@ -44,6 +42,7 @@
 		6D82C14B6692A3028A8F6510 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BA590ED06C2CFE985953AB6 /* Localizable.strings */; };
 		6FD5E9EE3DDFAFE91B83042F /* GameModelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E3AB24AAB4BE09B0ABFCBB /* GameModelProvider.swift */; };
 		7AC40458B89385CAC1BCA3B3 /* CatanStats.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 143FE92D4E9E1D3883E94C51 /* CatanStats.xcdatamodeld */; };
+		7B689A37FBA0DE856C4D7984 /* Player+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB7DD48CC1581EEE857D0A /* Player+CoreDataClass.swift */; };
 		8059D4CB95D8CFDB03034D02 /* Roll+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C95A64ABDC5E067B9744CC /* Roll+CoreDataClass.swift */; };
 		83F4AEB3C234860C34D14B77 /* NewGamePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157E7C48CE0E1EE29FAE96AD /* NewGamePresenter.swift */; };
 		867E40050F4C5933EFDD1656 /* SectionLayoutProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66111A7B95E0700C2FE8D7B3 /* SectionLayoutProviderFactory.swift */; };
@@ -60,6 +59,7 @@
 		A8C8ADEE2E9EB5B603FC703D /* GameListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99F3D07B00C29C76CEB1AAF /* GameListViewController.swift */; };
 		AB7706B7420281A4D933CA46 /* NewGameAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166768C7392A34AEF32FCABE /* NewGameAssembly.swift */; };
 		ABDF80FD2971E71B95193903 /* BarMark+PlayerNameForegroundStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69F4F73E6E834F63AA0A45CD /* BarMark+PlayerNameForegroundStyle.swift */; };
+		AD5E10F9F68B6D47D1B46A67 /* Player+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF55AF45E11395E203E27798 /* Player+CoreDataProperties.swift */; };
 		BD6672C35B7FC448D9BA8AC7 /* NewRollViewControllerStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796E1907C4DD1F304D50AEFD /* NewRollViewControllerStub.swift */; };
 		C2F21C8CA90F5C83184B6D65 /* TestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7E23929460B10FF3B186CAD /* TestCoreDataStack.swift */; };
 		C2F609730A0D28793CEFCD4D /* RollDistributionChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040D9CCC8BD671785DF30EC /* RollDistributionChartView.swift */; };
@@ -121,9 +121,7 @@
 		157E7C48CE0E1EE29FAE96AD /* NewGamePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGamePresenter.swift; sourceTree = "<group>"; };
 		166768C7392A34AEF32FCABE /* NewGameAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameAssembly.swift; sourceTree = "<group>"; };
 		190A4FE5D3CB742DEF11324E /* NewGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
-		22611E232C39B9360019007E /* ValidationErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationErrors.swift; sourceTree = "<group>"; };
-		22611E252C39BD9C0019007E /* Player+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Player+CoreDataClass.swift"; sourceTree = "<group>"; };
-		22611E262C39BD9C0019007E /* Player+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Player+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		1AFB7DD48CC1581EEE857D0A /* Player+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Player+CoreDataClass.swift"; sourceTree = "<group>"; };
 		226D4C1343B54AD412A79561 /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		2B4D84B3320E4C51D1E6524E /* UIColor+Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Dynamic.swift"; sourceTree = "<group>"; };
 		2BA590ED06C2CFE985953AB6 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
@@ -162,6 +160,7 @@
 		B935B6361C4E3C0E5B4D00CD /* Roll+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Roll+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		BC9A37C0F6FC4ABEA9AE56AF /* CastleRoll+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CastleRoll+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		BD0E412851734EDEB9E898CB /* TuistBundle+CatanStatsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistBundle+CatanStatsTests.swift"; sourceTree = "<group>"; };
+		BF55AF45E11395E203E27798 /* Player+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Player+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C16ABFD9764A95D759D446FA /* CatanStats.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CatanStats.xcdatamodel; sourceTree = "<group>"; };
 		C43DA17B8A9F79CE9C1765C8 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C66463D4B55E7C8FB44FBB0B /* GameDetailsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailsAssembly.swift; sourceTree = "<group>"; };
@@ -184,6 +183,7 @@
 		EBF73E306ADAB0307C64DDC4 /* RollChartsGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollChartsGroupView.swift; sourceTree = "<group>"; };
 		F0843F8CEDF11F883711D324 /* CatanStatsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "CatanStatsTests-Info.plist"; sourceTree = "<group>"; };
 		F76BC80C2D46F1EECB46A955 /* RollSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollSection.swift; sourceTree = "<group>"; };
+		FC44ABF5378118D47BD29BB7 /* ValidationErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationErrors.swift; sourceTree = "<group>"; };
 		FD1192FCA0EA834B1353E5D2 /* GameDetailsViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailsViewData.swift; sourceTree = "<group>"; };
 		FF95C4EBA7AC2B8B00B0FBCD /* PlayerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -424,7 +424,7 @@
 			isa = PBXGroup;
 			children = (
 				A4AE81FF75384AC741F1D254 /* NewGameUserInput.swift */,
-				22611E232C39B9360019007E /* ValidationErrors.swift */,
+				FC44ABF5378118D47BD29BB7 /* ValidationErrors.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -584,14 +584,14 @@
 		EAAB0C7D41563FA855A33D27 /* Managed Objects */ = {
 			isa = PBXGroup;
 			children = (
-				22611E252C39BD9C0019007E /* Player+CoreDataClass.swift */,
-				22611E262C39BD9C0019007E /* Player+CoreDataProperties.swift */,
 				B48E736C168DD6D2685C1B08 /* CastleRoll+CoreDataClass.swift */,
 				BC9A37C0F6FC4ABEA9AE56AF /* CastleRoll+CoreDataProperties.swift */,
 				5809355A53B7D67A562C6A3E /* Game+CoreDataClass.swift */,
 				5333425A7667E68E662B28D3 /* Game+CoreDataProperties.swift */,
 				9A15064EB733C80B71F5C490 /* NumberRoll+CoreDataClass.swift */,
 				A6FB72D61F816E117C01DAAC /* NumberRoll+CoreDataProperties.swift */,
+				1AFB7DD48CC1581EEE857D0A /* Player+CoreDataClass.swift */,
+				BF55AF45E11395E203E27798 /* Player+CoreDataProperties.swift */,
 				98C95A64ABDC5E067B9744CC /* Roll+CoreDataClass.swift */,
 				B935B6361C4E3C0E5B4D00CD /* Roll+CoreDataProperties.swift */,
 				13559F16F97E62BFDD402407 /* ShipRoll+CoreDataClass.swift */,
@@ -654,7 +654,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8E51B995889377539C74861F /* Build configuration list for PBXNativeTarget "CatanStats" */;
 			buildPhases = (
-				A4BA3BB2BCF1FD09C59E0CCB /* Run Swiftlint */,
 				5678D2E3305274FE1A74D5F2 /* Sources */,
 				8AF2A354A9EEB3EC525C048B /* Resources */,
 				989A44783B2761E8FADDE131 /* Embed Frameworks */,
@@ -722,28 +721,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		A4BA3BB2BCF1FD09C59E0CCB /* Run Swiftlint */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run Swiftlint";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n swiftlint\nelse\n echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n exit 1\nfi";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		076064E3D46D298EA70428F8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -774,6 +751,8 @@
 				40E82DB02459730CE8D7C7B9 /* Game+CoreDataProperties.swift in Sources */,
 				9E98A4646F9D5CF7A3C0088C /* NumberRoll+CoreDataClass.swift in Sources */,
 				9CDFD495818F6A3B104721AD /* NumberRoll+CoreDataProperties.swift in Sources */,
+				7B689A37FBA0DE856C4D7984 /* Player+CoreDataClass.swift in Sources */,
+				AD5E10F9F68B6D47D1B46A67 /* Player+CoreDataProperties.swift in Sources */,
 				8059D4CB95D8CFDB03034D02 /* Roll+CoreDataClass.swift in Sources */,
 				A3B4175087B1B6B49810DB84 /* Roll+CoreDataProperties.swift in Sources */,
 				371685B3806223E6F0BBDCFB /* ShipRoll+CoreDataClass.swift in Sources */,
@@ -790,8 +769,6 @@
 				E364EC63B923EF94F66687B8 /* GameDetailsViewController.swift in Sources */,
 				8D3315A66374AFBD4713E4F3 /* GameDetailsSectionHeaderView.swift in Sources */,
 				0B1ABE9357F8DC830D0F23E2 /* RollChartsGroupView.swift in Sources */,
-				22611E272C39BD9C0019007E /* Player+CoreDataClass.swift in Sources */,
-				22611E282C39BD9C0019007E /* Player+CoreDataProperties.swift in Sources */,
 				C2F609730A0D28793CEFCD4D /* RollDistributionChartView.swift in Sources */,
 				DF91644E826A25AC7F84EB14 /* RollCountTableViewCell.swift in Sources */,
 				F4135EF0E8F7C8FFD1E3203F /* GameListAssembly.swift in Sources */,
@@ -802,6 +779,7 @@
 				FF0D4B6D8632CA1BB69E00BB /* MainPageViewController.swift in Sources */,
 				AB7706B7420281A4D933CA46 /* NewGameAssembly.swift in Sources */,
 				15F9299C97DFD9D112FB5C1D /* NewGameUserInput.swift in Sources */,
+				1D0C433839F1743BDA12E883 /* ValidationErrors.swift in Sources */,
 				83F4AEB3C234860C34D14B77 /* NewGamePresenter.swift in Sources */,
 				60FBF501A76E3F4BEAA41CEE /* NewGameViewController.swift in Sources */,
 				251C7BAACA558F930772B65B /* PlayerNameTableViewCell.swift in Sources */,
@@ -809,7 +787,6 @@
 				10B0186D6174917690A7BD49 /* NewRollPresenter.swift in Sources */,
 				12702FB8DC89B48744DE0E38 /* NewRollViewController.swift in Sources */,
 				867E40050F4C5933EFDD1656 /* SectionLayoutProviderFactory.swift in Sources */,
-				22611E242C39B9360019007E /* ValidationErrors.swift in Sources */,
 				311CC1E3526549B57AEE463B /* NewRollCell.swift in Sources */,
 				89A5D99D4F8508597352AEA3 /* NewRollOverlay.swift in Sources */,
 				2A03A8F93B875F2296C31801 /* TabBarPage.swift in Sources */,
