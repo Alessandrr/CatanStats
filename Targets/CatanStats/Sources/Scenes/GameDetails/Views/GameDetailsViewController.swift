@@ -105,15 +105,16 @@ extension GameDetailsViewController: GameDetailsViewControllerProtocol {
 
 	func render(_ viewData: GameDetailsViewData) {
 		var snapshot = NSDiffableDataSourceSnapshot<RollSection, TableRollDisplayItem>()
-		snapshot.appendSections(Array(viewData.tableViewModels.keys).sorted())
+		snapshot.appendSections(Array(viewData.tableDisplayItems.keys).sorted())
 
 		for section in snapshot.sectionIdentifiers {
-			guard let diceModels = viewData.tableViewModels[section] else { return }
+			guard let diceModels = viewData.tableDisplayItems[section] else { return }
 			snapshot.appendItems(diceModels, toSection: section)
 		}
 		self.snapshot = snapshot
 
-		chartViewModel.displayItems = viewData.chartViewModels
+		chartViewModel.rollDisplayItems = viewData.chartRollDisplayItems
+		chartViewModel.expectedCountDisplayItems = viewData.chartExpectedDisplayItems
 
 		if let newSnapshot = self.snapshot {
 			dataSource?.apply(newSnapshot, animatingDifferences: false)

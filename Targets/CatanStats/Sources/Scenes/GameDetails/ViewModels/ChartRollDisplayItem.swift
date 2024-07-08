@@ -8,7 +8,7 @@
 import Foundation
 
 struct ChartRollDisplayItem: Hashable {
-	let playerName: String
+	let playerName: String?
 	let description: String
 	let count: Int
 }

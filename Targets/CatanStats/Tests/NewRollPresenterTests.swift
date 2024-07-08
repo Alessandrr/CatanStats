@@ -26,6 +26,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_didSelectRoll_numberSelected_shouldSaveCorrectRoll() {
 		let sut = makePresenter()
+		sut.initialSetup()
 		let expectedRollValue = 2
 		let diceModel = DiceModel(rollResult: .number(expectedRollValue))
 
@@ -47,6 +48,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_didSelectRoll_numberSelected_shouldAddToCurrentGame() throws {
 		let sut = makePresenter()
+		sut.initialSetup()
 		let expectedRollValue = 2
 		let rollModel = DiceModel(rollResult: .number(expectedRollValue))
 
@@ -62,6 +64,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_didSelectRoll_numberSelected_shouldAddToCurrentPlayer() throws {
 		let sut = makePresenter()
+		sut.initialSetup()
 		let expectedRollValue = 2
 		let rollModel = DiceModel(rollResult: .number(expectedRollValue))
 
@@ -106,6 +109,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_didSelectRoll_shipSelected_shouldAddToCurrentGame() throws {
 		let sut = makePresenter()
+		sut.initialSetup()
 		let shipModel = DiceModel(rollResult: .castleShip(.ship))
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
@@ -120,6 +124,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_didSelectRoll_shipSelected_shouldAddToCurrentPlayer() throws {
 		let sut = makePresenter()
+		sut.initialSetup()
 		let shipModel = DiceModel(rollResult: .castleShip(.ship))
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
@@ -168,6 +173,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_didSelectRoll_castleSelected_shouldAddToCurrentGame() throws {
 		let sut = makePresenter()
+		sut.initialSetup()
 		let castleModel = DiceModel(rollResult: .castleShip(.castle(color: .green)))
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
@@ -182,6 +188,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_didSelectRoll_castleSelected_shouldAddToCurrentPlayer() throws {
 		let sut = makePresenter()
+		sut.initialSetup()
 		let castleModel = DiceModel(rollResult: .castleShip(.castle(color: .green)))
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
@@ -206,6 +213,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_undoRoll_withOneRoll_shouldRemoveRoll() {
 		let sut = makePresenter()
+		sut.initialSetup()
 		let shipModel = DiceModel(rollResult: .castleShip(.ship))
 		sut.didSelectRollItem(shipModel)
 		var savedRolls = try? fetchRolls()
@@ -223,6 +231,7 @@ final class NewRollPresenterTests: XCTestCase {
 
 	func test_undoRoll_withTwoRolls_shouldRemoveLatest() {
 		let sut = makePresenter()
+		sut.initialSetup()
 		let shipModel = DiceModel(rollResult: .castleShip(.ship))
 		sut.didSelectRollItem(shipModel)
 		sut.didSelectRollItem(shipModel)

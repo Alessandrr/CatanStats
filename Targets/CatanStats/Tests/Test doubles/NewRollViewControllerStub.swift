@@ -11,10 +11,10 @@ import Foundation
 final class NewRollViewControllerStub: NewRollViewControllerProtocol {
 	func renderUndoButton(undoPossible: Bool) {
 	}
-	
+
 	func renderCurrentPlayer(_ name: String) {
 	}
-	
+
 	func renderOverlay(newRollsDisabled: Bool) {
 	}
 }

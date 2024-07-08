@@ -72,7 +72,6 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 			}
 		}
 		gameManager.rollAdded()
-		checkUndoPossibility()
 		coreDataStack.saveContext()
 	}
 
@@ -89,8 +88,8 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 			return
 		}
 		coreDataStack.managedContext.delete(lastRoll)
-		gameManager.rollUndone()
 		coreDataStack.saveContext()
+		gameManager.rollUndone()
 	}
 
 	// MARK: Private methods
@@ -115,8 +114,9 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 		gameManager.currentPlayerPublisher
 			.sink { [weak self] player in
 				guard let self = self else { return }
-				currentPlayer = player
 				guard let playerName = player?.name else { return }
+				currentPlayer = player
+				checkUndoPossibility()
 				viewController?.renderCurrentPlayer(playerName)
 			}
 			.store(in: &cancellables)

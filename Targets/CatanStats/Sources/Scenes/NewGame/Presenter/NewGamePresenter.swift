@@ -7,28 +7,9 @@
 
 import Foundation
 
-import Foundation
-
-enum ValidationError {
-	case emptyPlayerName(index: Int)
-}
-
-struct ValidationErrors: Error {
-	let validationErrors: [ValidationError]
-
-	func hasError(forPlayerAtIndex index: Int) -> Bool {
-		return validationErrors.contains { error in
-			if case .emptyPlayerName(let errorIndex) = error {
-				return errorIndex == index
-			}
-			return false
-		}
-	}
-}
-
 protocol NewGamePresenterProtocol {
 	func createGame(with input: NewGameUserInput)
-	func validate(_ input: NewGameUserInput) -> Result<GameData, ValidationErrors>
+	func validate(_ input: NewGameUserInput) -> Result<NewGameUserInput, ValidationErrors>
 }
 
 final class NewGamePresenter: NewGamePresenterProtocol {
@@ -54,19 +35,19 @@ final class NewGamePresenter: NewGamePresenterProtocol {
 		}
 	}
 
-	func validate(_ input: NewGameUserInput) -> Result<GameData, ValidationErrors> {
+	func validate(_ input: NewGameUserInput) -> Result<NewGameUserInput, ValidationErrors> {
 		var errors: [ValidationError] = []
 		let gameTitle = !input.gameTitle.isEmpty ? input.gameTitle : "New game"
 
-		let playerNames = Array(input.playerNames.prefix(input.playerCount)).map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+		let playerNames = Array(input.playerNames.prefix(input.playerCount)).map {
+			$0.trimmingCharacters(in: .whitespacesAndNewlines)
+		}
 		for index in 0..<playerNames.count where playerNames[index].isEmpty {
-				errors.append(.emptyPlayerName(index: index))
+			errors.append(.emptyPlayerName(index: index))
 		}
 
-		let playerData = playerNames.map { PlayerData(name: $0, rolls: []) }
-
 		if errors.isEmpty {
-			return .success(GameData(title: gameTitle, players: playerData))
+			return .success(NewGameUserInput(gameTitle: gameTitle, playerCount: playerNames.count, playerNames: playerNames))
 		} else {
 			return .failure(ValidationErrors(validationErrors: errors))
 		}

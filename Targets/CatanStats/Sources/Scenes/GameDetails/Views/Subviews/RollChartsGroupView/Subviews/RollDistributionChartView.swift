@@ -12,34 +12,26 @@ struct RollDistributionChartView: View {
 	@ObservedObject var viewModel: RollChartViewModel
 
 	var body: some View {
-		Chart {
-			ForEach(viewModel.displayItems, id: \.self) { displayItem in
-				BarMark(
-					x: .value("Roll", displayItem.description),
-					y: .value("Count", displayItem.count)
-				)
-				.foregroundStyle(by: .value("Player", displayItem.playerName))
-//				RuleMark(
-//					xStart: .value("Roll", getRollDescriptionFromModel(diceModel)),
-//					xEnd: .value("Roll", getRollDescriptionFromModel(diceModel)),
-//					y: .value(
-//						"Expected count",
-//						expectedCount(rollsCount: getRollCount(), diceModel)
-//					)
-//				)
-//				.foregroundStyle(.purple)
-//				.lineStyle(.init(lineWidth: 3))
+		VStack {
+			Chart {
+				ForEach(viewModel.rollDisplayItems, id: \.self) { displayItem in
+					BarMark(
+						x: .value("Roll", displayItem.description),
+						y: .value("Count", displayItem.count)
+					)
+					.playerNameForegroundStyle(playerName: displayItem.playerName)
+				}
+				ForEach(viewModel.expectedCountDisplayItems, id: \.self) { displayItem in
+					RuleMark(
+						xStart: .value("Roll", displayItem.description),
+						xEnd: .value("Roll", displayItem.description),
+						y: .value("Expected count", displayItem.count)
+					)
+					.foregroundStyle(.teal)
+					.lineStyle(StrokeStyle(lineWidth: 3))
+				}
 			}
-		}
-		.padding()
-	}
-
-	private func expectedCount(rollsCount: Int, _ diceModel: DiceModel) -> Double {
-		switch diceModel.rollResult {
-		case .number(let rollValue):
-			return Double(rollsCount) * DiceModel.probability(for: .number(rollValue))
-		case .castleShip(let castleShipResult):
-			return Double(rollsCount) * DiceModel.probability(for: .castleShip(castleShipResult))
+			.padding()
 		}
 	}
 }

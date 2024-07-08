@@ -45,11 +45,10 @@ final class GameManagerStub: GameManagerProtocol {
 	func deleteGame(_ game: CatanStats.Game) {
 	}
 
-
 	func setCurrentGame(_ game: CatanStats.Game) {
 	}
 
-	func createGame(with gameDetails: CatanStats.GameData) -> CatanStats.Game? {
+	func createGame(with gameInput: CatanStats.NewGameUserInput) -> Game? {
 		return nil
 	}
 

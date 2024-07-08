@@ -11,7 +11,7 @@ import Combine
 
 protocol GameManagerProtocol {
 	func deleteGame(_ game: Game)
-	func createGame(with gameDetails: GameData) -> Game?
+	func createGame(with gameInput: NewGameUserInput) -> Game?
 	func setCurrentGame(_ game: Game)
 	func rollAdded()
 	func rollUndone()
@@ -31,7 +31,6 @@ final class GameManager: GameManagerProtocol {
 	}
 
 	// MARK: Private properties
-	// TODO: Add error instead of nil?
 	private var currentGameSubject = CurrentValueSubject<Game?, Never>(nil)
 	private var currentPlayerSubject = CurrentValueSubject<Player?, Never>(nil)
 	private var cancellables = Set<AnyCancellable>()
@@ -61,16 +60,16 @@ final class GameManager: GameManagerProtocol {
 		coreDataStack.saveContext()
 	}
 
-	func createGame(with gameDetails: GameData) -> Game? {
+	func createGame(with gameInput: NewGameUserInput) -> Game? {
 		do {
 			guard let newGame = NSEntityDescription.insertNewObject(
 				forEntityName: "Game",
 				into: coreDataStack.managedContext
 			) as? Game else { return nil }
 			newGame.dateCreated = Date.now
-			newGame.title = gameDetails.title
-			gameDetails.players.forEach { player in
-				guard let player = createPlayer(name: player.name) else { return }
+			newGame.title = gameInput.gameTitle
+			gameInput.playerNames.forEach { playerName in
+				guard let player = createPlayer(name: playerName) else { return }
 				newGame.addToPlayers(player)
 			}
 			newGame.currentPlayerIndex = 0
@@ -138,6 +137,7 @@ final class GameManager: GameManagerProtocol {
 	private func fetchCurrentPlayer() {
 		guard let currentPlayerIndex = currentGameSubject.value?.currentPlayerIndex else { return }
 		guard let players = currentGameSubject.value?.players else { return }
+		guard Int(currentPlayerIndex) < players.count else { return }
 		currentPlayerSubject.value = players[Int(currentPlayerIndex)] as? Player
 	}
 

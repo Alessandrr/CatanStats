@@ -14,14 +14,16 @@ struct RollChartsGroupView: View {
 		TabView {
 			RollDistributionChartView(
 				viewModel: RollChartViewModel(
-					displayItems: viewModel.displayItems[.numberRolls] ?? []
+					displayItems: viewModel.rollDisplayItems[.numberRolls] ?? [],
+					expectedCountDisplayItems: viewModel.expectedCountDisplayItems[.numberRolls] ?? []
 				)
 			)
 			.padding(EdgeInsets(top: 0, leading: 0, bottom: Sizes.Padding.large, trailing: 0))
 
 			RollDistributionChartView(
 				viewModel: RollChartViewModel(
-					displayItems: viewModel.displayItems[.shipAndCastles] ?? []
+					displayItems: viewModel.rollDisplayItems[.shipAndCastles] ?? [],
+					expectedCountDisplayItems: viewModel.expectedCountDisplayItems[.shipAndCastles] ?? []
 				)
 			)
 			.padding(EdgeInsets(top: 0, leading: 0, bottom: Sizes.Padding.large, trailing: 0))
@@ -30,15 +32,3 @@ struct RollChartsGroupView: View {
 		.indexViewStyle(.page(backgroundDisplayMode: .always))
 	}
 }
-
-//#Preview {
-//	RollChartsGroupView(
-//		viewModel: RollChartViewModel(
-//			models:
-//				(2...12).map { number in
-//					let randomCount = Int.random(in: 2...10)
-//					return DiceModel(rollResult: .number(number), counter: randomCount)
-//				}
-//		)
-//	)
-//}

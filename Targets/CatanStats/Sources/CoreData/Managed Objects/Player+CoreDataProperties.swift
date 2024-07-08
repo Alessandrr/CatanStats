@@ -2,13 +2,12 @@
 //  Player+CoreDataProperties.swift
 //  CatanStats
 //
-//  Created by Aleksandr Mamlygo on 26.06.24.
+//  Created by Aleksandr Mamlygo on 06.07.24.
 //
 //
 
 import Foundation
 import CoreData
-
 
 extension Player {
 
@@ -57,6 +56,5 @@ extension Player {
 
 }
 
-extension Player : Identifiable {
-
+extension Player: Identifiable {
 }

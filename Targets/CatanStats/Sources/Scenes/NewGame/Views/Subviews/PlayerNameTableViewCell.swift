@@ -46,7 +46,7 @@ final class PlayerNameTableViewCell: UITableViewCell {
 		let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
 
 		textField.attributedPlaceholder = attributedPlaceholder
-		textField.backgroundColor = Color.lightRed
+		textField.backgroundColor = Colors.lightRed
 	}
 
 	private func setupUI() {

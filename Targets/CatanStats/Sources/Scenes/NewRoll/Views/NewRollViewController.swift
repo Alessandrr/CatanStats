@@ -139,7 +139,12 @@ extension NewRollViewController {
 // MARK: NewRollViewControllerProtocol
 extension NewRollViewController: NewRollViewControllerProtocol {
 	func renderOverlay(newRollsDisabled: Bool) {
-		overlayView.isHidden = !newRollsDisabled
+		if newRollsDisabled {
+			overlayView.isHidden = false
+			navigationItem.title = ""
+		} else {
+			overlayView.isHidden = true
+		}
 	}
 
 	func renderCurrentPlayer(_ name: String) {
