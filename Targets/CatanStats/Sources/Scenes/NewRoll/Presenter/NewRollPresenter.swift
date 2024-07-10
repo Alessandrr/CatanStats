@@ -12,12 +12,14 @@ import Combine
 protocol NewRollPresenterProtocol {
 	func didSelectRollItem(_ item: DiceModel)
 	func undoRoll()
+	func initialSetup()
 }
 
 final class NewRollPresenter: NewRollPresenterProtocol {
 
 	// MARK: Private properties
 	private var currentGame: Game?
+	private var currentPlayer: Player?
 	private var cancellables = Set<AnyCancellable>()
 
 	// MARK: Dependencies
@@ -30,10 +32,13 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 		self.coreDataStack = coreDataStack
 		self.gameManager = gameManager
 		self.viewController = viewController
-		setupBindings()
 	}
 
 	// MARK: Internal methods
+	func initialSetup() {
+		setupBindings()
+	}
+
 	func didSelectRollItem(_ item: DiceModel) {
 		switch item.rollResult {
 		case .number(let value):
@@ -44,6 +49,7 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 			numberRoll.value = Int16(value)
 			numberRoll.dateCreated = Date.now
 			currentGame?.addToRolls(numberRoll)
+			currentPlayer?.addToRolls(numberRoll)
 		case .castleShip(let castleShipResult):
 			switch castleShipResult {
 			case .ship:
@@ -53,6 +59,7 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 				) as? ShipRoll else { return }
 				shipRoll.dateCreated = Date.now
 				currentGame?.addToRolls(shipRoll)
+				currentPlayer?.addToRolls(shipRoll)
 			case .castle(color: let color):
 				guard let castleRoll = NSEntityDescription.insertNewObject(
 					forEntityName: "CastleRoll",
@@ -61,8 +68,10 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 				castleRoll.dateCreated = Date.now
 				castleRoll.color = color.rawValue
 				currentGame?.addToRolls(castleRoll)
+				currentPlayer?.addToRolls(castleRoll)
 			}
 		}
+		gameManager.rollAdded()
 		coreDataStack.saveContext()
 	}
 
@@ -70,18 +79,44 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 		let rollRequest = Roll.fetchRequest()
 		let sortByDate = NSSortDescriptor(key: #keyPath(Roll.dateCreated), ascending: true)
 		rollRequest.sortDescriptors = [sortByDate]
+		guard let gameID = currentGame?.objectID else { return }
 
-		guard let lastRoll = try? coreDataStack.managedContext.fetch(rollRequest).last else { return }
+		rollRequest.predicate = NSPredicate(format: "game == %@", gameID)
+
+		guard let lastRoll = try? coreDataStack.managedContext.fetch(rollRequest).last else {
+			viewController?.renderUndoButton(undoPossible: false)
+			return
+		}
 		coreDataStack.managedContext.delete(lastRoll)
 		coreDataStack.saveContext()
+		gameManager.rollUndone()
 	}
 
 	// MARK: Private methods
+	private func checkUndoPossibility() {
+		guard let rolls = currentGame?.rolls else {
+			viewController?.renderUndoButton(undoPossible: false)
+			return
+		}
+		viewController?.renderUndoButton(undoPossible: rolls.count != 0)
+	}
+
 	private func setupBindings() {
 		gameManager.currentGamePublisher
-			.sink { [unowned self] game in
+			.sink { [weak self] game in
+				guard let self = self else { return }
 				currentGame = game
-				viewController?.render(newRollsDisabled: currentGame == nil)
+				checkUndoPossibility()
+				viewController?.renderOverlay(newRollsDisabled: currentGame == nil)
+			}
+			.store(in: &cancellables)
+
+		gameManager.currentPlayerPublisher
+			.sink { [weak self] player in
+				guard let self = self, let playerName = player?.name else { return }
+				currentPlayer = player
+				checkUndoPossibility()
+				viewController?.renderCurrentPlayer(playerName)
 			}
 			.store(in: &cancellables)
 	}

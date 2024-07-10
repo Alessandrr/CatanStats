@@ -27,9 +27,9 @@ final class GameDetailsViewController: UIViewController {
 		)
 	}()
 
-	private var dataSource: UITableViewDiffableDataSource<RollSection, DiceModel>?
-	private var snapshot: NSDiffableDataSourceSnapshot<RollSection, DiceModel>?
-	private var chartViewModel = RollChartViewModel()
+	private var dataSource: UITableViewDiffableDataSource<RollSection, TableRollDisplayItem>?
+	private var snapshot: NSDiffableDataSourceSnapshot<RollSection, TableRollDisplayItem>?
+	private var chartViewModel = RollChartGroupViewModel()
 
 	// MARK: Dependencies
 	var presenter: GameDetailsPresenterProtocol?
@@ -72,13 +72,13 @@ private extension GameDetailsViewController {
 	func setupDataSource() {
 		tableView.register(RollCountTableViewCell.self, forCellReuseIdentifier: RollCountTableViewCell.reuseIdentifier)
 
-		dataSource = UITableViewDiffableDataSource(tableView: tableView) { tableView, indexPath, diceModel in
+		dataSource = UITableViewDiffableDataSource(tableView: tableView) { tableView, indexPath, displayItem in
 			guard let cell = tableView.dequeueReusableCell(
 				withIdentifier: RollCountTableViewCell.reuseIdentifier,
 				for: indexPath
 			) as? RollCountTableViewCell else { return UITableViewCell() }
 
-			cell.configure(with: diceModel)
+			cell.configure(with: displayItem)
 			return cell
 		}
 	}
@@ -104,16 +104,17 @@ extension GameDetailsViewController: GameDetailsViewControllerProtocol {
 	}
 
 	func render(_ viewData: GameDetailsViewData) {
-		var snapshot = NSDiffableDataSourceSnapshot<RollSection, DiceModel>()
-		snapshot.appendSections(Array(viewData.tableViewModels.keys).sorted())
+		var snapshot = NSDiffableDataSourceSnapshot<RollSection, TableRollDisplayItem>()
+		snapshot.appendSections(Array(viewData.tableDisplayItems.keys).sorted())
 
 		for section in snapshot.sectionIdentifiers {
-			guard let diceModels = viewData.tableViewModels[section] else { return }
+			guard let diceModels = viewData.tableDisplayItems[section] else { return }
 			snapshot.appendItems(diceModels, toSection: section)
 		}
 		self.snapshot = snapshot
 
-		chartViewModel.diceModels = viewData.chartViewModels
+		chartViewModel.rollDisplayItems = viewData.chartRollDisplayItems
+		chartViewModel.expectedCountDisplayItems = viewData.chartExpectedDisplayItems
 
 		if let newSnapshot = self.snapshot {
 			dataSource?.apply(newSnapshot, animatingDifferences: false)

@@ -17,6 +17,7 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 
 	// MARK: Private properties
 	private var cancellables = Set<AnyCancellable>()
+	private var players: [Player] = []
 
 	// MARK: Dependencies
 	private weak var viewController: GameDetailsViewControllerProtocol?
@@ -41,116 +42,31 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 	func loadData() {
 		setupRenderingBinding()
 		viewController?.setTitle(getGameDetailsTitle())
+		players = getPlayers()
 		renderData()
 	}
 
 	// MARK: Private methods
-	private func prepareViewData(from diceModels: [DiceModel]) -> GameDetailsViewData {
-		let tableViewCounters: [RollSection: [DiceModel]] = prepareModelsForTableView(diceModels)
-
+	private func prepareViewData(from gameData: GameData) -> GameDetailsViewData {
 		return GameDetailsViewData(
-			tableViewModels: tableViewCounters,
-			chartViewModels: diceModels
+			tableDisplayItems: prepareTableViewData(from: gameData),
+			chartRollDisplayItems: prepareChartViewData(from: gameData),
+			chartExpectedDisplayItems: prepareExpectedCountViewData(from: gameData)
 		)
 	}
 
-	private func fetchRollsWithCount() -> [DiceModel] {
+	private func fetchRollsWithCount(playerID: NSManagedObjectID?) -> [DiceModel] {
 		var rolls: [DiceModel] = []
 
-		gameModelProvider.makeModelsForSection(.numberRolls).forEach { diceModel in
-			guard case .number(let rollValue) = diceModel.rollResult else { return }
-
-			diceModel.counter = getNumberRollsCount(value: rollValue)
-			rolls.append(diceModel)
-		}
-
-		gameModelProvider.makeModelsForSection(.shipAndCastles).forEach { diceModel in
-			guard case .castleShip(let castleShipRoll) = diceModel.rollResult else { return }
-
-			diceModel.counter = getCastleShipRollsCount(for: castleShipRoll)
-			rolls.append(diceModel)
+		for section in RollSection.allCases {
+			let sectionRolls = gameModelProvider.makeModelsForSection(section).map { diceModel in
+				diceModel.counter = getRollCount(for: diceModel.rollResult, playerID: playerID)
+				return diceModel
+			}
+			rolls.append(contentsOf: sectionRolls)
 		}
 
 		return rolls
-	}
-
-	private func prepareModelsForTableView(_ models: [DiceModel]) -> [RollSection: [DiceModel]] {
-		var modelsBySection: [RollSection: [DiceModel]] = [:]
-
-		let numberSectionRolls = filterDiceModels(models, for: .numberRolls)
-		if numberSectionRolls.contains(where: { $0.counter != 0 }) {
-			modelsBySection[.numberRolls] = numberSectionRolls
-				.filter { $0.counter != 0 }
-				.sorted { $0.counter > $1.counter }
-		}
-
-		let shipCastleSectionRolls = filterDiceModels(models, for: .shipAndCastles)
-		if shipCastleSectionRolls.contains(where: { $0.counter != 0 }) {
-			modelsBySection[.shipAndCastles] = shipCastleSectionRolls
-				.filter { $0.counter != 0 }
-				.sorted { $0.counter > $1.counter }
-		}
-
-		return modelsBySection
-	}
-
-	private func filterDiceModels(_ models: [DiceModel], for section: RollSection) -> [DiceModel] {
-		switch section {
-		case .numberRolls:
-			return models.filter {
-				if case .number = $0.rollResult {
-					return true
-				}
-				return false
-			}
-		case .shipAndCastles:
-			return models.filter {
-				if case .castleShip = $0.rollResult {
-					return true
-				}
-				return false
-			}
-		}
-	}
-
-	private func getNumberRollsCount(value: Int) -> Int {
-		let fetchRequest: NSFetchRequest<NumberRoll> = NumberRoll.fetchRequest()
-		var subpredicates: [NSPredicate] = []
-
-		if let gameID {
-			subpredicates.append(NSPredicate(format: "game == %@", gameID))
-		}
-
-		subpredicates.append(NSPredicate(format: "value == %d", value))
-
-		let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: subpredicates)
-		fetchRequest.predicate = compoundPredicate
-
-		return (try? coreDataStack.managedContext.count(for: fetchRequest)) ?? 0
-	}
-
-	private func getCastleShipRollsCount(for rollResult: DiceModel.CastleShipResult) -> Int {
-		switch rollResult {
-		case .ship:
-			let fetchRequest: NSFetchRequest<ShipRoll> = ShipRoll.fetchRequest()
-			if let gameID {
-				fetchRequest.predicate = NSPredicate(format: "game == %@", gameID)
-			}
-			return (try? coreDataStack.managedContext.count(for: fetchRequest)) ?? 0
-		case .castle(let color):
-			let fetchRequest: NSFetchRequest<CastleRoll> = CastleRoll.fetchRequest()
-			var subpredicates: [NSPredicate] = []
-
-			if let gameID {
-				subpredicates.append(NSPredicate(format: "game == %@", gameID))
-			}
-
-			subpredicates.append(NSPredicate(format: "color == %@", color.rawValue))
-			let compoundPredicate = NSCompoundPredicate(type: .and, subpredicates: subpredicates)
-			fetchRequest.predicate = compoundPredicate
-
-			return (try? coreDataStack.managedContext.count(for: fetchRequest)) ?? 0
-		}
 	}
 
 	private func getGameDetailsTitle() -> String {
@@ -160,6 +76,14 @@ final class GameDetailsPresenter: NSObject, GameDetailsPresenterProtocol {
 		let game = coreDataStack.managedContext.object(with: gameID) as? Game
 
 		return game?.title ?? ""
+	}
+
+	private func getPlayers() -> [Player] {
+		guard let gameID else { return [] }
+		let game = coreDataStack.managedContext.object(with: gameID) as? Game
+
+		guard let players = game?.players?.array as? [Player] else { return [] }
+		return players
 	}
 }
 
@@ -175,9 +99,227 @@ private extension GameDetailsPresenter {
 	}
 
 	private func renderData() {
-		let rolls = fetchRollsWithCount()
-		let viewData = prepareViewData(from: rolls)
+		let gameData: GameData
+		if players.isEmpty {
+			gameData = GameData.allTimeStats(fetchRollsWithCount(playerID: nil))
+		} else {
+			gameData = GameData.singleGameStats(
+				players.map { player in
+					PlayerData(
+						name: player.name ?? "",
+						rolls: fetchRollsWithCount(playerID: player.objectID)
+					)
+				}
+			)
+		}
 
+		let viewData = prepareViewData(from: gameData)
 		viewController?.render(viewData)
+	}
+}
+
+// MARK: View data mapping
+private extension GameDetailsPresenter {
+	private func prepareTableViewData(from gameData: GameData) -> [RollSection: [TableRollDisplayItem]] {
+		var modelsBySection: [RollSection: [TableRollDisplayItem]] = [:]
+
+		let allRolls: [DiceModel]
+		switch gameData {
+		case .singleGameStats(let playerData):
+			allRolls = playerData.flatMap { $0.rolls }
+		case .allTimeStats(let allTimeRolls):
+			allRolls = allTimeRolls
+		}
+
+		for (section, sectionRolls) in groupRollsBySection(allRolls) {
+			let aggregatedRolls = aggregateRolls(sectionRolls)
+			if aggregatedRolls.contains(where: { $0.counter != 0 }) {
+				modelsBySection[section] = aggregatedRolls
+					.filter { $0.counter != 0 }
+					.sorted { $0.counter > $1.counter }
+					.map {
+						TableRollDisplayItem(
+							rollDescription: getRollDescriptionForTableView(for: $0),
+							rollCount: $0.counter.formatted()
+						)
+					}
+			}
+		}
+
+		return modelsBySection
+	}
+
+	private func getRollDescriptionForTableView(for diceModel: DiceModel) -> String {
+		switch diceModel.rollResult {
+		case .number(let value):
+			return CatanStatsStrings.GameDetails.numberRollDescription(value.description)
+		case .castleShip(let castleShipResult):
+			return castleShipResult.description
+		}
+	}
+
+	private func prepareChartViewData(from gameData: GameData) -> [RollSection: [ChartRollDisplayItem]] {
+		switch gameData {
+		case .singleGameStats(let playerData):
+			return prepareSingleGameChartData(playerData)
+		case .allTimeStats(let allTimeRolls):
+			return prepareAllTimeChartData(allTimeRolls)
+		}
+	}
+
+	private func prepareSingleGameChartData(_ playerDataList: [PlayerData]) -> [RollSection: [ChartRollDisplayItem]] {
+		var displayItemsBySection: [RollSection: [ChartRollDisplayItem]] = [:]
+
+		for playerData in playerDataList {
+			for (section, diceModels) in groupRollsBySection(playerData.rolls) {
+				displayItemsBySection[section, default: []] += diceModels.map { diceModel in
+					ChartRollDisplayItem(
+						playerName: playerData.name,
+						description: diceModel.rollResult.description,
+						count: diceModel.counter
+					)
+				}
+			}
+		}
+
+		return displayItemsBySection
+	}
+
+	private func prepareAllTimeChartData(_ allTimeRolls: [DiceModel]) -> [RollSection: [ChartRollDisplayItem]] {
+		var displayItemsBySection: [RollSection: [ChartRollDisplayItem]] = [:]
+		let groupedRolls = groupRollsBySection(allTimeRolls)
+
+		for (section, diceModels) in groupedRolls {
+			displayItemsBySection[section, default: []] += diceModels.map { diceModel in
+				ChartRollDisplayItem(
+					playerName: nil,
+					description: diceModel.rollResult.description,
+					count: diceModel.counter
+				)
+			}
+		}
+
+		return displayItemsBySection
+	}
+
+	private func prepareExpectedCountViewData(from gameData: GameData) -> [RollSection: [ExpectedCountDisplayItem]] {
+		var itemsBySection: [RollSection: [ExpectedCountDisplayItem]] = [:]
+
+		let allRolls: [DiceModel]
+		switch gameData {
+		case .singleGameStats(let playerData):
+			allRolls = playerData.flatMap { $0.rolls }
+		case .allTimeStats(let allTimeRolls):
+			allRolls = allTimeRolls
+		}
+
+		for (section, sectionRolls) in groupRollsBySection(allRolls) {
+			let aggregatedRolls = aggregateRolls(sectionRolls)
+			let totalRollCount = aggregatedRolls.reduce(0) { $0 + $1.counter }
+
+			itemsBySection[section] = aggregatedRolls.map { diceModel in
+				ExpectedCountDisplayItem(
+					description: diceModel.rollResult.description,
+					count: DiceModel.probability(for: diceModel.rollResult) * Double(totalRollCount)
+				)
+			}
+		}
+
+		return itemsBySection
+	}
+
+	private func aggregateRolls(_ rolls: [DiceModel]) -> [DiceModel] {
+		var rollDict: [DiceModel: Int] = [:]
+
+		for roll in rolls {
+			if let existingCount = rollDict[roll] {
+				rollDict[roll] = existingCount + roll.counter
+			} else {
+				rollDict[roll] = roll.counter
+			}
+		}
+
+		return rollDict.map { key, value in
+			let aggregatedRoll = key
+			aggregatedRoll.counter = value
+			return aggregatedRoll
+		}
+	}
+
+	private func groupRollsBySection(_ rolls: [DiceModel]) -> [RollSection: [DiceModel]] {
+		var rollsBySection: [RollSection: [DiceModel]] = [:]
+		for roll in rolls {
+			switch roll.rollResult {
+			case .number:
+				rollsBySection[.numberRolls, default: []].append(roll)
+			case .castleShip:
+				rollsBySection[.shipAndCastles, default: []].append(roll)
+			}
+		}
+		return rollsBySection
+	}
+}
+
+// MARK: Count fetch methods
+private extension GameDetailsPresenter {
+	private func getRollCount(for rollResult: DiceModel.RollResult, playerID: NSManagedObjectID?) -> Int {
+		switch rollResult {
+		case .number(let value):
+			return fetchRolls(
+				for: NumberRoll.self,
+				rollResult: value,
+				rollResultPropertyName: "value",
+				playerID: playerID
+			)
+		case .castleShip(let castleShipResult):
+			switch castleShipResult {
+			case .ship:
+				return fetchRolls(
+					for: ShipRoll.self,
+					rollResult: nil,
+					rollResultPropertyName: nil,
+					playerID: playerID
+				)
+			case .castle(color: let color):
+				return fetchRolls(
+					for: CastleRoll.self,
+					rollResult: color.rawValue,
+					rollResultPropertyName: "color",
+					playerID: playerID
+				)
+			}
+		}
+	}
+
+	private func fetchRolls<T: NSManagedObject>(
+		for entity: T.Type,
+		rollResult: Any? = nil,
+		rollResultPropertyName: String? = nil,
+		playerID: NSManagedObjectID?
+	) -> Int {
+		let fetchRequest = T.fetchRequest()
+		var subpredicates: [NSPredicate] = []
+
+		if let gameID {
+			subpredicates.append(NSPredicate(format: "game == %@", gameID))
+		}
+
+		if let playerID {
+			subpredicates.append(NSPredicate(format: "player == %@", playerID))
+		}
+
+		if let rollResult = rollResult, let propertyName = rollResultPropertyName {
+			switch rollResult {
+			case let stringValue as String:
+				subpredicates.append(NSPredicate(format: "\(propertyName) == %@", stringValue))
+			case let intValue as Int:
+				subpredicates.append(NSPredicate(format: "\(propertyName) == %d", intValue))
+			default:
+				assertionFailure("Unexpected roll property type: \(type(of: rollResult))")
+			}
+		}
+
+		fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: subpredicates)
+		return (try? coreDataStack.managedContext.count(for: fetchRequest)) ?? 0
 	}
 }

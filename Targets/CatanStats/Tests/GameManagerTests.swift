@@ -12,7 +12,13 @@ import CoreData
 @testable import CatanStats
 
 final class GameManagerTests: XCTestCase {
-	
+
+	private var gameInput = NewGameUserInput(
+		gameTitle: "gameTitle",
+		playerCount: 3,
+		playerNames: ["Player1", "Player2", "Player3"]
+	)
+
 	private var coreDataStack: CoreDataStack!
 	private var subscriptions = Set<AnyCancellable>()
 
@@ -25,25 +31,24 @@ final class GameManagerTests: XCTestCase {
 		subscriptions = []
 	}
 
-	func test_createGame_shouldCreateGameWithCorrectProperties() {
+	func test_createGame_shouldCreateGameWithCorrectProperties() throws {
 		let sut = makeGameManager()
 
 		let startDate = Date()
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
-		let createdGame = sut.createGame()
+		let createdGame = try XCTUnwrap(sut.createGame(with: gameInput), "Game was not created")
 		waitForExpectations(timeout: 0.5) { error in
 			XCTAssertNil(error, "Managed context wasn't saved")
 		}
-		
+
 		let endDate = Date()
 
-		XCTAssertNotNil(createdGame, "Game was not created")
-		guard let dateCreated = createdGame?.dateCreated else {
+		guard let dateCreated = createdGame.dateCreated else {
 			XCTFail("Date created was not set")
 			return
 		}
 		XCTAssertTrue(startDate...endDate ~= dateCreated, "Game date is incorrect")
-		XCTAssertNotNil(createdGame?.title, "Game title was not set")
+		XCTAssertEqual(createdGame.title, gameInput.gameTitle, "Game title is incorrect")
 	}
 
 	func test_createGame_shouldIncreaseGameCountByOne() {
@@ -51,7 +56,7 @@ final class GameManagerTests: XCTestCase {
 		let expectedCount = getGameCount() + 1
 
 		expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
-		_ = sut.createGame()
+		_ = sut.createGame(with: gameInput)
 		waitForExpectations(timeout: 0.5) { error in
 			XCTAssertNil(error, "Managed context wasn't saved")
 		}
@@ -66,7 +71,9 @@ final class GameManagerTests: XCTestCase {
 			into: coreDataStack.managedContext
 		) as? Game else { return }
 		var currentGame: Game?
-		let gamePublishedExpectation = XCTestExpectation(description: "currentGamePublisher emitted a value other than the initial one")
+		let gamePublishedExpectation = XCTestExpectation(
+			description: "currentGamePublisher emitted a value except the CurrentValue"
+		)
 
 		sut.currentGamePublisher
 			.dropFirst()
@@ -83,8 +90,8 @@ final class GameManagerTests: XCTestCase {
 
 	func test_deleteGame_withTwoGames_shouldMakeCountOne() throws {
 		let sut = makeGameManager()
-		_ = sut.createGame()
-		let secondGame = sut.createGame()
+		_ = sut.createGame(with: gameInput)
+		let secondGame = sut.createGame(with: gameInput)
 
 		let lastGameCreated = try XCTUnwrap(secondGame, "Create game method returned nil")
 
@@ -100,7 +107,7 @@ final class GameManagerTests: XCTestCase {
 
 	func test_deleteGame_withOneGame_shouldPublishCurrentNil() throws {
 		let sut = makeGameManager()
-		let game = try XCTUnwrap(sut.createGame(), "Create game method returned nil")
+		let game = try XCTUnwrap(sut.createGame(with: gameInput), "Create game method returned nil")
 		sut.setCurrentGame(game)
 
 		var currentGame: Game?
@@ -122,20 +129,23 @@ final class GameManagerTests: XCTestCase {
 
 	func test_deleteGame_nonCurrent_shouldNotPublish() throws {
 		let sut = makeGameManager()
-		let firstGame = try XCTUnwrap(sut.createGame(), "Create game method returned nil")
-		let secondGame = try XCTUnwrap(sut.createGame(), "Create game method returned nil")
+		let firstGame = try XCTUnwrap(sut.createGame(with: gameInput), "Create game method returned nil")
+		let secondGame = try XCTUnwrap(sut.createGame(with: gameInput), "Create game method returned nil")
 		sut.setCurrentGame(secondGame)
 
 		let noEventExpectation = XCTestExpectation(description: "No update for current game should be emitted")
 		noEventExpectation.isInverted = true
 		sut.currentGamePublisher
 			.dropFirst()
-			.sink { game in
+			.sink { _ in
 				noEventExpectation.fulfill()
 			}
 			.store(in: &subscriptions)
 
-		let contextDidSaveExpectation = expectation(forNotification: .NSManagedObjectContextDidSave, object: coreDataStack.managedContext)
+		let contextDidSaveExpectation = expectation(
+			forNotification: .NSManagedObjectContextDidSave,
+			object: coreDataStack.managedContext
+		)
 		sut.deleteGame(firstGame)
 
 		wait(for: [noEventExpectation, contextDidSaveExpectation], timeout: 0.5)

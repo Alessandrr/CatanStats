@@ -51,7 +51,7 @@ final class GameListViewController: UITableViewController {
 	}
 
 	@objc private func newGameTapped() {
-		presenter?.addNewGame()
+		presenter?.didSelectAddGame()
 	}
 
 	@objc private func allTimeStatsTapped() {
@@ -120,7 +120,7 @@ extension GameListViewController {
 			self?.presenter?.currentGameSelectedAt(indexPath)
 			actionPerformed(true)
 		}
-		setCurrentAction.backgroundColor = Color.lightBlue
+		setCurrentAction.backgroundColor = Colors.lightBlue
 
 		let configuration = UISwipeActionsConfiguration(actions: [deleteAction, setCurrentAction])
 		configuration.performsFirstActionWithFullSwipe = true

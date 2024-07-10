@@ -33,12 +33,12 @@ public enum CatanStatsTestsStrings {
     public static let actualCount = CatanStatsTestsStrings.tr("Localizable", "gameDetails.actualCount")
     /// All time stats
     public static let allTimeStatsTitle = CatanStatsTestsStrings.tr("Localizable", "gameDetails.allTimeStatsTitle")
-    /// Rolled %d
-    public static func diceCell(_ p1: Int) -> String {
-      return CatanStatsTestsStrings.tr("Localizable", "gameDetails.diceCell",p1)
-    }
     /// Expected count
     public static let expectedCount = CatanStatsTestsStrings.tr("Localizable", "gameDetails.expectedCount")
+    /// Rolled %@
+    public static func numberRollDescription(_ p1: Any) -> String {
+      return CatanStatsTestsStrings.tr("Localizable", "gameDetails.numberRollDescription",String(describing: p1))
+    }
   }
 
   public enum GameList {
@@ -54,6 +54,15 @@ public enum CatanStatsTestsStrings {
     }
     /// Activate
     public static let setCurrentActionTitle = CatanStatsTestsStrings.tr("Localizable", "gameList.setCurrentActionTitle")
+  }
+
+  public enum NewGame {
+  /// Add game
+    public static let navigationBarTitle = CatanStatsTestsStrings.tr("Localizable", "newGame.navigationBarTitle")
+    /// Player %d
+    public static func playerNamePlaceholder(_ p1: Int) -> String {
+      return CatanStatsTestsStrings.tr("Localizable", "newGame.playerNamePlaceholder",p1)
+    }
   }
 
   public enum NewRoll {

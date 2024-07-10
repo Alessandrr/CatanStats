@@ -32,7 +32,7 @@ final class NewRollCell: UICollectionViewCell {
 		case .number(let value):
 			imageView.image = UIImage(systemName: "\(value).circle")?
 				.scalePreservingAspectRatio(targetSize: targetNumberImageSize)
-			backgroundColor = Color.red
+			backgroundColor = Colors.red
 		case .castleShip(let castleShipResult):
 			switch castleShipResult {
 			case .ship:
@@ -42,11 +42,11 @@ final class NewRollCell: UICollectionViewCell {
 				imageView.image = UIImage(systemName: "house.lodge")
 				switch color {
 				case .yellow:
-					backgroundColor = Color.lightOrange
+					backgroundColor = Colors.lightOrange
 				case .green:
-					backgroundColor = Color.green
+					backgroundColor = Colors.green
 				case .blue:
-					backgroundColor = Color.lightBlue
+					backgroundColor = Colors.lightBlue
 				}
 			}
 		}
