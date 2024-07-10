@@ -113,8 +113,7 @@ final class NewRollPresenter: NewRollPresenterProtocol {
 
 		gameManager.currentPlayerPublisher
 			.sink { [weak self] player in
-				guard let self = self else { return }
-				guard let playerName = player?.name else { return }
+				guard let self = self, let playerName = player?.name else { return }
 				currentPlayer = player
 				checkUndoPossibility()
 				viewController?.renderCurrentPlayer(playerName)
